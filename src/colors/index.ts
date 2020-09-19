@@ -13,6 +13,7 @@ export const colors = {
   primary: PRIMARY,
   secondary: SECONDARY,
   accent: ACCENT,
+  success: ACCENT,
 
   // calculated colors
   transBlack: tinycolor(BLACK).setAlpha(0.5).toString(),
@@ -23,4 +24,5 @@ export const colors = {
   lightPrimary: tinycolor(PRIMARY).setAlpha(0.33).toString(),
   lightAccent: tinycolor(ACCENT).setAlpha(0.33).toString(),
   grey: tinycolor(BLACK).setAlpha(0.33).toString(),
+  lightSuccess: tinycolor(ACCENT).setAlpha(0.33).toString(),
 };

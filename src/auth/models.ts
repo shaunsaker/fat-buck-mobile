@@ -1,8 +1,10 @@
 import { FirebaseAuthTypes } from '@react-native-firebase/auth';
 
 export enum AuthActionTypes {
-  CREATE_USER_WITH_EMAIL_AND_PASSWORD = '@@auth/CREATE_USER_WITH_EMAIL_AND_PASSWORD',
-  CREATE_USER_WITH_EMAIL_AND_PASSWORD_SUCCESS = '@@auth/CREATE_USER_WITH_EMAIL_AND_PASSWORD_SUCCESS',
+  INITIATE_CREATE_USER = '@@auth/INITIATE_CREATE_USER',
+  INITIATE_CREATE_USER_SUCCESS = '@@auth/INITIATE_CREATE_USER_SUCCESS',
+  VERIFY_PIN_CODE = '@@auth/VERIFY_PIN_CODE',
+  VERIFY_PIN_CODE_SUCCESS = '@@auth/VERIFY_PIN_CODE_SUCCESS',
   SIGN_IN_ERROR = '@@auth/SIGN_IN_ERROR',
   SIGN_OUT = '@@auth/SIGN_OUT',
   SIGN_OUT_SUCCESS = '@@auth/SIGN_OUT_SUCCESS',
@@ -11,4 +13,6 @@ export enum AuthActionTypes {
 
 export interface AuthState extends FirebaseAuthTypes.User {
   loading: boolean;
+  confirmationResult: FirebaseAuthTypes.ConfirmationResult;
+  isNewUser: boolean;
 }

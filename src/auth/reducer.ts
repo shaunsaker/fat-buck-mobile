@@ -1,4 +1,5 @@
 import { Reducer } from 'redux';
+import { WelcomeActionTypes } from '../welcome/models';
 import { AuthActionTypes, AuthState } from './models';
 
 export const initialState: AuthState = {
@@ -12,16 +13,30 @@ export const authReducer: Reducer<AuthState> = (
   action,
 ) => {
   switch (action.type) {
-    case AuthActionTypes.CREATE_USER_WITH_EMAIL_AND_PASSWORD: {
+    case AuthActionTypes.INITIATE_CREATE_USER: {
       return {
         ...state,
         loading: true,
       };
     }
-    case AuthActionTypes.CREATE_USER_WITH_EMAIL_AND_PASSWORD_SUCCESS: {
+    case AuthActionTypes.INITIATE_CREATE_USER_SUCCESS: {
       return {
         ...state,
         loading: false,
+        confirmationResult: action.payload.confirmationResult,
+      };
+    }
+    case AuthActionTypes.VERIFY_PIN_CODE: {
+      return {
+        ...state,
+        loading: true,
+      };
+    }
+    case AuthActionTypes.VERIFY_PIN_CODE_SUCCESS: {
+      return {
+        ...state,
+        loading: false,
+        confirmationResult: undefined,
         ...action.payload.user,
       };
     }
@@ -44,6 +59,12 @@ export const authReducer: Reducer<AuthState> = (
       return {
         ...state,
         loading: false,
+      };
+    }
+    case WelcomeActionTypes.SET_HAS_SEEN_WELCOME: {
+      return {
+        ...state,
+        isNewUser: true,
       };
     }
     default: {

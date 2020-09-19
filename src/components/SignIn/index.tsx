@@ -5,19 +5,25 @@ import { Input } from '../Input';
 import Button, { ButtonKinds } from '../Button';
 import { TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { createUserWithEmailAndPassword } from '../../auth/actions';
-import { selectIsAuthLoading } from '../../auth/selectors';
+import { initiateCreateUser, verifyPinCode } from '../../auth/actions';
+import {
+  selectAuthConfirmationResult,
+  selectIsAuthLoading,
+  selectIsNewUser,
+} from '../../auth/selectors';
 import { Background } from '../Background';
 import { PageHeader } from '../PageHeader';
 import { dimensions } from '../../dimensions';
 import { Link } from '../Link';
 import { ParagraphText } from '../ParagraphText';
 import { ScreenNavigationProps, Screens } from '../../Router';
+import { validateEmail } from '../../utils/validateEmail';
+import { validatePhoneNumber } from '../../utils/validatePhoneNumber';
 
 const SignInContainer = styled.View`
   flex: 1;
   align-items: center;
-  padding: 0 ${dimensions.rhythm}px;
+  padding: ${dimensions.rhythm}px;
 `;
 
 const SignInInputsContainer = styled.View`
@@ -51,18 +57,20 @@ interface SignInBaseProps {
   isLoading: boolean;
   isDisabled: boolean;
   email: string;
+  isEmailValid: boolean;
   handleChangeEmail: (email: string) => void;
   password: string;
+  isPasswordValid: boolean;
   handleChangePassword: (password: string) => void;
-  hasSubmittedEmail: boolean;
-  isEmailVerified: boolean;
   cellphone: string;
+  isCellphoneValid: boolean;
   handleChangeCellphone: (cellphone: string) => void;
-  hasSubmittedCellphone: boolean;
   pinCode: string;
+  isPinCodeValid: boolean;
   handleChangePinCode: (pinCode: string) => void;
-  handleDismissKeyboard: () => void;
   handleSubmit: () => void;
+  hasSubmitted: boolean;
+  handleDismissKeyboard: () => void;
   handleForgotPassword: () => void;
 }
 
@@ -71,17 +79,19 @@ const SignInBase = ({
   isLoading,
   isDisabled,
   email,
+  isEmailValid,
   handleChangeEmail,
   password,
+  isPasswordValid,
   handleChangePassword,
-  hasSubmittedEmail,
-  isEmailVerified,
   cellphone,
+  isCellphoneValid,
   handleChangeCellphone,
-  hasSubmittedCellphone,
   pinCode,
+  isPinCodeValid,
   handleChangePinCode,
   handleSubmit,
+  hasSubmitted,
   handleDismissKeyboard,
   handleForgotPassword,
 }: SignInBaseProps) => {
@@ -96,10 +106,11 @@ const SignInBase = ({
           <SignInInputsContainer>
             <SignInInputContainer>
               <Input
-                placeholder="EMAIL"
+                placeholder="Email"
                 keyboardType="email-address"
                 value={email}
                 autoFocus
+                isValid={isEmailValid}
                 onChangeText={handleChangeEmail}
                 onSubmitEditing={handleDismissKeyboard}
               />
@@ -107,11 +118,12 @@ const SignInBase = ({
 
             <SignInInputContainer>
               <Input
-                placeholder="PASSWORD"
+                placeholder="Password"
                 secureTextEntry
                 value={password}
+                isValid={isPasswordValid}
                 onChangeText={handleChangePassword}
-                onSubmitEditing={handleSubmit}
+                onSubmitEditing={handleDismissKeyboard}
               />
             </SignInInputContainer>
 
@@ -119,40 +131,38 @@ const SignInBase = ({
               <Link onPress={handleForgotPassword}>Forgot password?</Link>
             </ForgotPasswordContainer>
 
-            {hasSubmittedEmail && !isEmailVerified ? (
-              <ParagraphText center>
-                Please verify your email and open the app.
-              </ParagraphText>
-            ) : null}
+            <SignInInputContainer>
+              <Input
+                placeholder="Cellphone (E.g. +27833771131)"
+                keyboardType="number-pad"
+                value={cellphone}
+                isValid={isCellphoneValid}
+                onChangeText={handleChangeCellphone}
+                onSubmitEditing={handleSubmit}
+              />
+            </SignInInputContainer>
 
-            {isEmailVerified ? (
-              hasSubmittedCellphone ? (
-                <>
-                  <PinCodeTextContainer>
-                    <ParagraphText center>
-                      Please enter the PIN code SMS'd to {cellphone}.
-                    </ParagraphText>
-                  </PinCodeTextContainer>
+            {hasSubmitted ? (
+              <>
+                <PinCodeTextContainer>
+                  <ParagraphText center>
+                    Please enter the PIN code that we SMS'd to your number:{' '}
+                    {cellphone}.
+                  </ParagraphText>
+                </PinCodeTextContainer>
 
-                  <SignInInputContainer>
-                    <Input
-                      placeholder="PIN CODE"
-                      keyboardType="number-pad"
-                      value={pinCode}
-                      onChangeText={handleChangePinCode}
-                    />
-                  </SignInInputContainer>
-                </>
-              ) : (
                 <SignInInputContainer>
                   <Input
-                    placeholder="CELLPHONE"
+                    placeholder="PIN Code"
                     keyboardType="number-pad"
-                    value={cellphone}
-                    onChangeText={handleChangeCellphone}
+                    value={pinCode}
+                    isValid={isPinCodeValid}
+                    autoFocus
+                    onChangeText={handleChangePinCode}
+                    onSubmitEditing={handleSubmit}
                   />
                 </SignInInputContainer>
-              )
+              </>
             ) : null}
           </SignInInputsContainer>
 
@@ -186,12 +196,19 @@ export const SignIn = ({}: SignInProps) => {
   const [password, setPassword] = useState('');
   const [cellphone, setCellphone] = useState('');
   const [pinCode, setPinCode] = useState('');
+
+  const isEmailValid = validateEmail(email);
+  const isPasswordValid = password.length >= 6;
+  const isCellphoneValid = validatePhoneNumber(cellphone);
+  const isPinCodeValid = pinCode.length >= 6;
   const isLoading = useSelector(selectIsAuthLoading);
-  const isNewUser = true; // TODO
-  const hasSubmittedEmail = false; // TODO
-  const isEmailVerified = false; // TODO
-  const hasSubmittedCellphone = false; // TODO
-  const isDisabled = false; // TODO
+  const isNewUser = useSelector(selectIsNewUser);
+  const hasSubmitted = Boolean(useSelector(selectAuthConfirmationResult));
+  const isDisabled =
+    isLoading ||
+    (hasSubmitted
+      ? !isPinCodeValid
+      : !isEmailValid || !isPasswordValid || !isCellphoneValid);
 
   const onChangeEmail = useCallback((text: string) => {
     setEmail(text);
@@ -216,11 +233,12 @@ export const SignIn = ({}: SignInProps) => {
   const onSubmit = useCallback(() => {
     Keyboard.dismiss();
 
-    // TODO: depending on the state, do stuff, ie
-    if (isNewUser) {
-      dispatch(createUserWithEmailAndPassword(email, password));
+    if (hasSubmitted) {
+      dispatch(verifyPinCode(pinCode, email, password));
+    } else {
+      dispatch(initiateCreateUser(cellphone));
     }
-  }, [dispatch, isNewUser, email, password]);
+  }, [dispatch, hasSubmitted, email, password, cellphone, pinCode]);
 
   const onForgotPassword = useCallback(() => {
     // TODO
@@ -232,18 +250,20 @@ export const SignIn = ({}: SignInProps) => {
       isLoading={isLoading}
       isDisabled={isDisabled}
       email={email}
+      isEmailValid={isEmailValid}
       handleChangeEmail={onChangeEmail}
       password={password}
+      isPasswordValid={isPasswordValid}
       handleChangePassword={onChangePassword}
-      hasSubmittedEmail={hasSubmittedEmail}
-      isEmailVerified={isEmailVerified}
       cellphone={cellphone}
+      isCellphoneValid={isCellphoneValid}
       handleChangeCellphone={onChangeCellphone}
-      hasSubmittedCellphone={hasSubmittedCellphone}
       pinCode={pinCode}
+      isPinCodeValid={isPinCodeValid}
       handleChangePinCode={onChangePinCode}
-      handleDismissKeyboard={onDismissKeyboard}
       handleSubmit={onSubmit}
+      hasSubmitted={hasSubmitted}
+      handleDismissKeyboard={onDismissKeyboard}
       handleForgotPassword={onForgotPassword}
     />
   );

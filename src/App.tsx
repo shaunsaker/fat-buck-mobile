@@ -9,9 +9,9 @@ import { colors } from './colors';
 import { ErrorBoundary } from './components/ErrorBoundary';
 
 const App = () => {
-  // useEffect(() => {
-  //   persistor.purge();
-  // }, []);
+  useEffect(() => {
+    persistor.purge();
+  }, []);
 
   return (
     <Provider store={store}>

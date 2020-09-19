@@ -13,10 +13,16 @@ import { PageHeader } from '../PageHeader';
 import { welcomeSlides, WelcomeSlide } from './welcomeSlides';
 import { ScreenNavigationProps, Screens } from '../../Router';
 
+const WelcomeContainer = styled.View`
+  padding: ${dimensions.rhythm}px 0;
+  flex: 1;
+  align-items: center;
+`;
+
 const WelcomeSlideContainer = styled.View`
+  width: ${Dimensions.get('window').width}px;
   padding: 0 ${dimensions.rhythm}px;
   align-items: center;
-  width: ${Dimensions.get('window').width}px;
 `;
 
 const WelcomeSlideProgressContainer = styled.View`
@@ -84,38 +90,41 @@ const WelcomeBase = ({
 
       <PageHeader>{currentSlide.title}</PageHeader>
 
-      <FlatList
-        ref={flatListRef}
-        horizontal
-        alwaysBounceHorizontal={false}
-        bounces={false}
-        scrollEnabled={false}
-        data={slides}
-        keyExtractor={({ title }) => title}
-        renderItem={renderSlide}
-      />
+      <WelcomeContainer>
+        <FlatList
+          ref={flatListRef}
+          horizontal
+          alwaysBounceHorizontal={false}
+          bounces={false}
+          scrollEnabled={false}
+          showsHorizontalScrollIndicator={false}
+          data={slides}
+          keyExtractor={({ title }) => title}
+          renderItem={renderSlide}
+        />
 
-      <ButtonContainer>
-        <WelcomeSlideProgressContainer>
-          {slides.map((slide, index) => (
-            <WelcomeSlideProgress
-              key={slide.title}
-              isActive={index === slideIndex}
-              hitSlop={{
-                top: WELCOME_SLIDE_PROGRESS_MARGIN,
-                right: WELCOME_SLIDE_PROGRESS_MARGIN,
-                bottom: WELCOME_SLIDE_PROGRESS_MARGIN,
-                left: WELCOME_SLIDE_PROGRESS_MARGIN,
-              }}
-              onPress={() => onSlideProgressPress(index)}
-            />
-          ))}
-        </WelcomeSlideProgressContainer>
+        <ButtonContainer>
+          <WelcomeSlideProgressContainer>
+            {slides.map((slide, index) => (
+              <WelcomeSlideProgress
+                key={slide.title}
+                isActive={index === slideIndex}
+                hitSlop={{
+                  top: WELCOME_SLIDE_PROGRESS_MARGIN,
+                  right: WELCOME_SLIDE_PROGRESS_MARGIN,
+                  bottom: WELCOME_SLIDE_PROGRESS_MARGIN,
+                  left: WELCOME_SLIDE_PROGRESS_MARGIN,
+                }}
+                onPress={() => onSlideProgressPress(index)}
+              />
+            ))}
+          </WelcomeSlideProgressContainer>
 
-        <Button kind={ButtonKinds.primary} onPress={onSubmitPress}>
-          {currentSlide.buttonText}
-        </Button>
-      </ButtonContainer>
+          <Button kind={ButtonKinds.primary} onPress={onSubmitPress}>
+            {currentSlide.buttonText}
+          </Button>
+        </ButtonContainer>
+      </WelcomeContainer>
     </Background>
   );
 };
@@ -139,7 +148,7 @@ export const Welcome = ({ navigation }: WelcomeProps) => {
       setSlideIndex(nextSlideIndex);
     } else {
       navigation.navigate(Screens.signIn);
-      setTimeout(() => dispatch(setHasSeenWelcome(true)), 500); // delay added so sign in can animate in
+      dispatch(setHasSeenWelcome(true));
     }
   }, [slideIndex, dispatch, navigation]);
 

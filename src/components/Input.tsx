@@ -8,6 +8,7 @@ const HEIGHT = 50;
 interface InputContainerProps {
   isFocussed: boolean;
   hasValue: boolean;
+  isValid: boolean;
 }
 
 const InputContainer = styled<InputContainerProps>(TextInput)`
@@ -21,17 +22,28 @@ const InputContainer = styled<InputContainerProps>(TextInput)`
   border-radius: ${HEIGHT / 2}px;
   border-width: 3px;
   border-style: solid;
-  border-color: ${({ isFocussed, hasValue }) =>
-    isFocussed || hasValue ? colors.primary : colors.white};
-  background-color: ${({ isFocussed }) =>
-    isFocussed ? colors.lightPrimary : 'transparent'};
+  border-color: ${({ isFocussed, hasValue, isValid }) =>
+    isValid
+      ? colors.success
+      : isFocussed || hasValue
+      ? colors.primary
+      : colors.white};
+  background-color: ${({ isFocussed, isValid }) =>
+    isFocussed
+      ? isValid
+        ? colors.lightSuccess
+        : colors.lightPrimary
+      : 'transparent'};
   padding: 0 ${HEIGHT / 2}px;
-  align-self: stretch;
+  align-self: center;
+  max-width: 360px;
+  width: 100%;
 `;
 
 interface InputBaseProps extends InputProps {
   isFocussed: boolean;
   hasValue: boolean;
+  isValid: boolean;
   handleFocus: () => void;
   handleBlur: () => void;
 }
@@ -40,6 +52,7 @@ const InputBase = ({
   placeholder,
   isFocussed,
   hasValue,
+  isValid,
   handleFocus,
   handleBlur,
   ...props
@@ -51,15 +64,19 @@ const InputBase = ({
         isFocussed ? colors.darkTransWhite : colors.transWhite
       }
       placeholder={placeholder}
+      underlineColorAndroid="transparent"
       isFocussed={isFocussed}
       hasValue={hasValue}
+      isValid={isValid}
       onFocus={handleFocus}
       onBlur={handleBlur}
     />
   );
 };
 
-interface InputProps extends TextInputProperties {}
+interface InputProps extends TextInputProperties {
+  isValid: boolean;
+}
 
 export const Input = (props: InputProps) => {
   const [isFocussed, setIsFocussed] = useState(false);
