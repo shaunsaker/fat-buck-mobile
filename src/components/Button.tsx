@@ -8,22 +8,36 @@ import { ActivityIndicator } from 'react-native';
 export enum ButtonKinds {
   primary,
   secondary,
+  accent,
+  accentFilled,
 }
 
 interface ButtonContainerProps {
   kind: ButtonKinds;
+  small?: boolean;
 }
 
+const WIDTH = 180;
+const SMALL_WIDTH = 90;
 const HEIGHT = 45;
+const SMALL_HEIGHT = 25;
 
 const ButtonContainer = styled(Touchable)<ButtonContainerProps>`
-  width: 180px;
-  height: ${HEIGHT}px;
+  width: ${({ small }) => (small ? SMALL_WIDTH : WIDTH)}px;
+  height: ${({ small }) => (small ? SMALL_HEIGHT : HEIGHT)}px;
   border-width: 3px;
   border-style: solid;
   border-color: ${({ kind }) =>
-    kind === ButtonKinds.secondary ? colors.lightTransWhite : colors.primary};
-  border-radius: ${HEIGHT / 2}px;
+    kind === ButtonKinds.primary
+      ? colors.primary
+      : kind === ButtonKinds.secondary
+      ? colors.lightTransWhite
+      : kind === ButtonKinds.accent || kind === ButtonKinds.accentFilled
+      ? colors.accent
+      : colors.white};
+  border-radius: ${({ small }) => (small ? SMALL_HEIGHT / 2 : HEIGHT / 2)}px;
+  background-color: ${({ kind }) =>
+    kind === ButtonKinds.accentFilled ? colors.accent : 'transparent'};
 `;
 
 const ButtonCss = css`
@@ -42,18 +56,25 @@ const ButtonBackground = styled.View`
 `;
 
 interface ButtonTextProps {
-  disabled: boolean;
+  kind: ButtonKinds;
+  small?: boolean;
+  disabled?: boolean;
 }
 
 const ButtonText = styled.Text<ButtonTextProps>`
-  font-size: 16px;
+  font-size: ${({ small }) => (small ? 12 : 16)}px;
   font-family: 'Recursive-Bold';
-  color: ${({ disabled }) => (disabled ? colors.transWhite : colors.white)};
-  font-weight: bold;
+  color: ${({ kind, disabled }) =>
+    disabled
+      ? colors.transWhite
+      : kind === ButtonKinds.accent
+      ? colors.accent
+      : colors.white};
 `;
 
 interface ButtonProps {
   kind: ButtonKinds;
+  small?: boolean;
   loading?: boolean;
   disabled?: boolean;
   children: string;
@@ -62,19 +83,26 @@ interface ButtonProps {
 
 export const Button = ({
   kind,
+  small,
   loading,
-  disabled = false,
+  disabled,
   onPress,
   children,
 }: ButtonProps) => {
   const childComponent = loading ? (
     <ActivityIndicator size="small" color={colors.white} />
   ) : (
-    <ButtonText disabled={disabled}>{children}</ButtonText>
+    <ButtonText kind={kind} small={small} disabled={disabled}>
+      {children}
+    </ButtonText>
   );
 
   return (
-    <ButtonContainer kind={kind} disabled={disabled} onPress={onPress}>
+    <ButtonContainer
+      kind={kind}
+      small={small}
+      disabled={disabled}
+      onPress={onPress}>
       {kind === ButtonKinds.primary ? (
         <ButtonGradient
           start={{ x: 0, y: 0.25 }}

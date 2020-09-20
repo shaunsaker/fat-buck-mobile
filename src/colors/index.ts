@@ -4,7 +4,7 @@ const BLACK = '#0B0B00';
 const WHITE = '#FCFCFD';
 const PRIMARY = '#9C9F02';
 const SECONDARY = 'red';
-const ACCENT = '#00D193';
+const ACCENT = '#029F70';
 
 export const colors = {
   // input colors
