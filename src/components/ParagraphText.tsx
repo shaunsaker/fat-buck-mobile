@@ -15,7 +15,6 @@ const ParagraphTextContainer = styled.Text<ParagraphTextContainerProps>`
   text-align: ${({ center }) => (center ? 'center' : 'left')};
   max-width: 360px;
   align-self: center;
-  align-items: center;
 `;
 
 interface ParagraphTextProps {

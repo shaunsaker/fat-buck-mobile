@@ -3,7 +3,7 @@ import styled from 'styled-components/native';
 import { HeaderBar } from '../HeaderBar';
 import { Input } from '../Input';
 import Button, { ButtonKinds } from '../Button';
-import { TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { Keyboard } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { initiateSignIn, finaliseSignIn } from '../../auth/actions';
 import {
@@ -19,21 +19,27 @@ import { ParagraphText } from '../ParagraphText';
 import { ScreenNavigationProps, Screens } from '../../Router';
 import { validateEmail } from '../../utils/validateEmail';
 import { validatePhoneNumber } from '../../utils/validatePhoneNumber';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 const SignInContainer = styled.View`
   flex: 1;
-  align-items: center;
-  padding: ${dimensions.rhythm}px;
 `;
 
 const SignInInputsContainer = styled.View`
-  flex: 1;
-  align-self: stretch;
+  max-width: 360px;
+  width: 100%;
+  align-self: center;
+  padding: ${dimensions.rhythm}px;
 `;
 
 const SignInInputContainer = styled.View`
   margin-bottom: ${dimensions.rhythm}px;
   align-self: stretch;
+`;
+
+const SignInFooterContainer = styled.View`
+  flex: 1;
+  justify-content: flex-end;
 `;
 
 const SignInButtonContainer = styled.View`
@@ -46,7 +52,7 @@ const ForgotPasswordContainer = styled.View`
   margin-bottom: ${dimensions.rhythm}px;
 `;
 
-const StyledLink = styled(Link)``;
+const TermsLinkContainer = styled.View``;
 
 const PinCodeTextContainer = styled.View`
   margin-bottom: ${dimensions.rhythm}px;
@@ -101,7 +107,7 @@ const SignInBase = ({
 
       <PageHeader>Sign {isNewUser ? 'Up' : 'In'}</PageHeader>
 
-      <TouchableWithoutFeedback onPress={handleDismissKeyboard}>
+      <KeyboardAwareScrollView contentContainerStyle={{ flex: 1 }}>
         <SignInContainer>
           <SignInInputsContainer>
             <SignInInputContainer>
@@ -166,22 +172,27 @@ const SignInBase = ({
             ) : null}
           </SignInInputsContainer>
 
-          <ParagraphText>
-            By signing in, you agree to our{' '}
-            <StyledLink onPress={() => {}}>terms</StyledLink>.
-          </ParagraphText>
+          <SignInFooterContainer>
+            <ParagraphText>
+              By signing in, you agree to our{' '}
+              <TermsLinkContainer>
+                <Link onPress={() => {}}>terms</Link>
+              </TermsLinkContainer>
+              .
+            </ParagraphText>
 
-          <SignInButtonContainer>
-            <Button
-              kind={isDisabled ? ButtonKinds.secondary : ButtonKinds.primary}
-              loading={isLoading}
-              disabled={isDisabled}
-              onPress={handleSubmit}>
-              SUBMIT
-            </Button>
-          </SignInButtonContainer>
+            <SignInButtonContainer>
+              <Button
+                kind={isDisabled ? ButtonKinds.secondary : ButtonKinds.primary}
+                loading={isLoading}
+                disabled={isDisabled}
+                onPress={handleSubmit}>
+                SUBMIT
+              </Button>
+            </SignInButtonContainer>
+          </SignInFooterContainer>
         </SignInContainer>
-      </TouchableWithoutFeedback>
+      </KeyboardAwareScrollView>
     </Background>
   );
 };

@@ -35,9 +35,6 @@ const InputContainer = styled<InputContainerProps>(TextInput)`
         : colors.lightPrimary
       : 'transparent'};
   padding: 0 ${HEIGHT / 2}px;
-  align-self: center;
-  max-width: 360px;
-  width: 100%;
 `;
 
 interface InputBaseProps extends InputProps {
