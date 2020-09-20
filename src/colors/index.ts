@@ -3,17 +3,17 @@ import tinycolor from 'tinycolor2';
 const BLACK = '#0B0B00';
 const WHITE = '#FCFCFD';
 const PRIMARY = '#9C9F02';
-const SECONDARY = 'red';
 const ACCENT = '#029F70';
+const DANGER = '#D13F00';
 
 export const colors = {
   // input colors
   black: BLACK,
   white: WHITE,
   primary: PRIMARY,
-  secondary: SECONDARY,
   accent: ACCENT,
   success: ACCENT,
+  danger: DANGER,
 
   // calculated colors
   transBlack: tinycolor(BLACK).setAlpha(0.5).toString(),
@@ -25,4 +25,5 @@ export const colors = {
   lightAccent: tinycolor(ACCENT).setAlpha(0.33).toString(),
   grey: tinycolor(BLACK).setAlpha(0.33).toString(),
   lightSuccess: tinycolor(ACCENT).setAlpha(0.33).toString(),
+  lightDanger: tinycolor(DANGER).setAlpha(0.33).toString(),
 };

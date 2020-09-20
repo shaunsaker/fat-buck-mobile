@@ -3,6 +3,7 @@ import { HeaderBar } from '../HeaderBar';
 import { Background } from '../Background';
 import { ProfitSection } from '../ProfitSection';
 import { BalanceSection } from '../BalanceSection';
+import { TradesSection } from '../TradesSection';
 
 export const Home = () => {
   return (
@@ -12,6 +13,8 @@ export const Home = () => {
       <ProfitSection />
 
       <BalanceSection />
+
+      <TradesSection />
     </Background>
   );
 };
