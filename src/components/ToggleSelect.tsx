@@ -8,6 +8,8 @@ const HEIGHT = 30;
 
 const ToggleSelectContainer = styled.View`
   flex-direction: row;
+  background-color: ${colors.veryLightTransWhite};
+  border-radius: ${HEIGHT / 2}px;
 `;
 
 interface ToggleSelectOptionContainerProps {
