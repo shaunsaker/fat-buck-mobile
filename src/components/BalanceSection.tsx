@@ -63,9 +63,9 @@ interface BalanceSectionBaseProps {
   balanceTypes: BalanceType[];
   selectedBalanceType: BalanceType;
   showActionButtons?: boolean;
-  onSelectBalanceType: (selectedBalanceType: BalanceType) => void;
-  onDeposit: () => void;
-  onWithdraw: () => void;
+  handleSelectBalanceType: (selectedBalanceType: BalanceType) => void;
+  handleDeposit: () => void;
+  handleWithdraw: () => void;
 }
 
 const BalanceSectionBase = ({
@@ -76,9 +76,9 @@ const BalanceSectionBase = ({
   balanceTypes,
   selectedBalanceType,
   showActionButtons,
-  onSelectBalanceType,
-  onDeposit,
-  onWithdraw,
+  handleSelectBalanceType,
+  handleDeposit,
+  handleWithdraw,
 }: BalanceSectionBaseProps) => {
   return (
     <BalanceSectionContainer>
@@ -104,13 +104,13 @@ const BalanceSectionBase = ({
         <ToggleSelect
           options={balanceTypes}
           selectedOption={selectedBalanceType}
-          onSelectOption={onSelectBalanceType}
+          onSelectOption={handleSelectBalanceType}
         />
       </BalanceSectionBalanceTypeContainer>
 
       {showActionButtons ? (
         <BalanceSectionActionButtonContainer right>
-          <Button kind={ButtonKinds.accentFilled} small onPress={onDeposit}>
+          <Button kind={ButtonKinds.accentFilled} small onPress={handleDeposit}>
             DEPOSIT
           </Button>
         </BalanceSectionActionButtonContainer>
@@ -118,7 +118,7 @@ const BalanceSectionBase = ({
 
       {showActionButtons ? (
         <BalanceSectionActionButtonContainer left>
-          <Button kind={ButtonKinds.accent} small onPress={onWithdraw}>
+          <Button kind={ButtonKinds.accent} small onPress={handleWithdraw}>
             WITHDRAW
           </Button>
         </BalanceSectionActionButtonContainer>
@@ -155,9 +155,9 @@ export const BalanceSection = () => {
       balanceTypes={balanceTypes}
       selectedBalanceType={selectedBalanceType}
       showActionButtons={showActionButtons}
-      onSelectBalanceType={onSelectBalanceType}
-      onDeposit={onDeposit}
-      onWithdraw={onWithdraw}
+      handleSelectBalanceType={onSelectBalanceType}
+      handleDeposit={onDeposit}
+      handleWithdraw={onWithdraw}
     />
   );
 };

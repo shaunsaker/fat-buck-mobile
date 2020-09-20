@@ -44,7 +44,7 @@ interface ProfitSectionBaseProps {
   currency: string;
   profitTypes: ProfitType[];
   selectedProfitType: ProfitType;
-  onSelectProfitType: (selectedProfitType: ProfitType) => void;
+  handleSelectProfitType: (selectedProfitType: ProfitType) => void;
 }
 
 const ProfitSectionBase = ({
@@ -53,7 +53,7 @@ const ProfitSectionBase = ({
   currency,
   profitTypes,
   selectedProfitType,
-  onSelectProfitType,
+  handleSelectProfitType,
 }: ProfitSectionBaseProps) => {
   return (
     <ProfitSectionContainer>
@@ -79,7 +79,7 @@ const ProfitSectionBase = ({
         <ToggleSelect
           options={profitTypes}
           selectedOption={selectedProfitType}
-          onSelectOption={onSelectProfitType}
+          onSelectOption={handleSelectProfitType}
         />
       </ProfitSectionProfitTypeContainer>
     </ProfitSectionContainer>
@@ -106,7 +106,7 @@ export const ProfitSection = () => {
       currency={currency}
       profitTypes={profitTypes}
       selectedProfitType={selectedProfitType}
-      onSelectProfitType={onSelectProfitType}
+      handleSelectProfitType={onSelectProfitType}
     />
   );
 };
