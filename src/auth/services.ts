@@ -15,7 +15,6 @@ export const firebaseGetEmailCredential = async (
   email: string,
   password: string,
 ) => {
-  console.log({ email, password, auth });
   return await auth.EmailAuthProvider.credential(email, password);
 };
 
@@ -33,4 +32,8 @@ export const firebaseLinkWithCredential = async (
 
 export const firebaseSignOut = async () => {
   return await auth().signOut();
+};
+
+export const firebaseSendPasswordResetEmail = async (email: string) => {
+  return await auth().sendPasswordResetEmail(email);
 };

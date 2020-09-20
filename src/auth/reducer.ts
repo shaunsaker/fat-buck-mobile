@@ -4,8 +4,8 @@ import { AuthActionTypes, AuthState } from './models';
 
 export const initialState: AuthState = {
   loading: false,
-  uid: '',
-  email: '',
+  confirmationResult: undefined,
+  isNewUser: false,
 };
 
 export const authReducer: Reducer<AuthState> = (
@@ -56,6 +56,18 @@ export const authReducer: Reducer<AuthState> = (
       return initialState;
     }
     case AuthActionTypes.SIGN_OUT_ERROR: {
+      return {
+        ...state,
+        loading: false,
+      };
+    }
+    case AuthActionTypes.SEND_PASSWORD_RESET_EMAIL: {
+      return {
+        ...state,
+        loading: true,
+      };
+    }
+    case AuthActionTypes.SEND_PASSWORD_RESET_EMAIL_SUCCESS: {
       return {
         ...state,
         loading: false,

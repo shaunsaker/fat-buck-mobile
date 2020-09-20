@@ -7,12 +7,12 @@ import { colors } from '../colors';
 const CloseButtonContainer = styled(TouchableIcon)``;
 
 interface CloseButtonProps {
-  handlePress: () => void;
+  onPress: () => void;
 }
 
-export const CloseButton = ({ handlePress }: CloseButtonProps) => {
+export const CloseButton = ({ onPress }: CloseButtonProps) => {
   return (
-    <CloseButtonContainer onPress={handlePress}>
+    <CloseButtonContainer onPress={onPress}>
       <CloseIcon width={24} height={24} fill={colors.white} />
     </CloseButtonContainer>
   );

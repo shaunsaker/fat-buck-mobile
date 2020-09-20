@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback } from 'react';
 import styled from 'styled-components/native';
 import { HeaderBar } from '../HeaderBar';
 import { Input } from '../Input';
@@ -20,6 +20,14 @@ import { ScreenNavigationProps, Screens } from '../../Router';
 import { validateEmail } from '../../utils/validateEmail';
 import { validatePhoneNumber } from '../../utils/validatePhoneNumber';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import {
+  selectSignInCellphoneFormField,
+  selectSignInEmailFormField,
+  selectSignInPasswordFormField,
+  selectSignInPinCodeFormField,
+} from '../../forms/selectors';
+import { setFormField } from '../../forms/actions';
+import { Forms, SignInFields } from '../../forms/models';
 
 const SignInContainer = styled.View`
   flex: 1;
@@ -107,7 +115,9 @@ const SignInBase = ({
 
       <PageHeader>Sign {isNewUser ? 'Up' : 'In'}</PageHeader>
 
-      <KeyboardAwareScrollView contentContainerStyle={{ flex: 1 }}>
+      <KeyboardAwareScrollView
+        contentContainerStyle={{ flex: 1 }}
+        keyboardShouldPersistTaps="handled">
         <SignInContainer>
           <SignInInputsContainer>
             <SignInInputContainer>
@@ -201,13 +211,12 @@ interface SignInProps {
   navigation: ScreenNavigationProps<Screens.signIn>;
 }
 
-export const SignIn = ({}: SignInProps) => {
+export const SignIn = ({ navigation }: SignInProps) => {
   const dispatch = useDispatch();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [cellphone, setCellphone] = useState('');
-  const [pinCode, setPinCode] = useState('');
-
+  const email = useSelector(selectSignInEmailFormField);
+  const password = useSelector(selectSignInPasswordFormField);
+  const cellphone = useSelector(selectSignInCellphoneFormField);
+  const pinCode = useSelector(selectSignInPinCodeFormField);
   const isEmailValid = validateEmail(email);
   const isPasswordValid = password.length >= 6;
   const isCellphoneValid = validatePhoneNumber(cellphone);
@@ -221,21 +230,33 @@ export const SignIn = ({}: SignInProps) => {
       ? !isPinCodeValid
       : !isEmailValid || !isPasswordValid || !isCellphoneValid);
 
-  const onChangeEmail = useCallback((text: string) => {
-    setEmail(text);
-  }, []);
+  const onChangeEmail = useCallback(
+    (text: string) => {
+      dispatch(setFormField(Forms.signIn, SignInFields.email, text));
+    },
+    [dispatch],
+  );
 
-  const onChangePassword = useCallback((text: string) => {
-    setPassword(text);
-  }, []);
+  const onChangePassword = useCallback(
+    (text: string) => {
+      dispatch(setFormField(Forms.signIn, SignInFields.password, text));
+    },
+    [dispatch],
+  );
 
-  const onChangeCellphone = useCallback((text: string) => {
-    setCellphone(text);
-  }, []);
+  const onChangeCellphone = useCallback(
+    (text: string) => {
+      dispatch(setFormField(Forms.signIn, SignInFields.cellphone, text));
+    },
+    [dispatch],
+  );
 
-  const onChangePinCode = useCallback((text: string) => {
-    setPinCode(text);
-  }, []);
+  const onChangePinCode = useCallback(
+    (text: string) => {
+      dispatch(setFormField(Forms.signIn, SignInFields.pinCode, text));
+    },
+    [dispatch],
+  );
 
   const onDismissKeyboard = useCallback(() => {
     Keyboard.dismiss();
@@ -252,8 +273,8 @@ export const SignIn = ({}: SignInProps) => {
   }, [dispatch, hasSubmitted, email, password, cellphone, pinCode]);
 
   const onForgotPassword = useCallback(() => {
-    // TODO
-  }, []);
+    navigation.navigate(Screens.forgotPassword);
+  }, [navigation]);
 
   return (
     <SignInBase

@@ -7,12 +7,15 @@ import { TouchableIcon } from './TouchableIcon';
 import { useDispatch } from 'react-redux';
 import { setSideMenuIsOpen } from '../store/actions';
 import app from '../../app.json';
+import { CloseButton } from './CloseButton';
+import { useNavigation } from '@react-navigation/native';
+import { dimensions } from '../dimensions';
 
 const HeaderBarContainer = styled.View`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding: 20px;
+  padding: ${dimensions.rhythm}px;
 `;
 
 const HeaderBarAlignmentContainer = styled.View`
@@ -22,7 +25,7 @@ const HeaderBarAlignmentContainer = styled.View`
 `;
 
 const HeaderBarMenuIconContainer = styled(TouchableIcon)`
-  margin-right: 10px;
+  margin-right: ${dimensions.rhythm / 2}px;
 `;
 
 const HeaderBarTextContainer = styled.View``;
@@ -36,17 +39,30 @@ const HeaderBarText = styled.Text`
 const HeaderBarBetaText = styled.Text`
   font-size: 12px;
   font-family: 'Recursive-Regular';
-  color: ${colors.grey};
+  color: ${colors.transWhite};
   position: absolute;
   top: 0;
   right: -30px;
 `;
 
+const HeaderBarCloseButtonContainer = styled.View`
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  justify-content: center;
+  padding: ${dimensions.rhythm}px;
+`;
+
 interface HeaderBarBaseProps extends HeaderBarProps {
   handleMenuPress: () => void;
+  handleClose?: () => void;
 }
 
-const HeaderBarBase = ({ handleMenuPress }: HeaderBarBaseProps) => {
+const HeaderBarBase = ({
+  handleMenuPress,
+  handleClose,
+}: HeaderBarBaseProps) => {
   return (
     <HeaderBarContainer>
       <HeaderBarAlignmentContainer>
@@ -64,18 +80,37 @@ const HeaderBarBase = ({ handleMenuPress }: HeaderBarBaseProps) => {
       </HeaderBarTextContainer>
 
       <HeaderBarAlignmentContainer />
+
+      {handleClose ? (
+        <HeaderBarCloseButtonContainer>
+          <CloseButton onPress={handleClose} />
+        </HeaderBarCloseButtonContainer>
+      ) : null}
     </HeaderBarContainer>
   );
 };
 
-interface HeaderBarProps {}
+interface HeaderBarProps {
+  showClose?: boolean;
+}
 
-export const HeaderBar = (props: HeaderBarProps) => {
+export const HeaderBar = ({ showClose, ...props }: HeaderBarProps) => {
   const dispatch = useDispatch();
+  const navigation = useNavigation();
 
   const onMenuPress = useCallback(() => {
     dispatch(setSideMenuIsOpen(true));
   }, [dispatch]);
 
-  return <HeaderBarBase {...props} handleMenuPress={onMenuPress} />;
+  const onClose = useCallback(() => {
+    navigation.goBack();
+  }, [navigation]);
+
+  return (
+    <HeaderBarBase
+      {...props}
+      handleMenuPress={onMenuPress}
+      handleClose={showClose ? onClose : undefined}
+    />
+  );
 };

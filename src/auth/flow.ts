@@ -9,6 +9,8 @@ import {
   signInError,
   finaliseSignIn,
   finaliseSignInSuccess,
+  sendPasswordResetEmailSuccess,
+  sendPasswordResetEmail,
 } from './actions';
 import { AuthActionTypes } from './models';
 import { selectAuthConfirmationResult } from './selectors';
@@ -19,10 +21,12 @@ import {
   firebaseSignInWithPhoneNumber,
   firebaseSignOut,
   firebaseVerifyPinCode,
+  firebaseSendPasswordResetEmail,
 } from './services';
 import { setSideMenuIsOpen, showSnackbar } from '../store/actions';
 import { select } from '../utils/typedSelect';
 import { FirebaseAuthTypes } from '@react-native-firebase/auth';
+import { navigate, Screens } from '../Router';
 
 export function* initiateSignInFlow(): SagaIterator {
   yield takeLatest(AuthActionTypes.INITIATE_SIGN_IN, function* (
@@ -57,13 +61,11 @@ export function* finaliseSignInFlow(): SagaIterator {
         action.payload.pinCode,
         confirmationResult,
       );
-      console.log({ email });
       const emailCredential = yield call(
         firebaseGetEmailCredential,
         action.payload.email,
         action.payload.password,
       );
-      console.log({ emailCredential });
 
       // if its an existing user, we sign in with the email credential
       // otherwise, we link the phone auth user with the email credential
@@ -102,8 +104,28 @@ export function* signOutFlow(): SagaIterator {
   });
 }
 
+export const PASSWORD_RESET_SUCCESS_MESSAGE =
+  'Password reset link sent successfully.';
+
+export function* passwordResetFlow(): SagaIterator {
+  yield takeLatest(AuthActionTypes.SEND_PASSWORD_RESET_EMAIL, function* (
+    action: ActionType<typeof sendPasswordResetEmail>,
+  ): SagaIterator {
+    try {
+      yield call(firebaseSendPasswordResetEmail, action.payload.email);
+      yield put(sendPasswordResetEmailSuccess());
+      yield put(showSnackbar(PASSWORD_RESET_SUCCESS_MESSAGE));
+      yield call(navigate, Screens.signIn);
+    } catch (error) {
+      yield put(signOutError());
+      yield put(showSnackbar(error.message));
+    }
+  });
+}
+
 export function* authFlow(): SagaIterator {
   yield fork(initiateSignInFlow);
   yield fork(finaliseSignInFlow);
   yield fork(signOutFlow);
+  yield fork(passwordResetFlow);
 }

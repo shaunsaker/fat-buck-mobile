@@ -33,3 +33,9 @@ export const signOut = () => action(AuthActionTypes.SIGN_OUT);
 export const signOutSuccess = () => action(AuthActionTypes.SIGN_OUT_SUCCESS);
 
 export const signOutError = () => action(AuthActionTypes.SIGN_OUT_ERROR);
+
+export const sendPasswordResetEmail = (email: string) =>
+  action(AuthActionTypes.SEND_PASSWORD_RESET_EMAIL, { email });
+
+export const sendPasswordResetEmailSuccess = () =>
+  action(AuthActionTypes.SEND_PASSWORD_RESET_EMAIL_SUCCESS);

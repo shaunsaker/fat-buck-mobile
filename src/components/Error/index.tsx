@@ -31,9 +31,9 @@ export const Error = ({
     <Background>
       <HeaderBar />
 
-      <ErrorContainer>
-        <PageHeader>Oops, something went wrong.</PageHeader>
+      <PageHeader>Oops, something went wrong.</PageHeader>
 
+      <ErrorContainer>
         <ErrorButtonsContainer>
           <ErrorButtonContainer>
             <Button kind={ButtonKinds.primary} onPress={handleReloadApp}>

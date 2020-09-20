@@ -9,10 +9,12 @@ export enum AuthActionTypes {
   SIGN_OUT = '@@auth/SIGN_OUT',
   SIGN_OUT_SUCCESS = '@@auth/SIGN_OUT_SUCCESS',
   SIGN_OUT_ERROR = '@@auth/SIGN_OUT_ERROR',
+  SEND_PASSWORD_RESET_EMAIL = '@@auth/SEND_PASSWORD_RESET_EMAIL',
+  SEND_PASSWORD_RESET_EMAIL_SUCCESS = '@@auth/SEND_PASSWORD_RESET_EMAIL_SUCCESS',
 }
 
 export interface AuthState extends FirebaseAuthTypes.User {
   loading: boolean;
-  confirmationResult: FirebaseAuthTypes.ConfirmationResult;
+  confirmationResult: FirebaseAuthTypes.ConfirmationResult | undefined;
   isNewUser: boolean;
 }
