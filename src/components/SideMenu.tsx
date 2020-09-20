@@ -84,13 +84,13 @@ const SideMenuComponent = ({
         </SideMenuHeaderContainer>
 
         <SideMenuContentContainer>
-          {isAuthenticated ? (
+          {/* {isAuthenticated ? (
             <SideMenuButtonContainer>
               <Button kind={ButtonKinds.primary} onPress={handleProfile}>
                 PROFILE
               </Button>
             </SideMenuButtonContainer>
-          ) : null}
+          ) : null} */}
 
           <SideMenuButtonContainer>
             <Button kind={ButtonKinds.primary} onPress={handleGetInTouch}>
@@ -98,11 +98,11 @@ const SideMenuComponent = ({
             </Button>
           </SideMenuButtonContainer>
 
-          <SideMenuButtonContainer>
+          {/* <SideMenuButtonContainer>
             <Button kind={ButtonKinds.primary} onPress={handleTerms}>
               TERMS
             </Button>
-          </SideMenuButtonContainer>
+          </SideMenuButtonContainer> */}
 
           {isAuthenticated ? (
             <SideMenuButtonContainer>
