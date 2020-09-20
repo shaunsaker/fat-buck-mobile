@@ -6,7 +6,7 @@ import { colors } from '../colors';
 import { TouchableIcon } from './TouchableIcon';
 import { useDispatch } from 'react-redux';
 import { setSideMenuIsOpen } from '../store/actions';
-import pkg from '../../package.json';
+import app from '../../app.json';
 
 const HeaderBarContainer = styled.View`
   flex-direction: row;
@@ -58,7 +58,7 @@ const HeaderBarBase = ({ handleMenuPress }: HeaderBarBaseProps) => {
       </HeaderBarAlignmentContainer>
 
       <HeaderBarTextContainer>
-        <HeaderBarText>{pkg.name}</HeaderBarText>
+        <HeaderBarText>{app.displayName}</HeaderBarText>
 
         <HeaderBarBetaText>BETA</HeaderBarBetaText>
       </HeaderBarTextContainer>

@@ -18,7 +18,7 @@ const ParagraphTextContainer = styled.Text<ParagraphTextContainerProps>`
   align-items: center;
 `;
 
-interface SecondaryTextProps {
+interface ParagraphTextProps {
   center?: boolean;
   bold?: boolean;
   children: ReactNode;
@@ -28,7 +28,7 @@ export const ParagraphText = ({
   center,
   bold,
   children,
-}: SecondaryTextProps) => {
+}: ParagraphTextProps) => {
   return (
     <ParagraphTextContainer center={center} bold={bold}>
       {children}
