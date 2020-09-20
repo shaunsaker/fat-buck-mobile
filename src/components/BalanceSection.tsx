@@ -136,7 +136,7 @@ export const BalanceSection = () => {
   const currency = 'R';
   const selectedBalanceCurrency = 'BTC';
   const balanceTypes = [BalanceType.btc, BalanceType.zar];
-  const showActionButtons = true;
+  const showActionButtons = false;
 
   const onSelectBalanceType = useCallback((profitType: BalanceType) => {
     setSelectedBalanceType(profitType);
