@@ -8,6 +8,8 @@ import {
   signOutError,
   finaliseSignIn,
   finaliseSignInSuccess,
+  sendPasswordResetEmail,
+  sendPasswordResetEmailSuccess,
 } from './actions';
 import { setHasSeenWelcome } from '../store/actions';
 import { testUser } from './mocks';
@@ -91,5 +93,20 @@ describe('auth reducer', () => {
     let nextState = authReducer(initialState, setHasSeenWelcome(true));
 
     expect(nextState.isNewUser).toEqual(true);
+  });
+
+  it('sets state correctly on SEND_PASSWORD_RESET_EMAIL', () => {
+    let nextState = authReducer(
+      initialState,
+      sendPasswordResetEmail(testUser.email),
+    );
+
+    expect(nextState.loading).toEqual(true);
+  });
+
+  it('sets state correctly on SEND_PASSWORD_RESET_EMAIL_SUCCESS', () => {
+    let nextState = authReducer(initialState, sendPasswordResetEmailSuccess());
+
+    expect(nextState.loading).toEqual(false);
   });
 });

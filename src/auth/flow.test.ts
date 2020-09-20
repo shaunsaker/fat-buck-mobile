@@ -69,7 +69,7 @@ describe('auth flow', () => {
   });
 
   it('signs a user out correctly', async () => {
-    const result = await expectSaga(signOutFlow)
+    await expectSaga(signOutFlow)
       .withReducer(rootReducer)
       .dispatch(signOut())
       .call(firebaseSignOut)
@@ -77,9 +77,6 @@ describe('auth flow', () => {
       .put(setSideMenuIsOpen(false))
       .put(showSnackbar(SIGN_OUT_SUCCESS_MESSAGE))
       .run();
-
-    expect(result.storeState.auth.uid).toEqual('');
-    expect(result.storeState.auth.email).toEqual('');
   });
 
   // TODO: test snackbar called on errors
