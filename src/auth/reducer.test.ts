@@ -1,128 +1,67 @@
 import { authReducer, initialState } from './reducer';
 import {
-  initiateCreateUser,
-  initiateCreateUserSuccess,
+  initiateSignIn,
+  initiateSignInSuccess,
   signInError,
   signOut,
   signOutSuccess,
   signOutError,
-  verifyPinCode,
-  verifyPinCodeSuccess,
+  finaliseSignIn,
+  finaliseSignInSuccess,
 } from './actions';
-import { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import { setHasSeenWelcome } from '../store/actions';
+import { testUser } from './mocks';
 
 describe('auth reducer', () => {
-  const email = 'sakershaun@gmail.com';
-  const password = '123123';
-  const cellphone = '+27833771130';
-  const pinCode = '123123';
-  const userCredential: FirebaseAuthTypes.UserCredential = {
-    user: {
-      displayName: '',
-      email,
-      emailVerified: false,
-      isAnonymous: false,
-      metadata: {},
-      phoneNumber: cellphone,
-      photoURL: '',
-      providerData: [],
-      providerId: '',
-      uid: '',
-      delete: () => {
-        return new Promise(() => {});
-      },
-      getIdToken: () => {
-        return new Promise(() => {});
-      },
-      getIdTokenResult: () => {
-        return new Promise(() => {});
-      },
-      linkWithCredential: () => {
-        return new Promise(() => {});
-      },
-      reauthenticateWithCredential: () => {
-        return new Promise(() => {});
-      },
-      reload: () => {
-        return new Promise(() => {});
-      },
-      sendEmailVerification: () => {
-        return new Promise(() => {});
-      },
-      verifyBeforeUpdateEmail: () => {
-        return new Promise(() => {});
-      },
-      toJSON: () => {
-        return new Promise(() => {});
-      },
-      unlink: () => {
-        return new Promise(() => {});
-      },
-      updateEmail: () => {
-        return new Promise(() => {});
-      },
-      updatePassword: () => {
-        return new Promise(() => {});
-      },
-      updatePhoneNumber: () => {
-        return new Promise(() => {});
-      },
-      updateProfile: () => {
-        return new Promise(() => {});
-      },
-    },
-  };
-  const confirmationResult = {
-    verificationId: '1',
-    confirm: (): Promise<FirebaseAuthTypes.UserCredential> => {
-      return new Promise((resolve) => resolve(userCredential));
-    },
-  };
-
-  it('sets loading to true on INITIATE_CREATE_USER', () => {
-    const nextState = authReducer(initialState, initiateCreateUser(cellphone));
+  it('sets loading to true on INITIATE_SIGN_IN', () => {
+    const nextState = authReducer(
+      initialState,
+      initiateSignIn(testUser.cellphone),
+    );
 
     expect(nextState.loading).toEqual(true);
   });
 
-  it('sets state correctly on INITIATE_CREATE_USER_SUCCESS', () => {
+  it('sets state correctly on INITIATE_SIGN_IN_SUCCESS', () => {
     const nextState = authReducer(
       initialState,
-      initiateCreateUserSuccess(confirmationResult),
+      initiateSignInSuccess(testUser.confirmationResult),
     );
 
     expect(nextState.loading).toEqual(false);
-    expect(nextState.confirmationResult).toEqual(confirmationResult);
+    expect(nextState.confirmationResult).toEqual(testUser.confirmationResult);
   });
 
-  it('sets loading to true on VERIFY_PIN_CODE', () => {
+  it('sets loading to true on FINALISE_SIGN_IN', () => {
     const nextState = authReducer(
       initialState,
-      verifyPinCode(pinCode, email, password),
+      finaliseSignIn(testUser.pinCode, testUser.email, testUser.password),
     );
 
     expect(nextState.loading).toEqual(true);
   });
 
-  it('sets state correctly on VERIFY_PIN_CODE_SUCCESS', () => {
+  it('sets state correctly on FINALISE_SIGN_IN_SUCCESS', () => {
     let nextState = authReducer(
       initialState,
-      verifyPinCode(pinCode, email, password),
+      finaliseSignIn(testUser.pinCode, testUser.email, testUser.password),
     );
     nextState = authReducer(
       nextState,
-      verifyPinCodeSuccess(userCredential.user),
+      finaliseSignInSuccess(testUser.userCredential.user),
     );
 
-    expect(nextState.email).toEqual(email);
-    expect(nextState.phoneNumber).toEqual(cellphone);
+    expect(nextState.email).toEqual(testUser.email);
+    expect(nextState.phoneNumber).toEqual(testUser.cellphone);
     expect(nextState.loading).toEqual(false);
     expect(nextState.confirmationResult).toEqual(undefined);
   });
 
-  it('sets loading to false on INITIATE_CREATE_USER_ERROR', () => {
-    let nextState = authReducer(initialState, initiateCreateUser(cellphone));
+  it('sets loading to false on INITIATE_SIGN_IN_ERROR', () => {
+    let nextState = authReducer(
+      initialState,
+      initiateSignIn(testUser.cellphone),
+    );
     nextState = authReducer(nextState, signInError());
 
     expect(nextState.loading).toEqual(false);

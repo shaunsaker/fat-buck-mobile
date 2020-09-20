@@ -6,6 +6,7 @@ import { BigText } from './BigText';
 import { ParagraphText } from './ParagraphText';
 import { ToggleSelect } from './ToggleSelect';
 import Button, { ButtonKinds } from './Button';
+import { colors } from '../colors';
 
 enum BalanceType {
   btc = 'BTC',
@@ -15,6 +16,7 @@ enum BalanceType {
 const BalanceSectionContainer = styled.View`
   padding: ${dimensions.rhythm}px;
   align-items: center;
+  background-color: ${colors.veryLightTransWhite};
 `;
 
 const BalanceSectionHeadingContainer = styled.View`

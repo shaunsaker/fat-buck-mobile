@@ -3,26 +3,26 @@ import { action } from 'typesafe-actions';
 
 import { AuthActionTypes } from './models';
 
-export const initiateCreateUser = (cellphone: string) =>
-  action(AuthActionTypes.INITIATE_CREATE_USER, {
+export const initiateSignIn = (cellphone: string) =>
+  action(AuthActionTypes.INITIATE_SIGN_IN, {
     cellphone,
   });
 
-export const initiateCreateUserSuccess = (
+export const initiateSignInSuccess = (
   confirmationResult: FirebaseAuthTypes.ConfirmationResult,
 ) =>
-  action(AuthActionTypes.INITIATE_CREATE_USER_SUCCESS, {
+  action(AuthActionTypes.INITIATE_SIGN_IN_SUCCESS, {
     confirmationResult,
   });
 
-export const verifyPinCode = (
+export const finaliseSignIn = (
   pinCode: string,
   email: string,
   password: string,
-) => action(AuthActionTypes.VERIFY_PIN_CODE, { pinCode, email, password });
+) => action(AuthActionTypes.FINALISE_SIGN_IN, { pinCode, email, password });
 
-export const verifyPinCodeSuccess = (user: FirebaseAuthTypes.User) =>
-  action(AuthActionTypes.VERIFY_PIN_CODE_SUCCESS, {
+export const finaliseSignInSuccess = (user: FirebaseAuthTypes.User) =>
+  action(AuthActionTypes.FINALISE_SIGN_IN_SUCCESS, {
     user,
   });
 

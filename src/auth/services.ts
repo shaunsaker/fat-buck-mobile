@@ -15,6 +15,7 @@ export const firebaseGetEmailCredential = async (
   email: string,
   password: string,
 ) => {
+  console.log({ email, password, auth });
   return await auth.EmailAuthProvider.credential(email, password);
 };
 

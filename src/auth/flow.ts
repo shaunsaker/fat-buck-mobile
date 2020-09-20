@@ -2,17 +2,16 @@ import { takeLatest, fork, call, put } from 'redux-saga/effects';
 import { ActionType } from 'typesafe-actions';
 import { SagaIterator } from 'redux-saga';
 import {
-  initiateCreateUser,
-  initiateCreateUserSuccess,
+  initiateSignIn,
+  initiateSignInSuccess,
   signOutSuccess,
   signOutError,
   signInError,
-  verifyPinCode,
-  verifyPinCodeSuccess,
+  finaliseSignIn,
+  finaliseSignInSuccess,
 } from './actions';
 import { AuthActionTypes } from './models';
-import { selectAuthConfirmationResult, selectIsAuthLoading } from './selectors';
-import { REHYDRATE } from 'redux-persist';
+import { selectAuthConfirmationResult } from './selectors';
 import {
   firebaseGetEmailCredential,
   firebaseSignInWithCredential,
@@ -25,25 +24,9 @@ import { setSideMenuIsOpen, showSnackbar } from '../store/actions';
 import { select } from '../utils/typedSelect';
 import { FirebaseAuthTypes } from '@react-native-firebase/auth';
 
-export function* authRehydrateFlow(): SagaIterator {
-  // we don't want to persist auth loading state but we can't blacklist it because it's not it's own reducer
-  // let's reset it on rehydrate
-  yield takeLatest(REHYDRATE, function* (): SagaIterator {
-    const isLoading = yield* select(selectIsAuthLoading);
-
-    if (isLoading) {
-      yield put(signInError());
-    }
-  });
-}
-
-export const SIGN_IN_SUCCESS_MESSAGE = 'Sign in success.';
-export const USER_NOT_FOUND_ERROR_MESSAGE =
-  '[auth/user-not-found] There is no user record corresponding to this identifier. The user may have been deleted.';
-
-export function* initiateCreateUserFlow(): SagaIterator {
-  yield takeLatest(AuthActionTypes.INITIATE_CREATE_USER, function* (
-    action: ActionType<typeof initiateCreateUser>,
+export function* initiateSignInFlow(): SagaIterator {
+  yield takeLatest(AuthActionTypes.INITIATE_SIGN_IN, function* (
+    action: ActionType<typeof initiateSignIn>,
   ): SagaIterator {
     try {
       const confirmationResult = yield call(
@@ -51,7 +34,7 @@ export function* initiateCreateUserFlow(): SagaIterator {
         action.payload.cellphone,
       );
 
-      yield put(initiateCreateUserSuccess(confirmationResult));
+      yield put(initiateSignInSuccess(confirmationResult));
     } catch (error) {
       yield put(signInError());
       yield put(showSnackbar(error.message));
@@ -59,24 +42,28 @@ export function* initiateCreateUserFlow(): SagaIterator {
   });
 }
 
-export function* verifyPinCodeFlow(): SagaIterator {
-  yield takeLatest(AuthActionTypes.VERIFY_PIN_CODE, function* (
-    action: ActionType<typeof verifyPinCode>,
+export const SIGN_IN_SUCCESS_MESSAGE = 'Sign in success.';
+
+export function* finaliseSignInFlow(): SagaIterator {
+  yield takeLatest(AuthActionTypes.FINALISE_SIGN_IN, function* (
+    action: ActionType<typeof finaliseSignIn>,
   ): SagaIterator {
     const confirmationResult = yield* select(selectAuthConfirmationResult);
     try {
       const {
-        user: { email },
+        user: { email }, // if email is returned, its an existing user
       }: FirebaseAuthTypes.UserCredential = yield call(
         firebaseVerifyPinCode,
         action.payload.pinCode,
         confirmationResult,
       );
+      console.log({ email });
       const emailCredential = yield call(
         firebaseGetEmailCredential,
         action.payload.email,
         action.payload.password,
       );
+      console.log({ emailCredential });
 
       // if its an existing user, we sign in with the email credential
       // otherwise, we link the phone auth user with the email credential
@@ -90,8 +77,8 @@ export function* verifyPinCodeFlow(): SagaIterator {
         emailCredential,
       );
 
-      yield put(verifyPinCodeSuccess(user));
-      yield put(showSnackbar('Sign in success.'));
+      yield put(finaliseSignInSuccess(user));
+      yield put(showSnackbar(SIGN_IN_SUCCESS_MESSAGE));
     } catch (error) {
       yield put(signInError());
       yield put(showSnackbar(error.message));
@@ -116,8 +103,7 @@ export function* signOutFlow(): SagaIterator {
 }
 
 export function* authFlow(): SagaIterator {
-  yield fork(authRehydrateFlow);
-  yield fork(initiateCreateUserFlow);
-  yield fork(verifyPinCodeFlow);
+  yield fork(initiateSignInFlow);
+  yield fork(finaliseSignInFlow);
   yield fork(signOutFlow);
 }

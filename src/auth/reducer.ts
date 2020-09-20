@@ -13,26 +13,26 @@ export const authReducer: Reducer<AuthState> = (
   action,
 ) => {
   switch (action.type) {
-    case AuthActionTypes.INITIATE_CREATE_USER: {
+    case AuthActionTypes.INITIATE_SIGN_IN: {
       return {
         ...state,
         loading: true,
       };
     }
-    case AuthActionTypes.INITIATE_CREATE_USER_SUCCESS: {
+    case AuthActionTypes.INITIATE_SIGN_IN_SUCCESS: {
       return {
         ...state,
         loading: false,
         confirmationResult: action.payload.confirmationResult,
       };
     }
-    case AuthActionTypes.VERIFY_PIN_CODE: {
+    case AuthActionTypes.FINALISE_SIGN_IN: {
       return {
         ...state,
         loading: true,
       };
     }
-    case AuthActionTypes.VERIFY_PIN_CODE_SUCCESS: {
+    case AuthActionTypes.FINALISE_SIGN_IN_SUCCESS: {
       return {
         ...state,
         loading: false,

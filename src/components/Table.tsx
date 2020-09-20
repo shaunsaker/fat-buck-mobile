@@ -5,9 +5,7 @@ import { colors } from '../colors';
 import { dimensions } from '../dimensions';
 import { HeadingText } from './HeadingText';
 
-const TableContainer = styled.View`
-  background-color: ${colors.veryLightTransWhite};
-`;
+const TableContainer = styled.View``;
 
 const TableTitleContainer = styled.View`
   align-items: center;

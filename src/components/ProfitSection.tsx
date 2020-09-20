@@ -2,7 +2,6 @@ import React, { useCallback, useState } from 'react';
 import styled from 'styled-components/native';
 import { dimensions } from '../dimensions';
 import { HeadingText } from './HeadingText';
-import { colors } from '../colors';
 import { BigText } from './BigText';
 import { ParagraphText } from './ParagraphText';
 import { ToggleSelect } from './ToggleSelect';
@@ -13,8 +12,7 @@ enum ProfitType {
 }
 
 const ProfitSectionContainer = styled.View`
-  padding: ${dimensions.rhythm}px;
-  background-color: ${colors.veryLightTransWhite};
+  padding: 0 0 ${dimensions.rhythm}px;
   align-items: center;
 `;
 
