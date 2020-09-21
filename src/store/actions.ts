@@ -5,3 +5,4 @@ export * from '../welcome/actions';
 export * from '../forms/actions';
 export * from '../profit/actions';
 export * from '../activeBot/actions';
+export * from '../balance/actions';

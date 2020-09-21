@@ -7,6 +7,13 @@ import { ParagraphText } from './ParagraphText';
 import { ToggleSelect } from './ToggleSelect';
 import Button, { ButtonKinds } from './Button';
 import { colors } from '../colors';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  selectBalance,
+  selectBalanceBTCValue,
+  selectBalanceType,
+} from '../balance/selectors';
+import { setBalanceType } from '../store/actions';
 
 enum BalanceType {
   btc = 'BTC',
@@ -56,10 +63,9 @@ const BalanceSectionActionButtonContainer = styled.View<
 `;
 
 interface BalanceSectionBaseProps {
-  value: number;
+  value: string;
   currencyValue: string;
   currency: string;
-  selectedBalanceCurrency: string;
   balanceTypes: BalanceType[];
   selectedBalanceType: BalanceType;
   showActionButtons?: boolean;
@@ -72,7 +78,6 @@ const BalanceSectionBase = ({
   value,
   currencyValue,
   currency,
-  selectedBalanceCurrency,
   balanceTypes,
   selectedBalanceType,
   showActionButtons,
@@ -90,7 +95,7 @@ const BalanceSectionBase = ({
         <BigText>{value}</BigText>
 
         <BalanceSectionProfilePercentageContainer>
-          <ParagraphText>{selectedBalanceCurrency}</ParagraphText>
+          <ParagraphText>{selectedBalanceType}</ParagraphText>
         </BalanceSectionProfilePercentageContainer>
       </BalanceSectionBalanceContainer>
 
@@ -128,19 +133,20 @@ const BalanceSectionBase = ({
 };
 
 export const BalanceSection = () => {
-  const [selectedBalanceType, setSelectedBalanceType] = useState(
-    BalanceType.btc,
-  ); // TEMP
-  const value = 1.03;
-  const currencyValue = '170 012.12';
+  const dispatch = useDispatch();
+  const selectedBalanceType = useSelector(selectBalanceType);
+  const value = useSelector(selectBalance);
+  const currencyValue = useSelector(selectBalanceBTCValue);
   const currency = 'R';
-  const selectedBalanceCurrency = 'BTC';
   const balanceTypes = [BalanceType.btc, BalanceType.zar];
   const showActionButtons = false;
 
-  const onSelectBalanceType = useCallback((profitType: BalanceType) => {
-    setSelectedBalanceType(profitType);
-  }, []);
+  const onSelectBalanceType = useCallback(
+    (type: BalanceType) => {
+      dispatch(setBalanceType(type));
+    },
+    [dispatch],
+  );
 
   const onDeposit = useCallback(() => {}, []);
 
@@ -151,7 +157,6 @@ export const BalanceSection = () => {
       value={value}
       currencyValue={currencyValue}
       currency={currency}
-      selectedBalanceCurrency={selectedBalanceCurrency}
       balanceTypes={balanceTypes}
       selectedBalanceType={selectedBalanceType}
       showActionButtons={showActionButtons}
