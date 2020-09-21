@@ -1,24 +1,27 @@
 import { SagaIterator } from 'redux-saga';
-import { fork, put, call, takeEvery } from 'redux-saga/effects';
+import {
+  fork,
+  put,
+  call,
+  takeEvery,
+  takeLatest,
+  take,
+} from 'redux-saga/effects';
 import { createFirestoreSyncChannel } from '../services/db';
 import { showSnackbar } from '../store/actions';
 import firestore from '@react-native-firebase/firestore';
-import { onlyAuthFlow } from '../utils/onlyAuthFlow';
-import { Profit } from './models';
-import { syncProfitSuccess } from './actions';
+import { Profit, ProfitActionTypes } from './models';
+import { syncProfit, syncProfitSuccess } from './actions';
+import { selectActiveBotId } from '../activeBot/selectors';
+import { select } from '../utils/typedSelect';
+import { onlySelectorTruthyOrChanged } from '../utils/onlySelectorTruthyOrChanged';
+import { selectIsAuthenticated } from '../auth/selectors';
+import { AuthActionTypes } from '../auth/models';
 
-export function* syncProfitFlow(): SagaIterator {
-  try {
-    // TODO: this should be a root function
-    // sync the active bot id
-    const activeBotRef = firestore().collection('activeBot');
-    const activeBotChannel = yield call(
-      createFirestoreSyncChannel,
-      activeBotRef,
-    );
-
-    yield takeEvery(activeBotChannel, function* (bots: { id: string }[]) {
-      const activeBotId = bots[0].id;
+export function* watchSyncProfitFlow(): SagaIterator {
+  yield takeLatest(ProfitActionTypes.SYNC_PROFIT, function* (): SagaIterator {
+    try {
+      const activeBotId = yield* select(selectActiveBotId);
 
       // use the activeBotId to sync to the relevant profit section
       const profitRef = firestore()
@@ -26,18 +29,32 @@ export function* syncProfitFlow(): SagaIterator {
         .doc(activeBotId)
         .collection('profit');
       const profitChannel = yield call(createFirestoreSyncChannel, profitRef);
-      // TODO: can't catch errors in the channel
 
       yield takeEvery(profitChannel, function* (profits: Profit[]) {
         const profit = profits[0];
         yield put(syncProfitSuccess(profit));
       });
-    });
-  } catch (error) {
-    yield put(showSnackbar(error.message));
-  }
+
+      // TODO: this isn't working entirely, still getting firestore permission errors
+      yield take(AuthActionTypes.SIGN_OUT_SUCCESS);
+      profitChannel.close();
+    } catch (error) {
+      yield put(showSnackbar(error.message));
+    }
+  });
+}
+
+export function* syncProfitFlow(): SagaIterator {
+  yield put(syncProfit());
 }
 
 export function* profitFlow(): SagaIterator {
-  yield fork(onlyAuthFlow, syncProfitFlow);
+  yield fork(watchSyncProfitFlow);
+  yield fork(
+    onlySelectorTruthyOrChanged,
+    selectIsAuthenticated,
+    onlySelectorTruthyOrChanged,
+    selectActiveBotId,
+    syncProfitFlow,
+  );
 }

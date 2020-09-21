@@ -19,15 +19,5 @@ export const selectProfitPercent = (state: ApplicationState) => {
   }
 };
 
-export const selectProfitCurrency = (state: ApplicationState) => {
-  const isToDateProfitType = state.profit.profitType === ProfitType.toDate;
-
-  if (isToDateProfitType) {
-    return getFloatString(state.profit.profitAllFiat);
-  } else {
-    return getAnnualisedValue(
-      state.profit.profitAllFiat,
-      state.profit.firstTradeTimestamp,
-    );
-  }
-};
+export const selectProfitCurrency = (state: ApplicationState) =>
+  getFloatString(state.profit.profitAllFiat);

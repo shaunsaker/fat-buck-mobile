@@ -9,6 +9,8 @@ import { formsReducer } from '../forms/reducer';
 import { FormsState } from '../forms/models';
 import { profitReducer } from '../profit/reducer';
 import { ProfitState } from '../profit/models';
+import { activeBotReducer } from '../activeBot/reducer';
+import { ActiveBotState } from '../activeBot/models';
 
 export interface ApplicationState {
   sideMenu: SideMenuState;
@@ -16,6 +18,7 @@ export interface ApplicationState {
   welcome: WelcomeState;
   forms: FormsState;
   profit: ProfitState;
+  activeBot: ActiveBotState;
 }
 
 const rootReducer = combineReducers({
@@ -24,6 +27,7 @@ const rootReducer = combineReducers({
   welcome: welcomeReducer,
   forms: formsReducer,
   profit: profitReducer,
+  activeBot: activeBotReducer,
 });
 
 export const initialState = rootReducer(undefined, { type: '' });

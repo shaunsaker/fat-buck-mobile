@@ -94,7 +94,7 @@ export const ProfitSection = () => {
   const value = useSelector(selectProfitPercent);
   const currencyValue = useSelector(selectProfitCurrency);
   const selectedProfitType = useSelector(selectProfitType);
-  const currency = `${selectedProfitType === ProfitType.toDate ? '' : '~'}R`;
+  const currency = 'R';
   const profitTypes = [ProfitType.toDate, ProfitType.annual];
 
   const onSelectProfitType = useCallback(

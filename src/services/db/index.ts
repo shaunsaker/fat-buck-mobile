@@ -21,7 +21,7 @@ const firestoreSync = <T>(
         (error) => {
           // TODO: can't catch these errors
           console.log({ error });
-          reject(error);
+          cb(error);
         },
       );
 

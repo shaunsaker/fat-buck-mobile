@@ -14,9 +14,11 @@ export function* onlyFlow<S extends Saga>(
   const condition = yield* select(selector);
 
   if (condition) {
+    console.log('INITIAL CONDITION');
     yield call(saga, ...args);
   } else {
     yield call(waitFor, selector, previousValue); // wait for selector to be different to previousValue
+    console.log('CONDITION UPDATED');
     yield call(saga, ...args);
   }
 }
