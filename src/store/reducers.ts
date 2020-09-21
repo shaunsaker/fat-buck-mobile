@@ -7,12 +7,15 @@ import { welcomeReducer } from '../welcome/reducer';
 import { WelcomeState } from '../welcome/models';
 import { formsReducer } from '../forms/reducer';
 import { FormsState } from '../forms/models';
+import { profitReducer } from '../profit/reducer';
+import { ProfitState } from '../profit/models';
 
 export interface ApplicationState {
   sideMenu: SideMenuState;
   auth: AuthState;
   welcome: WelcomeState;
   forms: FormsState;
+  profit: ProfitState;
 }
 
 const rootReducer = combineReducers({
@@ -20,6 +23,7 @@ const rootReducer = combineReducers({
   auth: authReducer,
   welcome: welcomeReducer,
   forms: formsReducer,
+  profit: profitReducer,
 });
 
 export const initialState = rootReducer(undefined, { type: '' });

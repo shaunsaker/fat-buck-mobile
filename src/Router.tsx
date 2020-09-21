@@ -15,6 +15,7 @@ import { Home } from './components/Home';
 import { Welcome } from './components/Welcome';
 import { selectHasSeenWelcome } from './welcome/selectors';
 import { ForgotPassword } from './components/ForgotPassword';
+import { ErrorBoundary } from './components/ErrorBoundary';
 
 export enum Screens {
   welcome = 'welcome',
@@ -55,32 +56,34 @@ export const Router = () => {
 
   return (
     <NavigationContainer ref={navigationRef}>
-      <Stack.Navigator headerMode="none" mode="modal">
-        {isAuthenticated ? (
-          <Stack.Screen name={Screens.home} component={Home} />
-        ) : (
-          <>
-            {!hasSeenWelcome ? (
+      <ErrorBoundary>
+        <Stack.Navigator headerMode="none" mode="modal">
+          {isAuthenticated ? (
+            <Stack.Screen name={Screens.home} component={Home} />
+          ) : (
+            <>
+              {!hasSeenWelcome ? (
+                <Stack.Screen
+                  name={Screens.welcome}
+                  component={Welcome}
+                  options={{ animationEnabled: false }}
+                />
+              ) : null}
+
               <Stack.Screen
-                name={Screens.welcome}
-                component={Welcome}
-                options={{ animationEnabled: false }}
+                name={Screens.signIn}
+                component={SignIn}
+                options={{ animationEnabled: !hasSeenWelcome }}
               />
-            ) : null}
 
-            <Stack.Screen
-              name={Screens.signIn}
-              component={SignIn}
-              options={{ animationEnabled: !hasSeenWelcome }}
-            />
-
-            <Stack.Screen
-              name={Screens.forgotPassword}
-              component={ForgotPassword}
-            />
-          </>
-        )}
-      </Stack.Navigator>
+              <Stack.Screen
+                name={Screens.forgotPassword}
+                component={ForgotPassword}
+              />
+            </>
+          )}
+        </Stack.Navigator>
+      </ErrorBoundary>
     </NavigationContainer>
   );
 };

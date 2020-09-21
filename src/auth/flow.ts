@@ -22,7 +22,7 @@ import {
   firebaseSignOut,
   firebaseVerifyPinCode,
   firebaseSendPasswordResetEmail,
-} from './services';
+} from '../services/auth';
 import { setSideMenuIsOpen, showSnackbar } from '../store/actions';
 import { select } from '../utils/typedSelect';
 import { FirebaseAuthTypes } from '@react-native-firebase/auth';

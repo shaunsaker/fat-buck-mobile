@@ -5,11 +5,14 @@ import { HeadingText } from './HeadingText';
 import { BigText } from './BigText';
 import { ParagraphText } from './ParagraphText';
 import { ToggleSelect } from './ToggleSelect';
-
-enum ProfitType {
-  toDate = 'TO DATE',
-  annual = 'ANNUAL',
-}
+import {
+  selectProfitCurrency,
+  selectProfitPercent,
+  selectProfitType,
+} from '../profit/selectors';
+import { useDispatch, useSelector } from 'react-redux';
+import { ProfitType } from '../profit/models';
+import { setProfitType } from '../store/actions';
 
 const ProfitSectionContainer = styled.View`
   padding: 0 0 ${dimensions.rhythm}px;
@@ -39,7 +42,7 @@ const ProfitSectionCurrencyValueContainer = styled.View`
 const ProfitSectionProfitTypeContainer = styled.View``;
 
 interface ProfitSectionBaseProps {
-  value: number;
+  value: string;
   currencyValue: string;
   currency: string;
   profitTypes: ProfitType[];
@@ -87,17 +90,19 @@ const ProfitSectionBase = ({
 };
 
 export const ProfitSection = () => {
-  const [selectedProfitType, setSelectedProfitType] = useState(
-    ProfitType.toDate,
-  ); // TEMP
-  const value = 64;
-  const currencyValue = '3415.67';
-  const currency = 'R';
+  const dispatch = useDispatch();
+  const value = useSelector(selectProfitPercent);
+  const currencyValue = useSelector(selectProfitCurrency);
+  const selectedProfitType = useSelector(selectProfitType);
+  const currency = `${selectedProfitType === ProfitType.toDate ? '' : '~'}R`;
   const profitTypes = [ProfitType.toDate, ProfitType.annual];
 
-  const onSelectProfitType = useCallback((profitType: ProfitType) => {
-    setSelectedProfitType(profitType);
-  }, []);
+  const onSelectProfitType = useCallback(
+    (profitType: ProfitType) => {
+      dispatch(setProfitType(profitType));
+    },
+    [dispatch],
+  );
 
   return (
     <ProfitSectionBase

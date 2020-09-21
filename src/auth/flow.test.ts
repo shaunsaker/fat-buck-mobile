@@ -22,7 +22,7 @@ import {
   firebaseSignInWithPhoneNumber,
   firebaseSignOut,
   firebaseVerifyPinCode,
-} from './services';
+} from '../services/auth';
 import { setSideMenuIsOpen, showSnackbar } from '../store/actions';
 import { testUser } from './mocks';
 import { initialState } from '../store/reducers';
