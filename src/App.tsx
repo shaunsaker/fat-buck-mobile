@@ -6,6 +6,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { store, persistor } from './store';
 import { Router } from './Router';
 import { colors } from './colors';
+import { CodePushHandler } from './components/CodePushHandler';
 
 const App = () => {
   // useEffect(() => {
@@ -19,6 +20,8 @@ const App = () => {
         <SideMenu>
           <Router />
         </SideMenu>
+
+        <CodePushHandler />
       </PersistGate>
     </Provider>
   );

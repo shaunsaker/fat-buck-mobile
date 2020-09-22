@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Fat Buck</string>
+    <string moduleConfig="true" name="CodePushDeploymentKey">B8rDh6fIxc1AX7ZdJwpOIuK_h7gM2dS_vSArR</string>
 </resources>
