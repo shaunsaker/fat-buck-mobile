@@ -1,6 +1,7 @@
 {
   "name": "FatBuck",
-  "version": "0.0.1",
+  "version": "1.0.0",
+  "build": "1",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -10,7 +11,9 @@
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
-    "postinstall": "npx pod-install"
+    "postinstall": "npx pod-install",
+    "deploy:android": "cd android && bundle exec fastlane deploy",
+    "deploy:ios": "cd ios && bundle exec fastlane deploy"
   },
   "dependencies": {
     "@react-native-community/async-storage": "^1.12.0",

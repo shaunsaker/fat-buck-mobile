@@ -192,7 +192,7 @@ export const SideMenu = ({ children }: SideMenuProps) => {
     <SideMenuBase
       menu={
         <SideMenuComponent
-          version={`v${pkg.version}`}
+          version={`v${pkg.version} - ${pkg.build}`}
           isAuthenticated={isAuthenticated}
           handleClose={onClose}
           handleProfile={onProfile}
