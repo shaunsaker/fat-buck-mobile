@@ -6,3 +6,4 @@ export * from '../forms/actions';
 export * from '../profit/actions';
 export * from '../activeBot/actions';
 export * from '../balance/actions';
+export * from '../trades/actions';

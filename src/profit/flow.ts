@@ -24,20 +24,20 @@ export function* watchSyncProfitFlow(): SagaIterator {
       const activeBotId = yield* select(selectActiveBotId);
 
       // use the activeBotId to sync to the relevant profit section
-      const profitRef = firestore()
+      const ref = firestore()
         .collection('bots')
         .doc(activeBotId)
         .collection('profit');
-      const profitChannel = yield call(createFirestoreSyncChannel, profitRef);
+      const channel = yield call(createFirestoreSyncChannel, ref);
 
-      yield takeEvery(profitChannel, function* (profits: Profit[]) {
-        const profit = profits[0];
-        yield put(syncProfitSuccess(profit));
+      yield takeEvery(channel, function* (data: Profit[]) {
+        const latest = data[0];
+        yield put(syncProfitSuccess(latest));
       });
 
       // TODO: this isn't working entirely, still getting firestore permission errors
       yield take(AuthActionTypes.SIGN_OUT_SUCCESS);
-      profitChannel.close();
+      channel.close();
     } catch (error) {
       yield put(showSnackbar(error.message));
     }

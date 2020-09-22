@@ -1,6 +1,15 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components/native';
 import { colors } from '../colors';
+import { selectTrades } from '../trades/selectors';
+import {
+  getTradeCoin,
+  getTradeOpenLoss,
+  getTradeOpenProfit,
+} from '../trades/utils';
+import { getFloatString } from '../utils/getFloatString';
+import { getTimeSince } from '../utils/getTimeSince';
 import { Table, Column, Row } from './Table';
 
 const TradesSectionContainer = styled.View``;
@@ -9,7 +18,7 @@ const COLUMNS: Column[] = [
   {
     label: 'Coin',
     style: {
-      flex: 1,
+      flex: 0.75,
       textAlign: 'left',
     },
   },
@@ -43,14 +52,31 @@ const COLUMNS: Column[] = [
   },
 ];
 
+interface TradeRow extends Omit<Row, 'style'> {
+  isOpenProfit?: boolean;
+  isOpenLoss?: boolean;
+}
+
 interface TradesSectionBaseProps {
-  rows: Row[];
+  rows: TradeRow[];
 }
 
 const TradesSectionBase = ({ rows }: TradesSectionBaseProps) => {
+  // attach styles
+  const rowsWithStyles = rows.map((row) => ({
+    ...row,
+    style: {
+      backgroundColor: row.isOpenProfit
+        ? colors.lightSuccess
+        : row.isOpenLoss
+        ? colors.lightDanger
+        : undefined,
+    },
+  }));
+
   return (
     <TradesSectionContainer>
-      <Table title="Trades" columns={COLUMNS} rows={rows} />
+      <Table title="Trades" columns={COLUMNS} rows={rowsWithStyles} />
     </TradesSectionContainer>
   );
 };
@@ -58,19 +84,21 @@ const TradesSectionBase = ({ rows }: TradesSectionBaseProps) => {
 interface TradesSectionProps {}
 
 export const TradesSection = ({}: TradesSectionProps) => {
-  const rows: Row[] = [
-    {
-      id: '1',
-      labels: ['LTC', ' 10 min ago', 'Active', '52.11', '1.35'],
-      style: { backgroundColor: colors.lightSuccess }, // active profit
-    },
-    {
-      id: '2',
-      labels: ['IOTA', ' 3 hrs ago', 'Active', '52.11', '-1.35'],
-      style: { backgroundColor: colors.lightDanger }, // active loss
-    },
-    { id: '3', labels: ['BCH', ' 1 day ago', '1 day ago', '52.11', '1.35'] },
-    { id: '4', labels: ['NEO', ' 2 days ago', '2 days ago', '52.11', '1.35'] },
-  ];
+  const trades = useSelector(selectTrades);
+  const rows: TradeRow[] = trades.map((trade) => ({
+    id: trade.id,
+    labels: [
+      getTradeCoin(trade),
+      getTimeSince(trade.openTimestamp),
+      trade.isOpen ? 'Active' : getTimeSince(trade.closeTimestamp),
+      getFloatString(trade.amount),
+      trade.isOpen
+        ? getFloatString(trade.currentProfitAbs, 6)
+        : getFloatString(trade.closeProfitAbs, 6),
+    ],
+    isOpenProfit: getTradeOpenProfit(trade),
+    isOpenLoss: getTradeOpenLoss(trade),
+  }));
+
   return <TradesSectionBase rows={rows} />;
 };
