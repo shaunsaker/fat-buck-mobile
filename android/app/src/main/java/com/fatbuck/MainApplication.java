@@ -1,4 +1,4 @@
-package co.za.shaunsaker.fatbuck;
+package com.fatbuck;
 
 import android.content.Context;
 import com.facebook.react.PackageList;
@@ -62,7 +62,7 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
          We use reflection here to pick up the class that initializes Flipper,
         since Flipper library is not available in release mode
         */
-        Class<?> aClass = Class.forName("co.za.shaunsaker.fatbuck.ReactNativeFlipper");
+        Class<?> aClass = Class.forName("com.fatbuck.ReactNativeFlipper");
         aClass
             .getMethod("initializeFlipper", Context.class, ReactInstanceManager.class)
             .invoke(null, context, reactInstanceManager);

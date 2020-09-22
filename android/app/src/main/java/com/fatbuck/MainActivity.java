@@ -1,4 +1,4 @@
-package co.za.shaunsaker.fatbuck;
+package com.fatbuck;
 
 import com.facebook.react.ReactActivity;
 

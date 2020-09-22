@@ -30,7 +30,7 @@ import com.android.build.OutputFile
  *   bundleInRelease: true,
  *
  *   // whether to bundle JS and assets in another build variant (if configured).
- *   // See http://tools.android.com/tech-docs/new-build-system/user-guide#TOC-Build-Variants
+ *   // See http://tools.android.com.fatbuckech-docs/new-build-system/user-guide#TOC-Build-Variants
  *   // The configuration property can be in the following formats
  *   //         'bundleIn${productFlavor}${buildType}'
  *   //         'bundleIn${buildType}'
@@ -130,7 +130,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "co.za.shaunsaker.fatbuck"
+        applicationId "com.fatbuck"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

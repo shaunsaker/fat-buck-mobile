@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>742530714380-4ervbke44ebutjevqb36906lsqtjibrp.apps.googleusercontent.com</string>
+	<string>742530714380-gvm16clvl2gnqmhmh00ln6qbempqjjes.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.742530714380-4ervbke44ebutjevqb36906lsqtjibrp</string>
+	<string>com.googleusercontent.apps.742530714380-gvm16clvl2gnqmhmh00ln6qbempqjjes</string>
 	<key>API_KEY</key>
 	<string>AIzaSyBZ83nTDSS3jeb7RVw81RTnuU9bdxmeRxk</string>
 	<key>GCM_SENDER_ID</key>
@@ -13,7 +13,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>co.za.shaunsaker.fatbuck</string>
+	<string>com.fatbuck</string>
 	<key>PROJECT_ID</key>
 	<string>fat-buck-a1f13</string>
 	<key>STORAGE_BUCKET</key>
@@ -29,7 +29,7 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:742530714380:ios:fbd10cb5c9123b5933d729</string>
+	<string>1:742530714380:ios:af4e93887fd7c3f233d729</string>
 	<key>DATABASE_URL</key>
 	<string>https://fat-buck-a1f13.firebaseio.com</string>
 </dict>

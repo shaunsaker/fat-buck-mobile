@@ -8,9 +8,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:742530714380:android:f72dfe8c973712ce33d729",
+        "mobilesdk_app_id": "1:742530714380:android:445563887f41740c33d729",
         "android_client_info": {
-          "package_name": "co.za.shaunsaker.fatbuck"
+          "package_name": "com.fatbuck"
         }
       },
       "oauth_client": [
@@ -32,10 +32,10 @@
               "client_type": 3
             },
             {
-              "client_id": "742530714380-4ervbke44ebutjevqb36906lsqtjibrp.apps.googleusercontent.com",
+              "client_id": "742530714380-gvm16clvl2gnqmhmh00ln6qbempqjjes.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "co.za.shaunsaker.fatbuck"
+                "bundle_id": "com.fatbuck"
               }
             }
           ]
