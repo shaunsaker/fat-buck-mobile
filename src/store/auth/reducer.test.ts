@@ -11,7 +11,7 @@ import {
   sendPasswordResetEmail,
   sendPasswordResetEmailSuccess,
 } from './actions';
-import { setHasSeenWelcome } from '../store/actions';
+import { setHasSeenWelcome } from '../actions';
 import { testUser } from './mocks';
 
 describe('auth reducer', () => {

@@ -1,5 +1,5 @@
-import { ApplicationState } from '../store/reducers';
-import { getFloatString } from '../utils/getFloatString';
+import { ApplicationState } from '../reducers';
+import { getFloatString } from '../../utils/getFloatString';
 import { BalanceType } from './models';
 
 export const selectBalanceType = (state: ApplicationState) =>

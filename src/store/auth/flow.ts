@@ -22,11 +22,11 @@ import {
   firebaseSignOut,
   firebaseVerifyPinCode,
   firebaseSendPasswordResetEmail,
-} from '../services/auth';
-import { setSideMenuIsOpen, showSnackbar } from '../store/actions';
-import { select } from '../utils/typedSelect';
+} from '../../services/auth';
+import { setSideMenuIsOpen, showSnackbar } from '../../store/actions';
+import { select } from '../../utils/typedSelect';
 import { FirebaseAuthTypes } from '@react-native-firebase/auth';
-import { navigate, Screens } from '../Router';
+import { navigate, Screens } from '../../Router';
 
 export function* watchInitiateSignInFlow(): SagaIterator {
   yield takeLatest(AuthActionTypes.INITIATE_SIGN_IN, function* (

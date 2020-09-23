@@ -11,10 +11,10 @@ import RNSideMenu, { ReactNativeSideMenuProps } from 'react-native-side-menu';
 import { Animated } from 'react-native';
 import { Background } from './Background';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectIsSideMenuOpen } from '../sideMenu/selectors';
+import { selectIsSideMenuOpen } from '../store/sideMenu/selectors';
 import { setSideMenuIsOpen, signOut } from '../store/actions';
 import { useLinking } from './useLinking';
-import { selectIsAuthenticated } from '../auth/selectors';
+import { selectIsAuthenticated } from '../store/auth/selectors';
 import { CONTACT } from '../config';
 import { dimensions } from '../dimensions';
 

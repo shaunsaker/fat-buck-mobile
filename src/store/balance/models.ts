@@ -1,8 +1,8 @@
 export enum BalanceActionTypes {
-  SYNC_BALANCE = '@@profit/SYNC_BALANCE',
-  SYNC_BALANCE_SUCCESS = '@@profit/SYNC_BALANCE_SUCCESS',
-  SYNC_BALANCE_ERROR = '@@profit/SYNC_BALANCE_ERROR',
-  SET_BALANCE_TYPE = '@@profit/SET_BALANCE_TYPE',
+  SYNC_BALANCE = '@@balance/SYNC_BALANCE',
+  SYNC_BALANCE_SUCCESS = '@@balance/SYNC_BALANCE_SUCCESS',
+  SYNC_BALANCE_ERROR = '@@balance/SYNC_BALANCE_ERROR',
+  SET_BALANCE_TYPE = '@@balance/SET_BALANCE_TYPE',
 }
 
 export interface Balance {

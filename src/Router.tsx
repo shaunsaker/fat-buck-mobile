@@ -10,10 +10,10 @@ import {
 } from '@react-navigation/stack';
 import { SignIn } from './components/SignIn';
 import { useSelector } from 'react-redux';
-import { selectIsAuthenticated } from './auth/selectors';
+import { selectIsAuthenticated } from './store/auth/selectors';
 import { Home } from './components/Home';
 import { Welcome } from './components/Welcome';
-import { selectHasSeenWelcome } from './welcome/selectors';
+import { selectHasSeenWelcome } from './store/welcome/selectors';
 import { ForgotPassword } from './components/ForgotPassword';
 import { ErrorBoundary } from './components/ErrorBoundary';
 

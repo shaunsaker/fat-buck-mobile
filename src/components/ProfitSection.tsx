@@ -9,9 +9,9 @@ import {
   selectProfitCurrency,
   selectProfitPercent,
   selectProfitType,
-} from '../profit/selectors';
+} from '../store/profit/selectors';
 import { useDispatch, useSelector } from 'react-redux';
-import { ProfitType } from '../profit/models';
+import { ProfitType } from '../store/profit/models';
 import { setProfitType } from '../store/actions';
 
 const ProfitSectionContainer = styled.View`

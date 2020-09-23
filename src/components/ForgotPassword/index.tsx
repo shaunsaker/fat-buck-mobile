@@ -5,7 +5,7 @@ import { Input } from '../Input';
 import Button, { ButtonKinds } from '../Button';
 import { Keyboard } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectIsAuthLoading } from '../../auth/selectors';
+import { selectIsAuthLoading } from '../../store/auth/selectors';
 import { Background } from '../Background';
 import { PageHeader } from '../PageHeader';
 import { dimensions } from '../../dimensions';
@@ -13,10 +13,10 @@ import { ScreenNavigationProps, Screens } from '../../Router';
 import { validateEmail } from '../../utils/validateEmail';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { ParagraphText } from '../ParagraphText';
-import { selectSignInEmailFormField } from '../../forms/selectors';
-import { setFormField } from '../../forms/actions';
-import { Forms, SignInFields } from '../../forms/models';
-import { sendPasswordResetEmail } from '../../auth/actions';
+import { selectSignInEmailFormField } from '../../store/forms/selectors';
+import { setFormField } from '../../store/forms/actions';
+import { Forms, SignInFields } from '../../store/forms/models';
+import { sendPasswordResetEmail } from '../../store/auth/actions';
 
 const ForgotPasswordContainer = styled.View`
   flex: 1;

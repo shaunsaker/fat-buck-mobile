@@ -5,12 +5,12 @@ import { Input } from '../Input';
 import Button, { ButtonKinds } from '../Button';
 import { Keyboard } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { initiateSignIn, finaliseSignIn } from '../../auth/actions';
+import { initiateSignIn, finaliseSignIn } from '../../store/auth/actions';
 import {
   selectAuthConfirmationResult,
   selectIsAuthLoading,
   selectIsNewUser,
-} from '../../auth/selectors';
+} from '../../store/auth/selectors';
 import { Background } from '../Background';
 import { PageHeader } from '../PageHeader';
 import { dimensions } from '../../dimensions';
@@ -25,9 +25,9 @@ import {
   selectSignInEmailFormField,
   selectSignInPasswordFormField,
   selectSignInPinCodeFormField,
-} from '../../forms/selectors';
-import { setFormField } from '../../forms/actions';
-import { Forms, SignInFields } from '../../forms/models';
+} from '../../store/forms/selectors';
+import { setFormField } from '../../store/forms/actions';
+import { Forms, SignInFields } from '../../store/forms/models';
 
 const SignInContainer = styled.View`
   flex: 1;

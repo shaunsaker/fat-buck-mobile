@@ -1,11 +1,11 @@
 import { all, fork } from 'redux-saga/effects';
-import { activeBotFlow } from '../activeBot/flow';
-import { authFlow } from '../auth/flow';
-import { balanceFlow } from '../balance/flow';
-import { profitFlow } from '../profit/flow';
-import { snackbarFlow } from '../snackbar/flow';
-import { tradesFlow } from '../trades/flow';
-import { welcomeFlow } from '../welcome/flow';
+import { activeBotFlow } from './activeBot/flow';
+import { authFlow } from './auth/flow';
+import { balanceFlow } from './balance/flow';
+import { profitFlow } from './profit/flow';
+import { snackbarFlow } from './snackbar/flow';
+import { tradesFlow } from './trades/flow';
+import { welcomeFlow } from './welcome/flow';
 
 function* rootSaga() {
   yield all([fork(authFlow)]);

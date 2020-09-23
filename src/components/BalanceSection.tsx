@@ -12,7 +12,7 @@ import {
   selectBalance,
   selectBalanceBTCValue,
   selectBalanceType,
-} from '../balance/selectors';
+} from '../store/balance/selectors';
 import { setBalanceType } from '../store/actions';
 
 enum BalanceType {

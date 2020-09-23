@@ -1,4 +1,4 @@
-import { ApplicationState } from '../store/reducers';
+import { ApplicationState } from '../reducers';
 
 export const selectIsAuthenticated = (state: ApplicationState) =>
   Boolean(

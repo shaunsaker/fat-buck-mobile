@@ -2,12 +2,12 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components/native';
 import { colors } from '../colors';
-import { selectTrades } from '../trades/selectors';
+import { selectTrades } from '../store/trades/selectors';
 import {
   getTradeCoin,
   getTradeOpenLoss,
   getTradeOpenProfit,
-} from '../trades/utils';
+} from '../store/trades/utils';
 import { getFloatString } from '../utils/getFloatString';
 import { getTimeSince } from '../utils/getTimeSince';
 import { Table, Column, Row } from './Table';

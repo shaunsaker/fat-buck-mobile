@@ -7,14 +7,14 @@ import {
   takeLatest,
   take,
 } from 'redux-saga/effects';
-import { createFirestoreSyncChannel } from '../services/db';
-import { showSnackbar } from '../store/actions';
+import { createFirestoreSyncChannel } from '../../services/db';
+import { showSnackbar } from '../actions';
 import firestore from '@react-native-firebase/firestore';
 import { Trades, TradesActionTypes } from './models';
 import { syncTrades, syncTradesSuccess } from './actions';
 import { selectActiveBotId } from '../activeBot/selectors';
-import { select } from '../utils/typedSelect';
-import { onlySelectorTruthyOrChanged } from '../utils/onlySelectorTruthyOrChanged';
+import { select } from '../../utils/typedSelect';
+import { onlySelectorTruthyOrChanged } from '../../utils/onlySelectorTruthyOrChanged';
 import { selectIsAuthenticated } from '../auth/selectors';
 import { AuthActionTypes } from '../auth/models';
 

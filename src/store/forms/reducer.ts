@@ -19,7 +19,7 @@ export const formsReducer: Reducer<FormsState> = (
       return {
         ...state,
         [action.payload.form]: {
-          ...state[action.payload.form],
+          ...state[action.payload.form], // FIXME
           [action.payload.field]: action.payload.text,
         },
       };

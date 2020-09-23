@@ -1,6 +1,6 @@
-import { ApplicationState } from '../store/reducers';
-import { getAnnualisedValue } from '../utils/getAnnualisedValue';
-import { getFloatString } from '../utils/getFloatString';
+import { ApplicationState } from '../reducers';
+import { getAnnualisedValue } from '../../utils/getAnnualisedValue';
+import { getFloatString } from '../../utils/getFloatString';
 import { ProfitType } from './models';
 
 export const selectProfitType = (state: ApplicationState) =>

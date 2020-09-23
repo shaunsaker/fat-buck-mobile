@@ -3,7 +3,7 @@ import { showSnackbar } from './actions';
 import { takeLatest, fork } from 'redux-saga/effects';
 import { ActionType } from 'typesafe-actions';
 import { SagaIterator } from 'redux-saga';
-import { Snackbar } from '../components/Snackbar';
+import { Snackbar } from '../../components/Snackbar';
 
 function* showSnackbarFlow(): SagaIterator {
   yield takeLatest(SnackbarActionTypes.SHOW_SNACKBAR, function* (
