@@ -35,7 +35,7 @@ export function* watchSignInSuccessFlow(): SagaIterator {
     const user: User = {
       uid: action.payload.user.uid,
       email: action.payload.user.email,
-      phoneNumber: action.payload.user.phoneNumber,
+      cellphone: action.payload.user.phoneNumber,
       dateLastSignedIn,
     };
     yield put(saveUser(user));

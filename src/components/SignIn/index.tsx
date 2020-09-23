@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import styled from 'styled-components/native';
 import { HeaderBar } from '../HeaderBar';
 import { Input } from '../Input';
@@ -28,6 +28,10 @@ import {
 import { setFormField } from '../../store/forms/actions';
 import { Forms, SignInFields } from '../../store/forms/models';
 import { navigate, Screens } from '../../Router';
+import {
+  selectUserCellphone,
+  selectUserEmail,
+} from '../../store/user/selectors';
 
 const SignInContainer = styled.View`
   flex: 1;
@@ -125,7 +129,7 @@ const SignInBase = ({
                 placeholder="Email"
                 keyboardType="email-address"
                 value={email}
-                autoFocus
+                autoFocus={!email}
                 isValid={isEmailValid}
                 onChangeText={handleChangeEmail}
                 onSubmitEditing={handleDismissKeyboard}
@@ -137,6 +141,7 @@ const SignInBase = ({
                 placeholder="Password"
                 secureTextEntry
                 value={password}
+                autoFocus={!password}
                 isValid={isPasswordValid}
                 onChangeText={handleChangePassword}
                 onSubmitEditing={handleDismissKeyboard}
@@ -152,6 +157,7 @@ const SignInBase = ({
                 placeholder="Cellphone (E.g. +27833771131)"
                 keyboardType="number-pad"
                 value={cellphone}
+                autoFocus={Boolean(password && !cellphone)}
                 isValid={isCellphoneValid}
                 onChangeText={handleChangeCellphone}
                 onSubmitEditing={handleSubmit}
@@ -225,6 +231,18 @@ export const SignIn = () => {
     (hasSubmitted
       ? !isPinCodeValid
       : !isEmailValid || !isPasswordValid || !isCellphoneValid);
+  const userEmail = useSelector(selectUserEmail);
+  const userCellphone = useSelector(selectUserCellphone);
+
+  useEffect(() => {
+    // init with user values if present
+    if (!email && userEmail) {
+      onChangeEmail(userEmail);
+    }
+    if (!cellphone && userCellphone) {
+      onChangeCellphone(userCellphone);
+    }
+  });
 
   const onChangeEmail = useCallback(
     (text: string) => {
