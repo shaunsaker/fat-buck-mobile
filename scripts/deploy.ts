@@ -13,10 +13,10 @@ const baseVersion = checkBaseVersion(args[0]);
 
 // the new version e.g. 2.6.0-5
 const { newVersion } = getNewVersion(baseVersion);
-const version = newVersion.split('-')[0];
-const build = newVersion.split('-')[1];
+const newBaseVersion = newVersion.split('-')[0];
+const newBuildVersion = newVersion.split('-')[1];
 
-updatePackageVersion(version, build);
+updatePackageVersion(newBaseVersion, newBuildVersion);
 createBranchAndTag(newVersion);
 
 // done
