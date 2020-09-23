@@ -1,4 +1,5 @@
 import { Reducer } from 'redux';
+import { REHYDRATE } from 'redux-persist';
 import { BalanceActionTypes, BalanceState, BalanceType } from './models';
 
 export const initialState: BalanceState = {
@@ -13,6 +14,12 @@ export const balanceReducer: Reducer<BalanceState> = (
   action,
 ) => {
   switch (action.type) {
+    case REHYDRATE: {
+      return {
+        ...state,
+        loading: false,
+      };
+    }
     case BalanceActionTypes.SYNC_BALANCE: {
       return {
         ...state,

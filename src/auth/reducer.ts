@@ -1,4 +1,5 @@
 import { Reducer } from 'redux';
+import { REHYDRATE } from 'redux-persist';
 import { AuthActionTypes, AuthState } from './models';
 
 // TODO: empty Firebase user state
@@ -13,6 +14,12 @@ export const authReducer: Reducer<AuthState> = (
   action,
 ) => {
   switch (action.type) {
+    case REHYDRATE: {
+      return {
+        ...state,
+        loading: false,
+      };
+    }
     case AuthActionTypes.INITIATE_SIGN_IN: {
       return {
         ...state,

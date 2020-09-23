@@ -1,4 +1,5 @@
 import { Reducer } from 'redux';
+import { REHYDRATE } from 'redux-persist';
 import { ProfitActionTypes, ProfitState, ProfitType } from './models';
 
 export const initialState: ProfitState = {
@@ -14,6 +15,12 @@ export const profitReducer: Reducer<ProfitState> = (
   action,
 ) => {
   switch (action.type) {
+    case REHYDRATE: {
+      return {
+        ...state,
+        loading: false,
+      };
+    }
     case ProfitActionTypes.SYNC_PROFIT: {
       return {
         ...state,

@@ -1,4 +1,5 @@
 import { Reducer } from 'redux';
+import { REHYDRATE } from 'redux-persist';
 import { TradesActionTypes, TradesState } from './models';
 
 export const initialState: TradesState = {
@@ -11,6 +12,12 @@ export const tradesReducer: Reducer<TradesState> = (
   action,
 ) => {
   switch (action.type) {
+    case REHYDRATE: {
+      return {
+        ...state,
+        loading: false,
+      };
+    }
     case TradesActionTypes.SYNC_TRADES: {
       return {
         ...state,

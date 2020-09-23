@@ -1,4 +1,5 @@
 import { Reducer } from 'redux';
+import { REHYDRATE } from 'redux-persist';
 import { ActiveBotActionTypes, ActiveBotState } from './models';
 
 export const initialState: ActiveBotState = {
@@ -11,6 +12,12 @@ export const activeBotReducer: Reducer<ActiveBotState> = (
   action,
 ) => {
   switch (action.type) {
+    case REHYDRATE: {
+      return {
+        ...state,
+        loading: false,
+      };
+    }
     case ActiveBotActionTypes.SYNC_ACTIVE_BOT: {
       return {
         ...state,
