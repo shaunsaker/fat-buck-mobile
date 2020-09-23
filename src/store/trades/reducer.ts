@@ -15,6 +15,7 @@ export const tradesReducer: Reducer<TradesState> = (
     case REHYDRATE: {
       return {
         ...state,
+        ...action.payload.trades,
         loading: false,
       };
     }

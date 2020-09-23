@@ -18,6 +18,7 @@ export const profitReducer: Reducer<ProfitState> = (
     case REHYDRATE: {
       return {
         ...state,
+        ...action.payload.profit,
         loading: false,
       };
     }

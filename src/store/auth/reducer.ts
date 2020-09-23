@@ -17,6 +17,7 @@ export const authReducer: Reducer<AuthState> = (
     case REHYDRATE: {
       return {
         ...state,
+        ...action.payload.auth,
         loading: false,
       };
     }
