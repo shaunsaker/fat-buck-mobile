@@ -190,7 +190,7 @@ const SignInBase = ({
 
           <SignInFooterContainer>
             <ParagraphText>
-              By signing in, you agree to our{' '}
+              By signing {isNewUser ? 'up' : 'in'}, you agree to our{' '}
               <TermsLinkContainer>
                 <Link onPress={() => {}}>terms</Link>
               </TermsLinkContainer>
