@@ -14,6 +14,7 @@ const PageHeaderHeadingText = styled.Text`
   font-size: 24px;
   font-family: 'Recursive-Bold';
   color: ${colors.white};
+  text-align: center;
 `;
 
 interface PageHeaderProps {
