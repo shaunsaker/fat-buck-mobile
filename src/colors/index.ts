@@ -24,6 +24,6 @@ export const colors = {
   lightPrimary: tinycolor(PRIMARY).setAlpha(0.33).toString(),
   lightAccent: tinycolor(ACCENT).setAlpha(0.33).toString(),
   grey: tinycolor(BLACK).setAlpha(0.33).toString(),
-  lightSuccess: tinycolor(ACCENT).setAlpha(0.33).toString(),
-  lightDanger: tinycolor(DANGER).setAlpha(0.33).toString(),
+  lightSuccess: tinycolor(ACCENT).setAlpha(0.17).toString(),
+  lightDanger: tinycolor(DANGER).setAlpha(0.17).toString(),
 };
