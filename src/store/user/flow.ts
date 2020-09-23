@@ -5,7 +5,7 @@ import { User, UserActionTypes } from './models';
 import { saveUser, saveUserError, saveUserSuccess } from './actions';
 import { AuthActionTypes } from '../auth/models';
 import { ActionType } from 'typesafe-actions';
-import { finaliseSignInSuccess } from '../auth/actions';
+import { signInSuccess } from '../auth/actions';
 import { firestoreSaveDocument } from '../../services/db';
 import firestore from '@react-native-firebase/firestore';
 import moment from 'moment';
@@ -28,8 +28,8 @@ export function* watchSaveUserFlow(): SagaIterator {
 }
 
 export function* watchSignInSuccessFlow(): SagaIterator {
-  yield takeLatest(AuthActionTypes.FINALISE_SIGN_IN_SUCCESS, function* (
-    action: ActionType<typeof finaliseSignInSuccess>,
+  yield takeLatest(AuthActionTypes.SIGN_IN_SUCCESS, function* (
+    action: ActionType<typeof signInSuccess>,
   ): SagaIterator {
     const dateLastSignedIn = moment().toISOString();
     const user: User = {

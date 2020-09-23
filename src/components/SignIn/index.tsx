@@ -5,7 +5,7 @@ import { Input } from '../Input';
 import Button, { ButtonKinds } from '../Button';
 import { Keyboard } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { initiateSignIn, finaliseSignIn } from '../../store/auth/actions';
+import { initiateSignIn, signIn } from '../../store/auth/actions';
 import {
   selectAuthConfirmationResult,
   selectIsAuthLoading,
@@ -262,7 +262,7 @@ export const SignIn = () => {
     Keyboard.dismiss();
 
     if (hasSubmitted) {
-      dispatch(finaliseSignIn(pinCode, email, password));
+      dispatch(signIn(pinCode, email, password));
     } else {
       dispatch(initiateSignIn(cellphone));
     }

@@ -6,8 +6,8 @@ import {
   signOut,
   signOutSuccess,
   signOutError,
-  finaliseSignIn,
-  finaliseSignInSuccess,
+  signIn,
+  signInSuccess,
   sendPasswordResetEmail,
   sendPasswordResetEmailSuccess,
 } from './actions';
@@ -34,23 +34,23 @@ describe('auth reducer', () => {
     expect(nextState.confirmationResult).toEqual(testUser.confirmationResult);
   });
 
-  it('sets loading to true on FINALISE_SIGN_IN', () => {
+  it('sets loading to true on SIGN_IN', () => {
     const nextState = authReducer(
       initialState,
-      finaliseSignIn(testUser.pinCode, testUser.email, testUser.password),
+      signIn(testUser.pinCode, testUser.email, testUser.password),
     );
 
     expect(nextState.loading).toEqual(true);
   });
 
-  it('sets state correctly on FINALISE_SIGN_IN_SUCCESS', () => {
+  it('sets state correctly on SIGN_IN_SUCCESS', () => {
     let nextState = authReducer(
       initialState,
-      finaliseSignIn(testUser.pinCode, testUser.email, testUser.password),
+      signIn(testUser.pinCode, testUser.email, testUser.password),
     );
     nextState = authReducer(
       nextState,
-      finaliseSignInSuccess(testUser.userCredential.user),
+      signInSuccess(testUser.userCredential.user),
     );
 
     expect(nextState.email).toEqual(testUser.email);

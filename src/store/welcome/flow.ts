@@ -4,7 +4,7 @@ import { AuthActionTypes } from '../auth/models';
 import { setHasSeenWelcome } from './actions';
 
 export function* watchSignInSuccessFlow(): SagaIterator {
-  yield take(AuthActionTypes.FINALISE_SIGN_IN_SUCCESS);
+  yield take(AuthActionTypes.SIGN_IN_SUCCESS);
   yield put(setHasSeenWelcome(true));
 }
 

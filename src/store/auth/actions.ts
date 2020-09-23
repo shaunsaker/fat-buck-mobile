@@ -15,14 +15,11 @@ export const initiateSignInSuccess = (
     confirmationResult,
   });
 
-export const finaliseSignIn = (
-  pinCode: string,
-  email: string,
-  password: string,
-) => action(AuthActionTypes.FINALISE_SIGN_IN, { pinCode, email, password });
+export const signIn = (pinCode: string, email: string, password: string) =>
+  action(AuthActionTypes.SIGN_IN, { pinCode, email, password });
 
-export const finaliseSignInSuccess = (user: FirebaseAuthTypes.User) =>
-  action(AuthActionTypes.FINALISE_SIGN_IN_SUCCESS, {
+export const signInSuccess = (user: FirebaseAuthTypes.User) =>
+  action(AuthActionTypes.SIGN_IN_SUCCESS, {
     user,
   });
 

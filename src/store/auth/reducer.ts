@@ -34,13 +34,13 @@ export const authReducer: Reducer<AuthState> = (
         confirmationResult: action.payload.confirmationResult,
       };
     }
-    case AuthActionTypes.FINALISE_SIGN_IN: {
+    case AuthActionTypes.SIGN_IN: {
       return {
         ...state,
         loading: true,
       };
     }
-    case AuthActionTypes.FINALISE_SIGN_IN_SUCCESS: {
+    case AuthActionTypes.SIGN_IN_SUCCESS: {
       return {
         ...state,
         loading: false,

@@ -7,8 +7,8 @@ import {
   signOutSuccess,
   signOutError,
   signInError,
-  finaliseSignIn,
-  finaliseSignInSuccess,
+  signIn,
+  signInSuccess,
   sendPasswordResetEmailSuccess,
   sendPasswordResetEmail,
 } from './actions';
@@ -48,9 +48,9 @@ export function* watchInitiateSignInFlow(): SagaIterator {
 
 export const SIGN_IN_SUCCESS_MESSAGE = 'Sign in success.';
 
-export function* watchFinaliseSignInFlow(): SagaIterator {
-  yield takeLatest(AuthActionTypes.FINALISE_SIGN_IN, function* (
-    action: ActionType<typeof finaliseSignIn>,
+export function* watchSignInFlow(): SagaIterator {
+  yield takeLatest(AuthActionTypes.SIGN_IN, function* (
+    action: ActionType<typeof signIn>,
   ): SagaIterator {
     const confirmationResult = yield* select(selectAuthConfirmationResult);
     try {
@@ -79,7 +79,7 @@ export function* watchFinaliseSignInFlow(): SagaIterator {
         emailCredential,
       );
 
-      yield put(finaliseSignInSuccess(user));
+      yield put(signInSuccess(user));
       yield put(showSnackbar(SIGN_IN_SUCCESS_MESSAGE));
     } catch (error) {
       yield put(signInError());
@@ -125,7 +125,7 @@ export function* watchPasswordResetFlow(): SagaIterator {
 
 export function* authFlow(): SagaIterator {
   yield fork(watchInitiateSignInFlow);
-  yield fork(watchFinaliseSignInFlow);
+  yield fork(watchSignInFlow);
   yield fork(watchSignOutFlow);
   yield fork(watchPasswordResetFlow);
 }
