@@ -1,4 +1,4 @@
-import { ApplicationState } from '../store/reducers';
+import { ApplicationState } from '../reducers';
 import { sortArrayOfObjectsByKey } from '../../utils/sortArrayOfObjectsByKey';
 
 export const selectTrades = (state: ApplicationState) =>

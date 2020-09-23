@@ -8,8 +8,10 @@ export interface Trade {
   id: string;
   amount: number;
   closeProfitAbs: number;
+  closeProfit: number;
   closeTimestamp: number;
   currentProfitAbs: number;
+  currentProfit: number;
   isOpen: boolean;
   openTimestamp: number;
   pair: string; // e.g. ALGO/BTC

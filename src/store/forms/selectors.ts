@@ -1,4 +1,4 @@
-import { ApplicationState } from '../store/reducers';
+import { ApplicationState } from '../reducers';
 
 export const selectSignInEmailFormField = (state: ApplicationState) => {
   return state.forms.signIn.email;

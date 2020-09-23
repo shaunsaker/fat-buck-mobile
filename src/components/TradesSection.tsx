@@ -7,8 +7,9 @@ import {
   getTradeCoin,
   getTradeOpenLoss,
   getTradeOpenProfit,
+  getTradeProfit,
+  getTradeProfitPercentage,
 } from '../store/trades/utils';
-import { getFloatString } from '../utils/getFloatString';
 import { getTimeSince } from '../utils/getTimeSince';
 import { Table, Column, Row } from './Table';
 
@@ -91,10 +92,8 @@ export const TradesSection = ({}: TradesSectionProps) => {
       getTradeCoin(trade),
       getTimeSince(trade.openTimestamp),
       trade.isOpen ? 'Active' : getTimeSince(trade.closeTimestamp),
-      getFloatString(trade.amount),
-      trade.isOpen
-        ? getFloatString(trade.currentProfitAbs, 6)
-        : getFloatString(trade.closeProfitAbs, 6),
+      getTradeProfit(trade, 170000), // TODO: get BTC currency value
+      getTradeProfitPercentage(trade),
     ],
     isOpenProfit: getTradeOpenProfit(trade),
     isOpenLoss: getTradeOpenLoss(trade),
