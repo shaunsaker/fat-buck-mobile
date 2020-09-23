@@ -69,7 +69,6 @@
     "babel-jest": "^25.1.0",
     "babel-loader": "^8.1.0",
     "eslint": "^6.5.1",
-    "husky": "^4.3.0",
     "jest": "^25.1.0",
     "metro-react-native-babel-preset": "^0.59.0",
     "prettier": "^2.1.1",
@@ -91,10 +90,5 @@
       "json",
       "node"
     ]
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "yarn lint"
-    }
   }
 }
