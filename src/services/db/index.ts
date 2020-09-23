@@ -41,3 +41,10 @@ export const createFirestoreSyncChannel = <T>(
     return () => {};
   });
 };
+
+export const firestoreSaveDocument = async <T>(
+  ref: FirebaseFirestoreTypes.DocumentReference,
+  data: T,
+) => {
+  await ref.set(data, { merge: true });
+};

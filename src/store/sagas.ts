@@ -6,6 +6,7 @@ import { profitFlow } from './profit/flow';
 import { snackbarFlow } from './snackbar/flow';
 import { tradesFlow } from './trades/flow';
 import { welcomeFlow } from './welcome/flow';
+import { userFlow } from './user/flow';
 
 function* rootSaga() {
   yield all([fork(authFlow)]);
@@ -15,6 +16,7 @@ function* rootSaga() {
   yield all([fork(balanceFlow)]);
   yield all([fork(tradesFlow)]);
   yield all([fork(welcomeFlow)]);
+  yield all([fork(userFlow)]);
 }
 
 export default rootSaga;

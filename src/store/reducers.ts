@@ -15,6 +15,8 @@ import { balanceReducer } from './balance/reducer';
 import { BalanceState } from './balance/models';
 import { tradesReducer } from './trades/reducer';
 import { TradesState } from './trades/models';
+import { userReducer } from './user/reducer';
+import { UserState } from './user/models';
 
 export interface ApplicationState {
   sideMenu: SideMenuState;
@@ -25,6 +27,7 @@ export interface ApplicationState {
   activeBot: ActiveBotState;
   balance: BalanceState;
   trades: TradesState;
+  user: UserState;
 }
 
 const rootReducer = combineReducers({
@@ -36,6 +39,7 @@ const rootReducer = combineReducers({
   activeBot: activeBotReducer,
   balance: balanceReducer,
   trades: tradesReducer,
+  user: userReducer,
 });
 
 export const initialState = rootReducer(undefined, { type: '' });
