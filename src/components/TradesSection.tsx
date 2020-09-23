@@ -5,9 +5,9 @@ import { colors } from '../colors';
 import { selectTrades } from '../store/trades/selectors';
 import {
   getTradeCoin,
-  getTradeOpenLoss,
-  getTradeOpenProfit,
+  getTradeLoss,
   getTradeProfit,
+  getTradeProfitCurrencyValue,
   getTradeProfitPercentage,
 } from '../store/trades/utils';
 import { getTimeSince } from '../utils/getTimeSince';
@@ -54,8 +54,8 @@ const COLUMNS: Column[] = [
 ];
 
 interface TradeRow extends Omit<Row, 'style'> {
-  isOpenProfit?: boolean;
-  isOpenLoss?: boolean;
+  isProfit?: boolean;
+  isLoss?: boolean;
 }
 
 interface TradesSectionBaseProps {
@@ -67,9 +67,9 @@ const TradesSectionBase = ({ rows }: TradesSectionBaseProps) => {
   const rowsWithStyles = rows.map((row) => ({
     ...row,
     style: {
-      backgroundColor: row.isOpenProfit
+      backgroundColor: row.isProfit
         ? colors.lightSuccess
-        : row.isOpenLoss
+        : row.isLoss
         ? colors.lightDanger
         : undefined,
     },
@@ -92,11 +92,11 @@ export const TradesSection = ({}: TradesSectionProps) => {
       getTradeCoin(trade),
       getTimeSince(trade.openTimestamp),
       trade.isOpen ? 'Active' : getTimeSince(trade.closeTimestamp),
-      getTradeProfit(trade, 170000), // TODO: get BTC currency value
+      getTradeProfitCurrencyValue(trade, 170000), // TODO: get BTC currency value
       getTradeProfitPercentage(trade),
     ],
-    isOpenProfit: getTradeOpenProfit(trade),
-    isOpenLoss: getTradeOpenLoss(trade),
+    isProfit: getTradeProfit(trade),
+    isLoss: getTradeLoss(trade),
   }));
 
   return <TradesSectionBase rows={rows} />;
