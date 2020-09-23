@@ -65,9 +65,9 @@ const SideMenuComponent = ({
   version,
   isAuthenticated,
   handleClose,
-  handleProfile,
+  // handleProfile,
   handleGetInTouch,
-  handleTerms,
+  // handleTerms,
   handleSignOut,
 }: SideMenuComponentProps) => {
   return (
@@ -174,7 +174,7 @@ export const SideMenu = ({ children }: SideMenuProps) => {
 
   const onProfile = useCallback(() => {
     // TODO:
-  }, [dispatch]);
+  }, []);
 
   const onGetInTouch = useCallback(() => {
     openLink(`mailto:${CONTACT}`);
@@ -182,7 +182,7 @@ export const SideMenu = ({ children }: SideMenuProps) => {
 
   const onTerms = useCallback(() => {
     // TODO:
-  }, [dispatch]);
+  }, []);
 
   const onSignOut = useCallback(() => {
     dispatch(signOut());

@@ -1,4 +1,4 @@
-import { Dispatch, useCallback } from 'react';
+import { useCallback } from 'react';
 import { Linking } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { showSnackbar } from '../store/actions';

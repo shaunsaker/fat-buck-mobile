@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback } from 'react';
 import styled from 'styled-components/native';
 import { dimensions } from '../dimensions';
 import { HeadingText } from './HeadingText';

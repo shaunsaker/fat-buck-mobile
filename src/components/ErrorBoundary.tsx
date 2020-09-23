@@ -61,7 +61,6 @@ class ErrorBoundaryBase extends React.Component<
     if (supported) {
       await Linking.openURL(url);
     } else {
-      console.log('NOT SUPPORTED');
       // @ts-expect-error FIXME it's not undefined but I don't know how to type this correctly
       dispatch(showSnackbar(`Don't know how to open this URL: ${url}`));
     }
