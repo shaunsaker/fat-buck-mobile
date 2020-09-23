@@ -9,7 +9,7 @@ import { colors } from './colors';
 import { CodePushHandler } from './components/CodePushHandler';
 
 const App = () => {
-  // useEffect(() => {
+  // require('react').useEffect(() => {
   //   persistor.purge();
   // }, []);
 
