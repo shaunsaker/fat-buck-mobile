@@ -31,7 +31,7 @@ export const Error = ({
     <Background>
       <HeaderBar />
 
-      <PageHeader>Oops, something went wrong.</PageHeader>
+      <PageHeader>Shit. We fucked up somewhere.</PageHeader>
 
       <ErrorContainer>
         <ErrorButtonsContainer>
