@@ -12,4 +12,4 @@ export const selectAuthConfirmationResult = (state: ApplicationState) =>
   state.auth.confirmationResult;
 
 export const selectIsNewUser = (state: ApplicationState) =>
-  state.auth.isNewUser;
+  !state.welcome.hasSeenWelcome;

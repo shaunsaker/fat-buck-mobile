@@ -1,7 +1,7 @@
 import { Reducer } from 'redux';
-import { WelcomeActionTypes } from '../welcome/models';
 import { AuthActionTypes, AuthState } from './models';
 
+// TODO: empty Firebase user state
 export const initialState: AuthState = {
   loading: false,
   confirmationResult: undefined,
@@ -71,12 +71,6 @@ export const authReducer: Reducer<AuthState> = (
       return {
         ...state,
         loading: false,
-      };
-    }
-    case WelcomeActionTypes.SET_HAS_SEEN_WELCOME: {
-      return {
-        ...state,
-        isNewUser: true,
       };
     }
     default: {

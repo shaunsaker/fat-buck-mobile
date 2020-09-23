@@ -1,11 +1,9 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Dimensions } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
-import { useDispatch } from 'react-redux';
 import styled from 'styled-components/native';
 import { colors } from '../../colors';
 import { dimensions } from '../../dimensions';
-import { setHasSeenWelcome } from '../../store/actions';
 import { Background } from '../Background';
 import Button, { ButtonKinds } from '../Button';
 import { HeaderBar } from '../HeaderBar';
@@ -135,7 +133,6 @@ interface WelcomeProps {
 
 export const Welcome = ({ navigation }: WelcomeProps) => {
   const [slideIndex, setSlideIndex] = useState(0);
-  const dispatch = useDispatch();
 
   const onSlideProgressPress = (index: number) => {
     setSlideIndex(index);
@@ -148,9 +145,8 @@ export const Welcome = ({ navigation }: WelcomeProps) => {
       setSlideIndex(nextSlideIndex);
     } else {
       navigation.navigate(Screens.signIn);
-      dispatch(setHasSeenWelcome(true));
     }
-  }, [slideIndex, dispatch, navigation]);
+  }, [slideIndex, navigation]);
 
   return (
     <WelcomeBase

@@ -111,7 +111,7 @@ const SignInBase = ({
 }: SignInBaseProps) => {
   return (
     <Background>
-      <HeaderBar />
+      <HeaderBar showClose={isNewUser} />
 
       <PageHeader>Sign {isNewUser ? 'Up' : 'In'}</PageHeader>
 

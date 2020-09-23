@@ -129,3 +129,5 @@ export function* authFlow(): SagaIterator {
   yield fork(watchSignOutFlow);
   yield fork(watchPasswordResetFlow);
 }
+
+// on hasSeenWelcome set new user
