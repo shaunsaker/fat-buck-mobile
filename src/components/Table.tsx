@@ -62,7 +62,9 @@ export const Table = ({ title, columns, rows }: TableProps) => {
             row.style,
           ]}>
           {row.labels.map((label, columnIndex) => (
-            <TableCellText key={label} style={columns[columnIndex].style}>
+            <TableCellText
+              key={`${label}${columnIndex}`}
+              style={columns[columnIndex].style}>
               {label}
             </TableCellText>
           ))}
