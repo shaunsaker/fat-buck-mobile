@@ -17,7 +17,7 @@ export const balanceReducer: Reducer<BalanceState> = (
     case REHYDRATE: {
       return {
         ...state,
-        ...action.payload.balance,
+        ...action.payload?.balance,
         loading: false,
       };
     }

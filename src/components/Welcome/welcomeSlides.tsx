@@ -8,28 +8,28 @@ import { Intro } from './Intro';
 export interface WelcomeSlide {
   title: string;
   children: ReactNode;
-  buttonText: string;
+  buttonText: (isNewUser?: boolean) => string;
 }
 
 export const welcomeSlides: WelcomeSlide[] = [
   {
     title: 'Welcome to Fat Buck!',
     children: <Intro />,
-    buttonText: 'CONTINUE',
+    buttonText: () => 'CONTINUE',
   },
   {
     title: 'We have a bot!',
     children: <Bot />,
-    buttonText: 'CONTINUE',
+    buttonText: () => 'CONTINUE',
   },
   {
     title: 'How does it work?',
     children: <How />,
-    buttonText: 'CONTINUE',
+    buttonText: () => 'CONTINUE',
   },
   {
     title: 'No shennanigans.',
     children: <Fees />,
-    buttonText: 'SIGN UP',
+    buttonText: (isNewUser?: boolean) => (isNewUser ? 'SIGN UP' : 'CLOSE'),
   },
 ];

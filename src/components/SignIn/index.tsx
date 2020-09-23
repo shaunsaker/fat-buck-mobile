@@ -16,7 +16,6 @@ import { PageHeader } from '../PageHeader';
 import { dimensions } from '../../dimensions';
 import { Link } from '../Link';
 import { ParagraphText } from '../ParagraphText';
-import { ScreenNavigationProps, Screens } from '../../Router';
 import { validateEmail } from '../../utils/validateEmail';
 import { validatePhoneNumber } from '../../utils/validatePhoneNumber';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -28,6 +27,7 @@ import {
 } from '../../store/forms/selectors';
 import { setFormField } from '../../store/forms/actions';
 import { Forms, SignInFields } from '../../store/forms/models';
+import { navigate, Screens } from '../../Router';
 
 const SignInContainer = styled.View`
   flex: 1;
@@ -207,11 +207,7 @@ const SignInBase = ({
   );
 };
 
-interface SignInProps {
-  navigation: ScreenNavigationProps<Screens.signIn>;
-}
-
-export const SignIn = ({ navigation }: SignInProps) => {
+export const SignIn = () => {
   const dispatch = useDispatch();
   const email = useSelector(selectSignInEmailFormField);
   const password = useSelector(selectSignInPasswordFormField);
@@ -273,8 +269,8 @@ export const SignIn = ({ navigation }: SignInProps) => {
   }, [dispatch, hasSubmitted, email, password, cellphone, pinCode]);
 
   const onForgotPassword = useCallback(() => {
-    navigation.navigate(Screens.forgotPassword);
-  }, [navigation]);
+    navigate(Screens.forgotPassword);
+  }, []);
 
   return (
     <SignInBase

@@ -8,8 +8,8 @@ import { useDispatch } from 'react-redux';
 import { setSideMenuIsOpen } from '../store/actions';
 import app from '../../app.json';
 import { CloseButton } from './CloseButton';
-import { useNavigation } from '@react-navigation/native';
 import { dimensions } from '../dimensions';
+import { navigate } from '../Router';
 
 const HeaderBarContainer = styled.View`
   flex-direction: row;
@@ -96,15 +96,14 @@ interface HeaderBarProps {
 
 export const HeaderBar = ({ showClose, ...props }: HeaderBarProps) => {
   const dispatch = useDispatch();
-  const navigation = useNavigation();
 
   const onMenuPress = useCallback(() => {
     dispatch(setSideMenuIsOpen(true));
   }, [dispatch]);
 
   const onClose = useCallback(() => {
-    navigation.goBack();
-  }, [navigation]);
+    navigate();
+  }, []);
 
   return (
     <HeaderBarBase

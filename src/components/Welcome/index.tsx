@@ -4,12 +4,12 @@ import { FlatList } from 'react-native-gesture-handler';
 import styled from 'styled-components/native';
 import { colors } from '../../colors';
 import { dimensions } from '../../dimensions';
+import { navigate, ScreenRouteProps, Screens } from '../../Router';
 import { Background } from '../Background';
 import Button, { ButtonKinds } from '../Button';
 import { HeaderBar } from '../HeaderBar';
 import { PageHeader } from '../PageHeader';
 import { welcomeSlides, WelcomeSlide } from './welcomeSlides';
-import { ScreenNavigationProps, Screens } from '../../Router';
 
 const WelcomeContainer = styled.View`
   padding: ${dimensions.rhythm}px 0;
@@ -52,6 +52,7 @@ const ButtonContainer = styled.View`
 `;
 
 interface WelcomeBaseProps {
+  isNewUser: boolean;
   slideIndex: number;
   slides: WelcomeSlide[];
   onSlideProgressPress: (index: number) => void;
@@ -59,6 +60,7 @@ interface WelcomeBaseProps {
 }
 
 const WelcomeBase = ({
+  isNewUser,
   slideIndex,
   slides,
   onSlideProgressPress,
@@ -84,7 +86,7 @@ const WelcomeBase = ({
 
   return (
     <Background>
-      <HeaderBar />
+      <HeaderBar showClose={!isNewUser} />
 
       <PageHeader>{currentSlide.title}</PageHeader>
 
@@ -119,7 +121,7 @@ const WelcomeBase = ({
           </WelcomeSlideProgressContainer>
 
           <Button kind={ButtonKinds.primary} onPress={onSubmitPress}>
-            {currentSlide.buttonText}
+            {currentSlide.buttonText(isNewUser)}
           </Button>
         </ButtonContainer>
       </WelcomeContainer>
@@ -128,10 +130,10 @@ const WelcomeBase = ({
 };
 
 interface WelcomeProps {
-  navigation: ScreenNavigationProps<Screens.welcome>;
+  route: ScreenRouteProps<Screens.welcomeStatic>;
 }
 
-export const Welcome = ({ navigation }: WelcomeProps) => {
+export const Welcome = ({ route }: WelcomeProps) => {
   const [slideIndex, setSlideIndex] = useState(0);
 
   const onSlideProgressPress = (index: number) => {
@@ -144,12 +146,17 @@ export const Welcome = ({ navigation }: WelcomeProps) => {
       const nextSlideIndex = slideIndex + 1;
       setSlideIndex(nextSlideIndex);
     } else {
-      navigation.navigate(Screens.signIn);
+      if (route.params.isNewUser) {
+        navigate(Screens.signIn);
+      } else {
+        navigate();
+      }
     }
-  }, [slideIndex, navigation]);
+  }, [slideIndex, route]);
 
   return (
     <WelcomeBase
+      isNewUser={route.params.isNewUser}
       slideIndex={slideIndex}
       slides={welcomeSlides}
       onSlideProgressPress={onSlideProgressPress}

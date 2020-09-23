@@ -15,7 +15,7 @@ export const activeBotReducer: Reducer<ActiveBotState> = (
     case REHYDRATE: {
       return {
         ...state,
-        ...action.payload.activeBot,
+        ...action.payload?.activeBot,
         loading: false,
       };
     }

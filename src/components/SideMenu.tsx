@@ -17,6 +17,7 @@ import { useLinking } from './useLinking';
 import { selectIsAuthenticated } from '../store/auth/selectors';
 import { CONTACT } from '../config';
 import { dimensions } from '../dimensions';
+import { isCurrentRoute, navigate, Screens } from '../Router';
 
 const SideMenuContainer = styled.View`
   flex: 1;
@@ -56,6 +57,8 @@ interface SideMenuComponentProps {
   isAuthenticated: boolean;
   handleClose: () => void;
   handleProfile: () => void;
+  isWelcomeScreen: boolean;
+  handleWelcome: () => void;
   handleGetInTouch: () => void;
   handleTerms: () => void;
   handleSignOut: () => void;
@@ -66,6 +69,8 @@ const SideMenuComponent = ({
   isAuthenticated,
   handleClose,
   // handleProfile,
+  isWelcomeScreen,
+  handleWelcome,
   handleGetInTouch,
   // handleTerms,
   handleSignOut,
@@ -91,6 +96,17 @@ const SideMenuComponent = ({
               </Button>
             </SideMenuButtonContainer>
           ) : null} */}
+
+          {isAuthenticated ? (
+            <SideMenuButtonContainer>
+              <Button
+                kind={ButtonKinds.primary}
+                disabled={isWelcomeScreen}
+                onPress={handleWelcome}>
+                WELCOME
+              </Button>
+            </SideMenuButtonContainer>
+          ) : null}
 
           <SideMenuButtonContainer>
             <Button kind={ButtonKinds.primary} onPress={handleGetInTouch}>
@@ -160,6 +176,11 @@ export const SideMenu = ({ children }: SideMenuProps) => {
   const isOpen = useSelector(selectIsSideMenuOpen);
   const { openLink } = useLinking();
   const isAuthenticated = useSelector(selectIsAuthenticated);
+  const isWelcomeScreen = isCurrentRoute(Screens.welcomeStatic);
+
+  const closeSideMenu = useCallback(() => {
+    dispatch(setSideMenuIsOpen(false));
+  }, [dispatch]);
 
   const onSideMenuChange = useCallback(
     (nextIsOpen: boolean) => {
@@ -169,20 +190,27 @@ export const SideMenu = ({ children }: SideMenuProps) => {
   );
 
   const onClose = useCallback(() => {
-    dispatch(setSideMenuIsOpen(false));
-  }, [dispatch]);
+    closeSideMenu();
+  }, [closeSideMenu]);
 
   const onProfile = useCallback(() => {
-    // TODO:
-  }, []);
+    // TODO
+    closeSideMenu();
+  }, [closeSideMenu]);
+
+  const onWelcome = useCallback(() => {
+    closeSideMenu();
+    navigate(Screens.welcomeStatic);
+  }, [closeSideMenu]);
 
   const onGetInTouch = useCallback(() => {
     openLink(`mailto:${CONTACT}`);
   }, [openLink]);
 
   const onTerms = useCallback(() => {
-    // TODO:
-  }, []);
+    // TODO
+    closeSideMenu();
+  }, [closeSideMenu]);
 
   const onSignOut = useCallback(() => {
     dispatch(signOut());
@@ -196,6 +224,8 @@ export const SideMenu = ({ children }: SideMenuProps) => {
           isAuthenticated={isAuthenticated}
           handleClose={onClose}
           handleProfile={onProfile}
+          isWelcomeScreen={isWelcomeScreen}
+          handleWelcome={onWelcome}
           handleGetInTouch={onGetInTouch}
           handleTerms={onTerms}
           handleSignOut={onSignOut}

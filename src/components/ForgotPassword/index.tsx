@@ -9,7 +9,6 @@ import { selectIsAuthLoading } from '../../store/auth/selectors';
 import { Background } from '../Background';
 import { PageHeader } from '../PageHeader';
 import { dimensions } from '../../dimensions';
-import { ScreenNavigationProps, Screens } from '../../Router';
 import { validateEmail } from '../../utils/validateEmail';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { ParagraphText } from '../ParagraphText';
@@ -113,11 +112,7 @@ const ForgotPasswordBase = ({
   );
 };
 
-interface ForgotPasswordProps {
-  navigation: ScreenNavigationProps<Screens.signIn>;
-}
-
-export const ForgotPassword = ({}: ForgotPasswordProps) => {
+export const ForgotPassword = () => {
   const dispatch = useDispatch();
   const email = useSelector(selectSignInEmailFormField);
   const isEmailValid = validateEmail(email);
