@@ -10,6 +10,7 @@ export enum ButtonKinds {
   secondary,
   accent,
   accentFilled,
+  disabled,
 }
 
 interface ButtonContainerProps {
@@ -30,7 +31,7 @@ const ButtonContainer = styled(Touchable)<ButtonContainerProps>`
   border-color: ${({ kind }) =>
     kind === ButtonKinds.primary
       ? colors.primary
-      : kind === ButtonKinds.secondary
+      : kind === ButtonKinds.disabled || kind === ButtonKinds.secondary
       ? colors.lightTransWhite
       : kind === ButtonKinds.accent || kind === ButtonKinds.accentFilled
       ? colors.accent
@@ -64,8 +65,8 @@ interface ButtonTextProps {
 const ButtonText = styled.Text<ButtonTextProps>`
   font-size: ${({ small }) => (small ? 12 : 16)}px;
   font-family: 'Recursive-Bold';
-  color: ${({ kind, disabled }) =>
-    disabled
+  color: ${({ kind }) =>
+    kind === ButtonKinds.disabled
       ? colors.transWhite
       : kind === ButtonKinds.accent
       ? colors.accent
@@ -89,21 +90,22 @@ export const Button = ({
   onPress,
   children,
 }: ButtonProps) => {
+  const renderedKind = disabled ? ButtonKinds.disabled : kind;
   const childComponent = loading ? (
     <ActivityIndicator size="small" color={colors.white} />
   ) : (
-    <ButtonText kind={kind} small={small} disabled={disabled}>
+    <ButtonText kind={renderedKind} small={small}>
       {children}
     </ButtonText>
   );
 
   return (
     <ButtonContainer
-      kind={kind}
+      kind={renderedKind}
       small={small}
       disabled={disabled}
       onPress={onPress}>
-      {kind === ButtonKinds.primary ? (
+      {renderedKind === ButtonKinds.primary ? (
         <ButtonGradient
           start={{ x: 0, y: 0.25 }}
           end={{ x: 1.5, y: 1.5 }}

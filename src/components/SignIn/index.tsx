@@ -199,7 +199,7 @@ const SignInBase = ({
 
             <SignInButtonContainer>
               <Button
-                kind={isDisabled ? ButtonKinds.secondary : ButtonKinds.primary}
+                kind={ButtonKinds.primary}
                 loading={isLoading}
                 disabled={isDisabled}
                 onPress={handleSubmit}>
