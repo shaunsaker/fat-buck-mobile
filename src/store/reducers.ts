@@ -17,6 +17,8 @@ import { tradesReducer } from './trades/reducer';
 import { TradesState } from './trades/models';
 import { userReducer } from './user/reducer';
 import { UserState } from './user/models';
+import { CountryState } from './country/models';
+import { countryReducer } from './country/reducer';
 
 export interface ApplicationState {
   sideMenu: SideMenuState;
@@ -28,6 +30,7 @@ export interface ApplicationState {
   balance: BalanceState;
   trades: TradesState;
   user: UserState;
+  country: CountryState;
 }
 
 const rootReducer = combineReducers({
@@ -40,6 +43,7 @@ const rootReducer = combineReducers({
   balance: balanceReducer,
   trades: tradesReducer,
   user: userReducer,
+  country: countryReducer,
 });
 
 export const initialState = rootReducer(undefined, { type: '' });

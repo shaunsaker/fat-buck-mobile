@@ -5,7 +5,9 @@ import { colors } from '../colors';
 import { dimensions } from '../dimensions';
 import { HeadingText } from './HeadingText';
 
-const TableContainer = styled.View``;
+const TableContainer = styled.View`
+  flex: 1;
+`;
 
 const TableTitleContainer = styled.View`
   align-items: center;
@@ -92,6 +94,8 @@ export const Table = ({ title, columns, rows }: TableProps) => {
         data={rows}
         keyExtractor={(row) => row.id}
         renderItem={renderRow}
+        style={{ flex: 1 }}
+        // contentContainerStyle={{ paddingBottom: 100 }}
       />
     </TableContainer>
   );

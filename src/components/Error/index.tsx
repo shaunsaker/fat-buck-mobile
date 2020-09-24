@@ -4,13 +4,11 @@ import { Background } from '../Background';
 import styled from 'styled-components/native';
 import Button, { ButtonKinds } from '../Button';
 import { PageHeader } from '../PageHeader';
+import { LayoutContainer } from '../LayoutContainer';
 
-const ErrorContainer = styled.View`
-  margin: 0 20px;
+const ErrorButtonsContainer = styled.View`
   align-items: center;
 `;
-
-const ErrorButtonsContainer = styled.View``;
 
 const ErrorButtonContainer = styled.View`
   margin-bottom: 20px;
@@ -33,7 +31,7 @@ export const Error = ({
 
       <PageHeader>Shit. We fucked up somewhere.</PageHeader>
 
-      <ErrorContainer>
+      <LayoutContainer>
         <ErrorButtonsContainer>
           <ErrorButtonContainer>
             <Button kind={ButtonKinds.primary} onPress={handleReloadApp}>
@@ -51,7 +49,7 @@ export const Error = ({
             CONTACT SUPPORT
           </Button>
         </ErrorButtonsContainer>
-      </ErrorContainer>
+      </LayoutContainer>
     </Background>
   );
 };

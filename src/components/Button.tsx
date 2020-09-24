@@ -16,6 +16,7 @@ export enum ButtonKinds {
 interface ButtonContainerProps {
   kind: ButtonKinds;
   small?: boolean;
+  fullWidth?: boolean;
 }
 
 const WIDTH = 180;
@@ -24,7 +25,8 @@ const HEIGHT = 45;
 const SMALL_HEIGHT = 25;
 
 const ButtonContainer = styled(Touchable)<ButtonContainerProps>`
-  width: ${({ small }) => (small ? SMALL_WIDTH : WIDTH)}px;
+  width: ${({ small, fullWidth }) =>
+    small ? `${SMALL_WIDTH}px` : fullWidth ? 'auto' : `${WIDTH}px`};
   height: ${({ small }) => (small ? SMALL_HEIGHT : HEIGHT)}px;
   border-width: 3px;
   border-style: solid;
@@ -78,6 +80,7 @@ interface ButtonProps {
   small?: boolean;
   loading?: boolean;
   disabled?: boolean;
+  fullWidth?: boolean;
   children: string;
   onPress: () => void;
 }
@@ -87,6 +90,7 @@ export const Button = ({
   small,
   loading,
   disabled,
+  fullWidth,
   onPress,
   children,
 }: ButtonProps) => {
@@ -104,6 +108,7 @@ export const Button = ({
       kind={renderedKind}
       small={small}
       disabled={disabled}
+      fullWidth={fullWidth}
       onPress={onPress}>
       {renderedKind === ButtonKinds.primary ? (
         <ButtonGradient

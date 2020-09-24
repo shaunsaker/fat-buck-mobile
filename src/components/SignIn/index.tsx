@@ -18,7 +18,6 @@ import { Link } from '../Link';
 import { ParagraphText } from '../ParagraphText';
 import { validateEmail } from '../../utils/validateEmail';
 import { validatePhoneNumber } from '../../utils/validatePhoneNumber';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import {
   selectSignInCellphoneFormField,
   selectSignInEmailFormField,
@@ -32,16 +31,13 @@ import {
   selectUserCellphone,
   selectUserEmail,
 } from '../../store/user/selectors';
+import { PhoneInput } from '../PhoneInput';
+import { InputContainer } from '../InputContainer';
+import { LayoutContainer } from '../LayoutContainer';
+import { selectCountry } from '../../store/country/selectors';
 
 const SignInContainer = styled.View`
   flex: 1;
-`;
-
-const SignInInputsContainer = styled.View`
-  max-width: 360px;
-  width: 100%;
-  align-self: center;
-  padding: ${dimensions.rhythm}px;
 `;
 
 const SignInInputContainer = styled.View`
@@ -82,7 +78,10 @@ interface SignInBaseProps {
   handleChangePassword: (password: string) => void;
   cellphone: string;
   isCellphoneValid: boolean;
+  countryFlagEmoji: string;
+  countryCallingCode: string;
   handleChangeCellphone: (cellphone: string) => void;
+  handlePhoneInputCountryCodePress: () => void;
   pinCode: string;
   isPinCodeValid: boolean;
   handleChangePinCode: (pinCode: string) => void;
@@ -104,7 +103,10 @@ const SignInBase = ({
   handleChangePassword,
   cellphone,
   isCellphoneValid,
+  countryFlagEmoji,
+  countryCallingCode,
   handleChangeCellphone,
+  handlePhoneInputCountryCodePress,
   pinCode,
   isPinCodeValid,
   handleChangePinCode,
@@ -117,13 +119,11 @@ const SignInBase = ({
     <Background>
       <HeaderBar showClose={isNewUser} />
 
-      <PageHeader>Sign {isNewUser ? 'Up' : 'In'}</PageHeader>
+      <InputContainer>
+        <PageHeader>Sign {isNewUser ? 'Up' : 'In'}</PageHeader>
 
-      <KeyboardAwareScrollView
-        contentContainerStyle={{ flex: 1 }}
-        keyboardShouldPersistTaps="handled">
         <SignInContainer>
-          <SignInInputsContainer>
+          <LayoutContainer>
             <SignInInputContainer>
               <Input
                 placeholder="Email"
@@ -141,7 +141,7 @@ const SignInBase = ({
                 placeholder="Password"
                 secureTextEntry
                 value={password}
-                autoFocus={!password}
+                autoFocus={Boolean(email && !password)}
                 isValid={isPasswordValid}
                 onChangeText={handleChangePassword}
                 onSubmitEditing={handleDismissKeyboard}
@@ -153,14 +153,16 @@ const SignInBase = ({
             </ForgotPasswordContainer>
 
             <SignInInputContainer>
-              <Input
-                placeholder="Cellphone (E.g. +27833771131)"
-                keyboardType="number-pad"
+              <PhoneInput
+                placeholder="833771133"
                 value={cellphone}
-                autoFocus={Boolean(password && !cellphone)}
+                countryFlagEmoji={countryFlagEmoji}
+                countryCallingCode={countryCallingCode}
+                autoFocus={Boolean(email && password && !cellphone)}
                 isValid={isCellphoneValid}
                 onChangeText={handleChangeCellphone}
                 onSubmitEditing={handleSubmit}
+                onCountryCodePress={handlePhoneInputCountryCodePress}
               />
             </SignInInputContainer>
 
@@ -169,6 +171,7 @@ const SignInBase = ({
                 <PinCodeTextContainer>
                   <ParagraphText center>
                     Please enter the PIN code that we SMS'd to your number:{' '}
+                    {countryCallingCode}
                     {cellphone}.
                   </ParagraphText>
                 </PinCodeTextContainer>
@@ -179,14 +182,16 @@ const SignInBase = ({
                     keyboardType="number-pad"
                     value={pinCode}
                     isValid={isPinCodeValid}
-                    autoFocus
+                    autoFocus={Boolean(
+                      email && password && cellphone && !pinCode,
+                    )}
                     onChangeText={handleChangePinCode}
                     onSubmitEditing={handleSubmit}
                   />
                 </SignInInputContainer>
               </>
             ) : null}
-          </SignInInputsContainer>
+          </LayoutContainer>
 
           <SignInFooterContainer>
             <ParagraphText>
@@ -208,7 +213,7 @@ const SignInBase = ({
             </SignInButtonContainer>
           </SignInFooterContainer>
         </SignInContainer>
-      </KeyboardAwareScrollView>
+      </InputContainer>
     </Background>
   );
 };
@@ -219,9 +224,13 @@ export const SignIn = () => {
   const password = useSelector(selectSignInPasswordFormField);
   const cellphone = useSelector(selectSignInCellphoneFormField);
   const pinCode = useSelector(selectSignInPinCodeFormField);
+  const country = useSelector(selectCountry);
+  const countryFlagEmoji = country.emoji;
+  const countryCallingCode = country.countryCallingCodes[0];
   const isEmailValid = validateEmail(email);
   const isPasswordValid = password.length >= 6;
-  const isCellphoneValid = validatePhoneNumber(cellphone);
+  const parsedCellphone = `${countryCallingCode}${cellphone}`;
+  const isCellphoneValid = validatePhoneNumber(parsedCellphone);
   const isPinCodeValid = pinCode.length >= 6;
   const isLoading = useSelector(selectIsAuthLoading);
   const isNewUser = useSelector(selectIsNewUser);
@@ -234,15 +243,19 @@ export const SignIn = () => {
   const userEmail = useSelector(selectUserEmail);
   const userCellphone = useSelector(selectUserCellphone);
 
-  useEffect(() => {
-    // init with user values if present
-    if (!email && userEmail) {
-      onChangeEmail(userEmail);
-    }
-    if (!cellphone && userCellphone) {
-      onChangeCellphone(userCellphone);
-    }
-  });
+  useEffect(
+    () => {
+      // init with user values if present
+      if (!email && userEmail) {
+        onChangeEmail(userEmail);
+      }
+      if (!cellphone && userCellphone) {
+        const parsedCellphone_ = userCellphone.replace(countryCallingCode, '');
+        onChangeCellphone(parsedCellphone_);
+      }
+    },
+    [], // eslint-disable-line
+  );
 
   const onChangeEmail = useCallback(
     (text: string) => {
@@ -265,6 +278,10 @@ export const SignIn = () => {
     [dispatch],
   );
 
+  const onPhoneInputCountryCodePress = useCallback(() => {
+    navigate(Screens.countrySelector);
+  }, []);
+
   const onChangePinCode = useCallback(
     (text: string) => {
       dispatch(setFormField(Forms.signIn, SignInFields.pinCode, text));
@@ -282,9 +299,9 @@ export const SignIn = () => {
     if (hasSubmitted) {
       dispatch(signIn(pinCode, email, password));
     } else {
-      dispatch(initiateSignIn(cellphone));
+      dispatch(initiateSignIn(parsedCellphone));
     }
-  }, [dispatch, hasSubmitted, email, password, cellphone, pinCode]);
+  }, [dispatch, hasSubmitted, email, password, parsedCellphone, pinCode]);
 
   const onForgotPassword = useCallback(() => {
     navigate(Screens.forgotPassword);
@@ -303,7 +320,10 @@ export const SignIn = () => {
       handleChangePassword={onChangePassword}
       cellphone={cellphone}
       isCellphoneValid={isCellphoneValid}
+      countryFlagEmoji={countryFlagEmoji}
+      countryCallingCode={countryCallingCode}
       handleChangeCellphone={onChangeCellphone}
+      handlePhoneInputCountryCodePress={onPhoneInputCountryCodePress}
       pinCode={pinCode}
       isPinCodeValid={isPinCodeValid}
       handleChangePinCode={onChangePinCode}

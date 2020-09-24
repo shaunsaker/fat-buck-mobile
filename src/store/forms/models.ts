@@ -1,5 +1,6 @@
 export enum Forms {
   signIn = 'signIn',
+  countrySelector = 'countrySelector',
 }
 
 export enum SignInFields {
@@ -9,7 +10,11 @@ export enum SignInFields {
   pinCode = 'pinCode',
 }
 
-export type FormFields = SignInFields;
+export enum CountrySelectorFields {
+  search = 'search',
+}
+
+export type FormFields = SignInFields | CountrySelectorFields;
 
 export enum FormsActionTypes {
   SET_FORM_FIELD = '@@forms/SET_FORM_FIELD',
@@ -21,5 +26,8 @@ export interface FormsState {
     password: string;
     cellphone: string;
     pinCode: string;
+  };
+  countrySelector: {
+    search: string;
   };
 }

@@ -1,25 +1,20 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, ReactNode } from 'react';
 import styled from 'styled-components/native';
 import { colors } from '../colors';
 import { TextInputProperties, TextInput, Platform } from 'react-native';
 
-const HEIGHT = 50;
+export const INPUT_HEIGHT = 50;
+export const INPUT_PADDING = INPUT_HEIGHT / 2;
 
-interface InputContainerProps {
+interface StyledInputContainerProps {
   isFocussed: boolean;
   hasValue: boolean;
-  isValid: boolean;
+  isValid?: boolean;
 }
 
-const InputContainer = styled<InputContainerProps>(TextInput)`
-  font-family: 'Recursive-Bold';
-  font-weight: ${Platform.OS === 'android'
-    ? 'normal'
-    : 'bold'}; /* fix font-family android */
-  font-size: 16px;
-  color: ${colors.white};
-  height: ${HEIGHT}px;
-  border-radius: ${HEIGHT / 2}px;
+const StyledInputContainer = styled.View<StyledInputContainerProps>`
+  flex-direction: row;
+  border-radius: ${INPUT_HEIGHT / 2}px;
   border-width: 3px;
   border-style: solid;
   border-color: ${({ isFocussed, hasValue, isValid }) =>
@@ -34,19 +29,31 @@ const InputContainer = styled<InputContainerProps>(TextInput)`
         ? colors.lightSuccess
         : colors.lightPrimary
       : 'transparent'};
-  padding: 0 ${HEIGHT / 2}px;
+`;
+
+const StyledInput = styled(TextInput)`
+  font-family: 'Recursive-Bold';
+  font-weight: ${Platform.OS === 'android'
+    ? 'normal'
+    : 'bold'}; /* fix font-family android */
+  font-size: 16px;
+  color: ${colors.white};
+  height: ${INPUT_HEIGHT}px;
+  padding: 0 ${INPUT_PADDING}px;
+  width: 100%;
 `;
 
 interface InputBaseProps extends InputProps {
   isFocussed: boolean;
   hasValue: boolean;
-  isValid: boolean;
+  isValid?: boolean;
   handleFocus: () => void;
   handleBlur: () => void;
 }
 
 const InputBase = ({
   placeholder,
+  affix,
   isFocussed,
   hasValue,
   isValid,
@@ -55,24 +62,29 @@ const InputBase = ({
   ...props
 }: InputBaseProps) => {
   return (
-    <InputContainer
-      {...props}
-      placeholderTextColor={
-        isFocussed ? colors.darkTransWhite : colors.transWhite
-      }
-      placeholder={placeholder}
-      underlineColorAndroid="transparent"
+    <StyledInputContainer
       isFocussed={isFocussed}
       hasValue={hasValue}
-      isValid={isValid}
-      onFocus={handleFocus}
-      onBlur={handleBlur}
-    />
+      isValid={isValid}>
+      {affix}
+
+      <StyledInput
+        placeholderTextColor={
+          isFocussed ? colors.darkTransWhite : colors.transWhite
+        }
+        placeholder={placeholder}
+        underlineColorAndroid="transparent"
+        onFocus={handleFocus}
+        onBlur={handleBlur}
+        {...props}
+      />
+    </StyledInputContainer>
   );
 };
 
-interface InputProps extends TextInputProperties {
-  isValid: boolean;
+export interface InputProps extends TextInputProperties {
+  affix?: ReactNode;
+  isValid?: boolean;
 }
 
 export const Input = (props: InputProps) => {
@@ -89,11 +101,11 @@ export const Input = (props: InputProps) => {
 
   return (
     <InputBase
-      {...props}
       isFocussed={isFocussed}
       hasValue={hasValue}
       handleFocus={onFocus}
       handleBlur={onBlur}
+      {...props}
     />
   );
 };

@@ -13,7 +13,9 @@ import {
 import { getTimeSince } from '../utils/getTimeSince';
 import { Table, Column, Row } from './Table';
 
-const TradesSectionContainer = styled.View``;
+const TradesSectionContainer = styled.View`
+  flex: 1;
+`;
 
 const COLUMNS: Column[] = [
   {

@@ -9,6 +9,8 @@ import { signInSuccess } from '../auth/actions';
 import { firestoreSaveDocument } from '../../services/db';
 import firestore from '@react-native-firebase/firestore';
 import moment from 'moment';
+import { select } from '../../utils/typedSelect';
+import { selectCountry } from '../country/selectors';
 
 export function* watchSaveUserFlow(): SagaIterator {
   yield takeLatest(UserActionTypes.SAVE_USER, function* (
@@ -32,10 +34,12 @@ export function* watchSignInSuccessFlow(): SagaIterator {
     action: ActionType<typeof signInSuccess>,
   ): SagaIterator {
     const dateLastSignedIn = moment().toISOString();
+    const country = (yield* select(selectCountry)).name;
     const user: User = {
       uid: action.payload.user.uid,
       email: action.payload.user.email,
       cellphone: action.payload.user.phoneNumber,
+      country,
       dateLastSignedIn,
     };
     yield put(saveUser(user));

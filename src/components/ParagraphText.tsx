@@ -13,7 +13,6 @@ const ParagraphTextContainer = styled.Text<ParagraphTextContainerProps>`
   line-height: 22px;
   color: ${colors.white};
   text-align: ${({ center }) => (center ? 'center' : 'left')};
-  max-width: 360px;
   align-self: center;
 `;
 

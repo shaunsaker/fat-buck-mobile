@@ -1,10 +1,12 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Dimensions } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components/native';
 import { colors } from '../../colors';
 import { dimensions } from '../../dimensions';
-import { navigate, ScreenRouteProps, Screens } from '../../Router';
+import { navigate, Screens } from '../../Router';
+import { selectIsAuthenticated } from '../../store/auth/selectors';
 import { Background } from '../Background';
 import Button, { ButtonKinds } from '../Button';
 import { HeaderBar } from '../HeaderBar';
@@ -129,12 +131,9 @@ const WelcomeBase = ({
   );
 };
 
-interface WelcomeProps {
-  route: ScreenRouteProps<Screens.welcomeStatic>;
-}
-
-export const Welcome = ({ route }: WelcomeProps) => {
+export const Welcome = () => {
   const [slideIndex, setSlideIndex] = useState(0);
+  const isNewUser = !useSelector(selectIsAuthenticated);
 
   const onSlideProgressPress = (index: number) => {
     setSlideIndex(index);
@@ -146,17 +145,17 @@ export const Welcome = ({ route }: WelcomeProps) => {
       const nextSlideIndex = slideIndex + 1;
       setSlideIndex(nextSlideIndex);
     } else {
-      if (route.params.isNewUser) {
+      if (isNewUser) {
         navigate(Screens.signIn);
       } else {
         navigate();
       }
     }
-  }, [slideIndex, route]);
+  }, [slideIndex, isNewUser]);
 
   return (
     <WelcomeBase
-      isNewUser={route.params.isNewUser}
+      isNewUser={isNewUser}
       slideIndex={slideIndex}
       slides={welcomeSlides}
       onSlideProgressPress={onSlideProgressPress}

@@ -8,6 +8,9 @@ export const initialState: FormsState = {
     cellphone: '',
     pinCode: '',
   },
+  countrySelector: {
+    search: '',
+  },
 };
 
 export const formsReducer: Reducer<FormsState> = (

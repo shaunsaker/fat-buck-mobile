@@ -8,6 +8,7 @@ export interface User {
   uid: string | null;
   email: string | null;
   cellphone: string | null;
+  country: string;
   dateLastSignedIn: string;
 }
 

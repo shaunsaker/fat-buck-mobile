@@ -6,7 +6,8 @@ export const initialState: UserState = {
   loading: false,
   uid: '',
   email: '',
-  phoneNumber: '',
+  cellphone: '',
+  country: '',
 };
 
 export const userReducer: Reducer<UserState> = (

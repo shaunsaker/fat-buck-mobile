@@ -8,6 +8,8 @@ import { colors } from './colors';
 import { CodePushHandler } from './components/CodePushHandler';
 import { ErrorBoundary } from './components/ErrorBoundary';
 
+console.disableYellowBox = true;
+
 const App = () => {
   // require('react').useEffect(() => {
   //   persistor.purge();

@@ -17,6 +17,7 @@ import { Welcome } from './components/Welcome';
 import { selectHasSeenWelcome } from './store/welcome/selectors';
 import { ForgotPassword } from './components/ForgotPassword';
 import { SideMenu } from './components/SideMenu';
+import { CountrySelector } from './components/CountrySelector';
 
 export enum Screens {
   welcome = 'welcome',
@@ -24,18 +25,16 @@ export enum Screens {
   signIn = 'signIn',
   forgotPassword = 'forgotPassword',
   home = 'home',
-}
-
-interface WelcomeScreenParams {
-  isNewUser: boolean;
+  countrySelector = 'countrySelector',
 }
 
 export type RouteStackParamList = {
-  [Screens.welcome]: WelcomeScreenParams;
-  [Screens.welcomeStatic]: WelcomeScreenParams;
+  [Screens.welcome]: undefined;
+  [Screens.welcomeStatic]: undefined;
   [Screens.signIn]: undefined;
   [Screens.forgotPassword]: undefined;
   [Screens.home]: undefined;
+  [Screens.countrySelector]: undefined;
 };
 
 export type ScreenNavigationProps<T extends Screens> = StackNavigationProp<
@@ -83,11 +82,7 @@ export const Router = () => {
             <>
               <Stack.Screen name={Screens.home} component={Home} />
 
-              <Stack.Screen
-                name={Screens.welcomeStatic}
-                component={Welcome}
-                initialParams={{ isNewUser: false }}
-              />
+              <Stack.Screen name={Screens.welcomeStatic} component={Welcome} />
             </>
           ) : (
             <>
@@ -96,7 +91,6 @@ export const Router = () => {
                   name={Screens.welcome}
                   component={Welcome}
                   options={{ animationEnabled: false }}
-                  initialParams={{ isNewUser: true }}
                 />
               ) : null}
 
@@ -112,6 +106,11 @@ export const Router = () => {
               />
             </>
           )}
+
+          <Stack.Screen
+            name={Screens.countrySelector}
+            component={CountrySelector}
+          />
         </Stack.Navigator>
       </SideMenu>
     </NavigationContainer>

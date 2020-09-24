@@ -10,26 +10,20 @@ import { Background } from '../Background';
 import { PageHeader } from '../PageHeader';
 import { dimensions } from '../../dimensions';
 import { validateEmail } from '../../utils/validateEmail';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { ParagraphText } from '../ParagraphText';
 import { selectSignInEmailFormField } from '../../store/forms/selectors';
 import { setFormField } from '../../store/forms/actions';
 import { Forms, SignInFields } from '../../store/forms/models';
 import { sendPasswordResetEmail } from '../../store/auth/actions';
+import { InputContainer } from '../InputContainer';
+import { LayoutContainer } from '../LayoutContainer';
 
 const ForgotPasswordContainer = styled.View`
   flex: 1;
-  padding: ${dimensions.rhythm}px;
 `;
 
 const ForgotPasswordTextContainer = styled.View`
   margin-bottom: ${dimensions.rhythm}px;
-`;
-
-const ForgotPasswordInputsContainer = styled.View`
-  max-width: 360px;
-  width: 100%;
-  align-self: center;
 `;
 
 const ForgotPasswordInputContainer = styled.View`
@@ -70,18 +64,16 @@ const ForgotPasswordBase = ({
 
       <PageHeader>Forgot Password</PageHeader>
 
-      <KeyboardAwareScrollView
-        contentContainerStyle={{ flex: 1 }}
-        keyboardShouldPersistTaps="handled">
+      <InputContainer>
         <ForgotPasswordContainer>
-          <ForgotPasswordTextContainer>
-            <ParagraphText>
-              Please enter your email so that we can send you a password reset
-              link.
-            </ParagraphText>
-          </ForgotPasswordTextContainer>
+          <LayoutContainer>
+            <ForgotPasswordTextContainer>
+              <ParagraphText center>
+                Please enter your email so that we can send you a password reset
+                link.
+              </ParagraphText>
+            </ForgotPasswordTextContainer>
 
-          <ForgotPasswordInputsContainer>
             <ForgotPasswordInputContainer>
               <Input
                 placeholder="Email"
@@ -93,7 +85,7 @@ const ForgotPasswordBase = ({
                 onSubmitEditing={handleSubmit}
               />
             </ForgotPasswordInputContainer>
-          </ForgotPasswordInputsContainer>
+          </LayoutContainer>
 
           <ForgotPasswordFooterContainer>
             <ForgotPasswordSubmitButtonContainer>
@@ -107,7 +99,7 @@ const ForgotPasswordBase = ({
             </ForgotPasswordSubmitButtonContainer>
           </ForgotPasswordFooterContainer>
         </ForgotPasswordContainer>
-      </KeyboardAwareScrollView>
+      </InputContainer>
     </Background>
   );
 };
