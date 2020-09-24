@@ -5,5 +5,6 @@ module.exports = {
   plugins: ['@typescript-eslint'],
   rules: {
     'react-native/no-inline-styles': 'off',
+    'eslint-comments/no-unlimited-disable': 'off',
   },
 };
