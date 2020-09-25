@@ -257,6 +257,12 @@ export const SignIn = () => {
     [], // eslint-disable-line
   );
 
+  useEffect(() => {
+    // if the country changes, reset the cellphone field
+    // NOTE: this won't work if the user already has a cellphone saved to the store
+    onChangeEmail('');
+  }, [country, onChangeEmail]);
+
   const onChangeEmail = useCallback(
     (text: string) => {
       dispatch(setFormField(Forms.signIn, SignInFields.email, text));
