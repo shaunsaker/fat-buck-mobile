@@ -51,14 +51,23 @@ export function* watchSyncCurrencyFlow(): SagaIterator {
         const channel = yield call(createFirestoreSyncChannel, ref);
 
         yield takeEvery(channel, function* (currency: Currency) {
-          yield put(syncCurrencySuccess(currency));
+          // if there is no currency rate available (e.g. the exchange does not support AED), set it to USD
+          if (!currency.rate) {
+            const defaultCurrency = 'USD';
+            yield put(setSelectedCurrency(defaultCurrency));
+            yield put(
+              showSnackbar(
+                `${currency.id} not supported. Defaulting to ${defaultCurrency}.`,
+              ),
+            );
+          } else {
+            yield put(syncCurrencySuccess(currency));
+          }
         });
 
         // TODO: this isn't working entirely, still getting firestore permission errors
         yield take(AuthActionTypes.SIGN_OUT_SUCCESS);
         channel.close();
-
-        // TODO: if there is no selected currency, set it to USD
       } catch (error) {
         yield put(syncCurrencyError());
         yield put(showSnackbar(error.message));
