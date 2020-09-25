@@ -59,7 +59,7 @@ const CountrySelectorBase = ({
           {country.name}
         </Button>
 
-        <CountryFlagContainer>
+        <CountryFlagContainer pointerEvents="none">
           <ParagraphText>{country.emoji}</ParagraphText>
         </CountryFlagContainer>
       </CountryButtonContainer>
