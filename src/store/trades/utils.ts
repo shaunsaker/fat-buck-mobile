@@ -16,8 +16,8 @@ export const getTradeProfitPercentage = (trade: Trade) =>
 
 export const getTradeProfitCurrencyValue = (
   trade: Trade,
-  currencyValue: number,
+  exchangeRate: string,
 ) =>
   trade.isOpen
-    ? getFloatString(trade.currentProfitAbs * currencyValue) // BTC value, get currency value
-    : getFloatString(trade.closeProfitAbs * currencyValue);
+    ? getFloatString(trade.currentProfitAbs * exchangeRate)
+    : getFloatString(trade.closeProfitAbs * exchangeRate);

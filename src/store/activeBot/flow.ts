@@ -10,7 +10,11 @@ import {
 import { createFirestoreSyncChannel } from '../../services/db';
 import { showSnackbar } from '../actions';
 import firestore from '@react-native-firebase/firestore';
-import { syncActiveBot, syncActiveBotSuccess } from './actions';
+import {
+  syncActiveBot,
+  syncActiveBotError,
+  syncActiveBotSuccess,
+} from './actions';
 import { selectIsAuthenticated } from '../auth/selectors';
 import { onlySelectorTruthyOrChanged } from '../../utils/onlySelectorTruthyOrChanged';
 import { ActiveBotActionTypes } from './models';
@@ -36,6 +40,7 @@ export function* watchSyncActiveBotFlow(): SagaIterator {
         yield take(AuthActionTypes.SIGN_OUT_SUCCESS);
         activeBotChannel.close();
       } catch (error) {
+        yield put(syncActiveBotError());
         yield put(showSnackbar(error.message));
       }
     },

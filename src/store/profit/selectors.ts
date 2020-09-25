@@ -19,5 +19,5 @@ export const selectProfitPercent = (state: ApplicationState) => {
   }
 };
 
-export const selectProfitCurrency = (state: ApplicationState) =>
-  getFloatString(state.profit.profitAllFiat);
+export const selectProfitCurrencyValue = (state: ApplicationState) =>
+  getFloatString(state.profit.profitAllFiat * state.currency.rate);

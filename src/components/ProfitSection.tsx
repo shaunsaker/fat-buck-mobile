@@ -6,13 +6,14 @@ import { BigText } from './BigText';
 import { ParagraphText } from './ParagraphText';
 import { ToggleSelect } from './ToggleSelect';
 import {
-  selectProfitCurrency,
+  selectProfitCurrencyValue,
   selectProfitPercent,
   selectProfitType,
 } from '../store/profit/selectors';
 import { useDispatch, useSelector } from 'react-redux';
 import { ProfitType } from '../store/profit/models';
 import { setProfitType } from '../store/actions';
+import { selectSelectedCurrency } from '../store/currency/selectors';
 
 const ProfitSectionContainer = styled.View`
   padding: 0 0 ${dimensions.rhythm}px;
@@ -74,7 +75,7 @@ const ProfitSectionBase = ({
 
       <ProfitSectionCurrencyValueContainer>
         <ParagraphText>
-          {currency} {currencyValue}
+          {currencyValue} {currency}
         </ParagraphText>
       </ProfitSectionCurrencyValueContainer>
 
@@ -92,9 +93,9 @@ const ProfitSectionBase = ({
 export const ProfitSection = () => {
   const dispatch = useDispatch();
   const value = useSelector(selectProfitPercent);
-  const currencyValue = useSelector(selectProfitCurrency);
+  const currencyValue = useSelector(selectProfitCurrencyValue);
   const selectedProfitType = useSelector(selectProfitType);
-  const currency = 'R';
+  const currency = useSelector(selectSelectedCurrency);
   const profitTypes = [ProfitType.toDate, ProfitType.annual];
 
   const onSelectProfitType = useCallback(

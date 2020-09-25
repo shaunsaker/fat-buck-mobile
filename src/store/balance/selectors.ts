@@ -8,7 +8,9 @@ export const selectBalanceType = (state: ApplicationState) =>
 export const selectBalance = (state: ApplicationState) =>
   state.balance.balanceType === BalanceType.btc
     ? getFloatString(state.balance.total, 6)
-    : getFloatString(state.balance.value);
+    : getFloatString(state.balance.value * state.currency.rate);
 
-export const selectBalanceBTCValue = (state: ApplicationState) =>
-  getFloatString(state.balance.value / state.balance.total);
+export const selectBTCPrice = (state: ApplicationState) =>
+  getFloatString(
+    (state.balance.value * state.currency.rate) / state.balance.total,
+  );

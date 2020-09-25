@@ -10,10 +10,11 @@ import { colors } from '../colors';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   selectBalance,
-  selectBalanceBTCValue,
+  selectBTCPrice,
   selectBalanceType,
 } from '../store/balance/selectors';
 import { setBalanceType } from '../store/actions';
+import { selectSelectedCurrency } from '../store/currency/selectors';
 
 enum BalanceType {
   btc = 'BTC',
@@ -101,7 +102,7 @@ const BalanceSectionBase = ({
 
       <BalanceSectionCurrencyValueContainer>
         <ParagraphText>
-          1 BTC = {currency} {currencyValue}
+          1 BTC = {currencyValue} {currency}
         </ParagraphText>
       </BalanceSectionCurrencyValueContainer>
 
@@ -136,8 +137,8 @@ export const BalanceSection = () => {
   const dispatch = useDispatch();
   const selectedBalanceType = useSelector(selectBalanceType);
   const value = useSelector(selectBalance);
-  const currencyValue = useSelector(selectBalanceBTCValue);
-  const currency = 'R';
+  const currencyValue = useSelector(selectBTCPrice);
+  const currency = useSelector(selectSelectedCurrency);
   const balanceTypes = [BalanceType.btc, BalanceType.zar];
   const showActionButtons = false;
 

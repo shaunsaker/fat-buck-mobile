@@ -1,20 +1,40 @@
 import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
 import { eventChannel } from 'redux-saga';
 
+// FIXME: type this correctly
 const firestoreSync = <T>(
-  ref: FirebaseFirestoreTypes.CollectionReference,
+  ref:
+    | FirebaseFirestoreTypes.CollectionReference
+    | FirebaseFirestoreTypes.DocumentReference,
   cb: (data: T | { [key: string]: any }) => void,
 ) => {
   return new Promise(async (resolve, reject) => {
     try {
       const unsubscribe = ref.onSnapshot(
-        (snapshot) => {
-          const data = snapshot.docs.map((document) => {
-            return {
-              ...document.data(),
-              id: document.id,
+        (
+          snapshot:
+            | FirebaseFirestoreTypes.QuerySnapshot
+            | FirebaseFirestoreTypes.DocumentSnapshot,
+        ) => {
+          let data;
+
+          if (snapshot.docs) {
+            // it's a collection ref
+            data = snapshot.docs.map(
+              (document: FirebaseFirestoreTypes.DocumentData) => {
+                return {
+                  ...document.data(),
+                  id: document.id,
+                };
+              },
+            );
+          } else {
+            // it's a doc ref
+            data = {
+              ...snapshot.data(),
+              id: snapshot.id,
             };
-          });
+          }
 
           cb(data);
         },
@@ -33,7 +53,9 @@ const firestoreSync = <T>(
 };
 
 export const createFirestoreSyncChannel = <T>(
-  ref: FirebaseFirestoreTypes.CollectionReference,
+  ref:
+    | FirebaseFirestoreTypes.CollectionReference
+    | FirebaseFirestoreTypes.DocumentReference,
 ) => {
   return eventChannel((emit) => {
     firestoreSync<T>(ref, emit);

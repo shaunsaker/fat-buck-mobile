@@ -9,3 +9,4 @@ export * from './balance/actions';
 export * from './trades/actions';
 export * from './user/actions';
 export * from './country/actions';
+export * from './currency/actions';

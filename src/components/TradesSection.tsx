@@ -12,6 +12,8 @@ import {
 } from '../store/trades/utils';
 import { getTimeSince } from '../utils/getTimeSince';
 import { Table, Column, Row } from './Table';
+import { selectExchangeRate } from '../store/currency/selectors';
+import { selectBTCPrice } from '../store/balance/selectors';
 
 const TradesSectionContainer = styled.View`
   flex: 1;
@@ -88,13 +90,14 @@ interface TradesSectionProps {}
 
 export const TradesSection = ({}: TradesSectionProps) => {
   const trades = useSelector(selectTrades);
+  const BTCPrice = useSelector(selectBTCPrice);
   const rows: TradeRow[] = trades.map((trade) => ({
     id: trade.id,
     labels: [
       getTradeCoin(trade),
       getTimeSince(trade.openTimestamp),
       trade.isOpen ? 'Active' : getTimeSince(trade.closeTimestamp),
-      getTradeProfitCurrencyValue(trade, 170000), // TODO: get BTC currency value
+      getTradeProfitCurrencyValue(trade, BTCPrice),
       getTradeProfitPercentage(trade),
     ],
     isProfit: getTradeProfit(trade),

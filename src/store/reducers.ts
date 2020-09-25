@@ -19,6 +19,8 @@ import { userReducer } from './user/reducer';
 import { UserState } from './user/models';
 import { CountryState } from './country/models';
 import { countryReducer } from './country/reducer';
+import { CurrencyState } from './currency/models';
+import { currencyReducer } from './currency/reducer';
 
 export interface ApplicationState {
   sideMenu: SideMenuState;
@@ -31,6 +33,7 @@ export interface ApplicationState {
   trades: TradesState;
   user: UserState;
   country: CountryState;
+  currency: CurrencyState;
 }
 
 const rootReducer = combineReducers({
@@ -44,6 +47,7 @@ const rootReducer = combineReducers({
   trades: tradesReducer,
   user: userReducer,
   country: countryReducer,
+  currency: currencyReducer,
 });
 
 export const initialState = rootReducer(undefined, { type: '' });
