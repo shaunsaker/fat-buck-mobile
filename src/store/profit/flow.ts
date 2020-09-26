@@ -10,29 +10,29 @@ import {
 import { createFirestoreSyncChannel } from '../../services/db';
 import { showSnackbar } from '../actions';
 import firestore from '@react-native-firebase/firestore';
-import { Profit, ProfitActionTypes } from './models';
+import { ProfitData, ProfitActionTypes } from './models';
 import { syncProfit, syncProfitSuccess } from './actions';
-import { selectActiveBotId } from '../activeBot/selectors';
-import { select } from '../../utils/typedSelect';
 import { onlySelectorTruthyOrChanged } from '../../utils/onlySelectorTruthyOrChanged';
 import { selectIsAuthenticated } from '../auth/selectors';
 import { AuthActionTypes } from '../auth/models';
+import { ActionType } from 'typesafe-actions';
+import { watchSyncActiveBotsSuccessFlow } from '../activeBots/flow';
 
 export function* watchSyncProfitFlow(): SagaIterator {
-  yield takeLatest(ProfitActionTypes.SYNC_PROFIT, function* (): SagaIterator {
+  yield takeLatest(ProfitActionTypes.SYNC_PROFIT, function* (
+    action: ActionType<typeof syncProfit>,
+  ): SagaIterator {
     try {
-      const activeBotId = yield* select(selectActiveBotId);
-
-      // use the activeBotId to sync to the relevant profit section
+      const { botId } = action.payload;
       const ref = firestore()
         .collection('bots')
-        .doc(activeBotId)
+        .doc(botId)
         .collection('profit');
       const channel = yield call(createFirestoreSyncChannel, ref);
 
-      yield takeEvery(channel, function* (data: Profit[]) {
+      yield takeEvery(channel, function* (data: ProfitData[]) {
         const latest = data[0];
-        yield put(syncProfitSuccess(latest));
+        yield put(syncProfitSuccess(botId, latest));
       });
 
       // TODO: this isn't working entirely, still getting firestore permission errors
@@ -44,17 +44,12 @@ export function* watchSyncProfitFlow(): SagaIterator {
   });
 }
 
-export function* syncProfitFlow(): SagaIterator {
-  yield put(syncProfit());
-}
-
 export function* profitFlow(): SagaIterator {
   yield fork(watchSyncProfitFlow);
   yield fork(
     onlySelectorTruthyOrChanged,
     selectIsAuthenticated,
-    onlySelectorTruthyOrChanged,
-    selectActiveBotId,
-    syncProfitFlow,
+    watchSyncActiveBotsSuccessFlow,
+    syncProfit,
   );
 }

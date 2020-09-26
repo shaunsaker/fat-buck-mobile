@@ -4,7 +4,7 @@ import { TradesActionTypes, TradesState } from './models';
 
 export const initialState: TradesState = {
   loading: false,
-  data: [],
+  data: {},
 };
 
 export const tradesReducer: Reducer<TradesState> = (
@@ -29,7 +29,7 @@ export const tradesReducer: Reducer<TradesState> = (
       return {
         ...state,
         loading: false,
-        data: action.payload.trades,
+        data: { ...state.data, ...action.payload.trades },
       };
     }
     case TradesActionTypes.SYNC_TRADES_ERROR: {

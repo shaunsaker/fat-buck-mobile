@@ -11,7 +11,7 @@ import {
   selectProfitType,
 } from '../store/profit/selectors';
 import { useDispatch, useSelector } from 'react-redux';
-import { ProfitType } from '../store/profit/models';
+import { ProfitTypes } from '../store/profit/models';
 import { setProfitType } from '../store/actions';
 import { selectSelectedCurrency } from '../store/currency/selectors';
 
@@ -46,9 +46,9 @@ interface ProfitSectionBaseProps {
   value: string;
   currencyValue: string;
   currency: string;
-  profitTypes: ProfitType[];
-  selectedProfitType: ProfitType;
-  handleSelectProfitType: (selectedProfitType: ProfitType) => void;
+  profitTypes: ProfitTypes[];
+  selectedProfitType: ProfitTypes;
+  handleSelectProfitType: (selectedProfitType: ProfitTypes) => void;
 }
 
 const ProfitSectionBase = ({
@@ -96,10 +96,10 @@ export const ProfitSection = () => {
   const currencyValue = useSelector(selectProfitCurrencyValue);
   const selectedProfitType = useSelector(selectProfitType);
   const currency = useSelector(selectSelectedCurrency);
-  const profitTypes = [ProfitType.toDate, ProfitType.annual];
+  const profitTypes = [ProfitTypes.toDate, ProfitTypes.annual];
 
   const onSelectProfitType = useCallback(
-    (profitType: ProfitType) => {
+    (profitType: ProfitTypes) => {
       dispatch(setProfitType(profitType));
     },
     [dispatch],

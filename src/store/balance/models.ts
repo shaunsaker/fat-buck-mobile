@@ -5,17 +5,20 @@ export enum BalanceActionTypes {
   SET_BALANCE_TYPE = '@@balance/SET_BALANCE_TYPE',
 }
 
-export interface Balance {
-  total: number;
-  value: number;
+export interface BalanceData {
+  [key: string]: {
+    total: number;
+    value: number;
+  };
 }
 
-export enum BalanceType {
+export enum BalanceTypes {
   btc = 'BTC',
   zar = 'ZAR',
 }
 
-export interface BalanceState extends Balance {
+export interface BalanceState {
   loading: boolean;
-  balanceType: BalanceType;
+  balanceType: BalanceTypes;
+  data: BalanceData;
 }

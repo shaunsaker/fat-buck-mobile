@@ -18,7 +18,7 @@ export const welcomeSlides: WelcomeSlide[] = [
     buttonText: () => 'CONTINUE',
   },
   {
-    title: 'We have a bot!',
+    title: 'We have bots!',
     children: <Bot />,
     buttonText: () => 'CONTINUE',
   },

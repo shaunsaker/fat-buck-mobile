@@ -1,13 +1,13 @@
 import { Reducer } from 'redux';
 import { REHYDRATE } from 'redux-persist';
-import { ActiveBotActionTypes, ActiveBotState } from './models';
+import { ActiveBotsActionTypes, ActiveBotsState } from './models';
 
-export const initialState: ActiveBotState = {
+export const initialState: ActiveBotsState = {
   loading: false,
-  botId: '',
+  botIds: [],
 };
 
-export const activeBotReducer: Reducer<ActiveBotState> = (
+export const activeBotsReducer: Reducer<ActiveBotsState> = (
   state = initialState,
   action,
 ) => {
@@ -15,24 +15,24 @@ export const activeBotReducer: Reducer<ActiveBotState> = (
     case REHYDRATE: {
       return {
         ...state,
-        ...action.payload?.activeBot,
+        ...action.payload?.activeBots,
         loading: false,
       };
     }
-    case ActiveBotActionTypes.SYNC_ACTIVE_BOT: {
+    case ActiveBotsActionTypes.SYNC_ACTIVE_BOTS: {
       return {
         ...state,
         loading: true,
       };
     }
-    case ActiveBotActionTypes.SYNC_ACTIVE_BOT_SUCCESS: {
+    case ActiveBotsActionTypes.SYNC_ACTIVE_BOTS_SUCCESS: {
       return {
         ...state,
         loading: false,
-        botId: action.payload.botId,
+        botIds: action.payload.botIds,
       };
     }
-    case ActiveBotActionTypes.SYNC_ACTIVE_BOT_ERROR: {
+    case ActiveBotsActionTypes.SYNC_ACTIVE_BOTS_ERROR: {
       return {
         ...state,
         loading: false,

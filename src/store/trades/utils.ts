@@ -19,5 +19,5 @@ export const getTradeProfitCurrencyValue = (
   exchangeRate: string,
 ) =>
   trade.isOpen
-    ? getFloatString(trade.currentProfitAbs * exchangeRate)
-    : getFloatString(trade.closeProfitAbs * exchangeRate);
+    ? getFloatString(trade.currentProfitAbs * Number(exchangeRate))
+    : getFloatString(trade.closeProfitAbs * Number(exchangeRate));

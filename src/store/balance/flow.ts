@@ -10,29 +10,29 @@ import {
 import { createFirestoreSyncChannel } from '../../services/db';
 import { showSnackbar } from '../actions';
 import firestore from '@react-native-firebase/firestore';
-import { Balance, BalanceActionTypes } from './models';
+import { BalanceData, BalanceActionTypes } from './models';
 import { syncBalance, syncBalanceSuccess } from './actions';
-import { selectActiveBotId } from '../activeBot/selectors';
-import { select } from '../../utils/typedSelect';
 import { onlySelectorTruthyOrChanged } from '../../utils/onlySelectorTruthyOrChanged';
 import { selectIsAuthenticated } from '../auth/selectors';
 import { AuthActionTypes } from '../auth/models';
+import { ActionType } from 'typesafe-actions';
+import { watchSyncActiveBotsSuccessFlow } from '../activeBots/flow';
 
 export function* watchSyncBalanceFlow(): SagaIterator {
-  yield takeLatest(BalanceActionTypes.SYNC_BALANCE, function* (): SagaIterator {
+  yield takeLatest(BalanceActionTypes.SYNC_BALANCE, function* (
+    action: ActionType<typeof syncBalance>,
+  ): SagaIterator {
     try {
-      const activeBotId = yield* select(selectActiveBotId);
-
-      // use the activeBotId to sync to the relevant balance section
+      const { botId } = action.payload;
       const ref = firestore()
         .collection('bots')
-        .doc(activeBotId)
+        .doc(botId)
         .collection('balance');
       const channel = yield call(createFirestoreSyncChannel, ref);
 
-      yield takeEvery(channel, function* (data: Balance[]) {
+      yield takeEvery(channel, function* (data: BalanceData[]) {
         const latest = data[0];
-        yield put(syncBalanceSuccess(latest));
+        yield put(syncBalanceSuccess(botId, latest));
       });
 
       // TODO: this isn't working entirely, still getting firestore permission errors
@@ -44,17 +44,12 @@ export function* watchSyncBalanceFlow(): SagaIterator {
   });
 }
 
-export function* syncBalanceFlow(): SagaIterator {
-  yield put(syncBalance());
-}
-
 export function* balanceFlow(): SagaIterator {
   yield fork(watchSyncBalanceFlow);
   yield fork(
     onlySelectorTruthyOrChanged,
     selectIsAuthenticated,
-    onlySelectorTruthyOrChanged,
-    selectActiveBotId,
-    syncBalanceFlow,
+    watchSyncActiveBotsSuccessFlow,
+    syncBalance,
   );
 }

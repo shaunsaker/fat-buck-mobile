@@ -9,8 +9,8 @@ import { formsReducer } from './forms/reducer';
 import { FormsState } from './forms/models';
 import { profitReducer } from './profit/reducer';
 import { ProfitState } from './profit/models';
-import { activeBotReducer } from './activeBot/reducer';
-import { ActiveBotState } from './activeBot/models';
+import { activeBotsReducer } from './activeBots/reducer';
+import { ActiveBotsState } from './activeBots/models';
 import { balanceReducer } from './balance/reducer';
 import { BalanceState } from './balance/models';
 import { tradesReducer } from './trades/reducer';
@@ -28,7 +28,7 @@ export interface ApplicationState {
   welcome: WelcomeState;
   forms: FormsState;
   profit: ProfitState;
-  activeBot: ActiveBotState;
+  activeBots: ActiveBotsState;
   balance: BalanceState;
   trades: TradesState;
   user: UserState;
@@ -42,7 +42,7 @@ const rootReducer = combineReducers({
   welcome: welcomeReducer,
   forms: formsReducer,
   profit: profitReducer,
-  activeBot: activeBotReducer,
+  activeBots: activeBotsReducer,
   balance: balanceReducer,
   trades: tradesReducer,
   user: userReducer,

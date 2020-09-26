@@ -16,7 +16,7 @@ import {
 import { setBalanceType } from '../store/actions';
 import { selectSelectedCurrency } from '../store/currency/selectors';
 
-enum BalanceType {
+enum BalanceTypes {
   btc = 'BTC',
   zar = 'ZAR',
 }
@@ -67,10 +67,10 @@ interface BalanceSectionBaseProps {
   value: string;
   currencyValue: string;
   currency: string;
-  balanceTypes: BalanceType[];
-  selectedBalanceType: BalanceType;
+  balanceTypes: BalanceTypes[];
+  balanceType: BalanceTypes;
   showActionButtons?: boolean;
-  handleSelectBalanceType: (selectedBalanceType: BalanceType) => void;
+  handleSelectBalanceType: (balanceType: BalanceTypes) => void;
   handleDeposit: () => void;
   handleWithdraw: () => void;
 }
@@ -80,7 +80,7 @@ const BalanceSectionBase = ({
   currencyValue,
   currency,
   balanceTypes,
-  selectedBalanceType,
+  balanceType,
   showActionButtons,
   handleSelectBalanceType,
   handleDeposit,
@@ -96,7 +96,7 @@ const BalanceSectionBase = ({
         <BigText>{value}</BigText>
 
         <BalanceSectionProfilePercentageContainer>
-          <ParagraphText>{selectedBalanceType}</ParagraphText>
+          <ParagraphText>{balanceType}</ParagraphText>
         </BalanceSectionProfilePercentageContainer>
       </BalanceSectionBalanceContainer>
 
@@ -109,7 +109,7 @@ const BalanceSectionBase = ({
       <BalanceSectionBalanceTypeContainer>
         <ToggleSelect
           options={balanceTypes}
-          selectedOption={selectedBalanceType}
+          selectedOption={balanceType}
           onSelectOption={handleSelectBalanceType}
         />
       </BalanceSectionBalanceTypeContainer>
@@ -135,15 +135,15 @@ const BalanceSectionBase = ({
 
 export const BalanceSection = () => {
   const dispatch = useDispatch();
-  const selectedBalanceType = useSelector(selectBalanceType);
+  const balanceType = useSelector(selectBalanceType);
   const value = useSelector(selectBalance);
   const currencyValue = useSelector(selectBTCPrice);
   const currency = useSelector(selectSelectedCurrency);
-  const balanceTypes = [BalanceType.btc, BalanceType.zar];
+  const balanceTypes = [BalanceTypes.btc, BalanceTypes.zar];
   const showActionButtons = false;
 
   const onSelectBalanceType = useCallback(
-    (type: BalanceType) => {
+    (type: BalanceTypes) => {
       dispatch(setBalanceType(type));
     },
     [dispatch],
@@ -159,7 +159,7 @@ export const BalanceSection = () => {
       currencyValue={currencyValue}
       currency={currency}
       balanceTypes={balanceTypes}
-      selectedBalanceType={selectedBalanceType}
+      balanceType={balanceType}
       showActionButtons={showActionButtons}
       handleSelectBalanceType={onSelectBalanceType}
       handleDeposit={onDeposit}

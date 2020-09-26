@@ -5,18 +5,21 @@ export enum ProfitActionTypes {
   SET_PROFIT_TYPE = '@@profit/SET_PROFIT_TYPE',
 }
 
-export interface Profit {
-  profitAllPercent: number;
-  profitAllFiat: number;
-  firstTradeTimestamp: number; // CFO: assumes first trade date was first deposit date
+export interface ProfitData {
+  [key: string]: {
+    profitAllPercent: number;
+    profitAllFiat: number;
+    firstTradeTimestamp: number; // CFO: assumes first trade date was first deposit date
+  };
 }
 
-export enum ProfitType {
+export enum ProfitTypes {
   toDate = 'TO DATE',
   annual = 'ANNUAL',
 }
 
-export interface ProfitState extends Profit {
+export interface ProfitState {
   loading: boolean;
-  profitType: ProfitType;
+  profitType: ProfitTypes;
+  data: ProfitData;
 }

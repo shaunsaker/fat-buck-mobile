@@ -29,7 +29,7 @@ export const Bot = ({}: BotProps) => {
         <ParagraphText center>
           Take the emotion out of it and let our{' '}
           <ParagraphText center bold>
-            super smart bot
+            super smart bots
           </ParagraphText>{' '}
           do the trading for you.
         </ParagraphText>
@@ -45,14 +45,6 @@ export const Bot = ({}: BotProps) => {
           , no matter what the markets are doing!
         </ParagraphText>
       </TextContainer>
-
-      <ParagraphText center>
-        <ParagraphText center bold>
-          Note:{' '}
-        </ParagraphText>
-        Your investment is subject to BTC price fluctuations. Past results are
-        not an indicator of future results (but they help).
-      </ParagraphText>
     </BotContainer>
   );
 };

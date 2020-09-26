@@ -1,12 +1,11 @@
 import { Reducer } from 'redux';
 import { REHYDRATE } from 'redux-persist';
-import { BalanceActionTypes, BalanceState, BalanceType } from './models';
+import { BalanceActionTypes, BalanceState, BalanceTypes } from './models';
 
 export const initialState: BalanceState = {
   loading: false,
-  balanceType: BalanceType.btc,
-  total: 0,
-  value: 0,
+  balanceType: BalanceTypes.btc,
+  data: {},
 };
 
 export const balanceReducer: Reducer<BalanceState> = (
@@ -31,7 +30,10 @@ export const balanceReducer: Reducer<BalanceState> = (
       return {
         ...state,
         loading: false,
-        ...action.payload.balance,
+        data: {
+          ...state.data,
+          [action.payload.botId]: action.payload.balance,
+        },
       };
     }
     case BalanceActionTypes.SYNC_BALANCE_ERROR: {

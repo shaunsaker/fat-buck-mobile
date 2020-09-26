@@ -37,7 +37,7 @@ export const How = ({}: HowProps) => {
 
       <TextContainer>
         <ParagraphText center>
-          2. Our bot makes{' '}
+          2. Our bots make{' '}
           <ParagraphText center bold>
             trades
           </ParagraphText>{' '}

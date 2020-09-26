@@ -1,13 +1,11 @@
 import { Reducer } from 'redux';
 import { REHYDRATE } from 'redux-persist';
-import { ProfitActionTypes, ProfitState, ProfitType } from './models';
+import { ProfitActionTypes, ProfitState, ProfitTypes } from './models';
 
 export const initialState: ProfitState = {
   loading: false,
-  profitType: ProfitType.toDate,
-  profitAllPercent: 0,
-  profitAllFiat: 0,
-  firstTradeTimestamp: 0,
+  profitType: ProfitTypes.toDate,
+  data: {},
 };
 
 export const profitReducer: Reducer<ProfitState> = (
@@ -32,7 +30,10 @@ export const profitReducer: Reducer<ProfitState> = (
       return {
         ...state,
         loading: false,
-        ...action.payload.profit,
+        data: {
+          ...state.data,
+          [action.payload.botId]: action.payload.profit,
+        },
       };
     }
     case ProfitActionTypes.SYNC_PROFIT_ERROR: {

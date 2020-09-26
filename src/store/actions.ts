@@ -4,7 +4,7 @@ export * from './snackbar/actions';
 export * from './welcome/actions';
 export * from './forms/actions';
 export * from './profit/actions';
-export * from './activeBot/actions';
+export * from './activeBots/actions';
 export * from './balance/actions';
 export * from './trades/actions';
 export * from './user/actions';

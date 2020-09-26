@@ -1,5 +1,3 @@
-import { getFloatString } from './getFloatString';
-
 export const getAnnualisedValue = (value: number, startDate: number) => {
   // calculate the annualised %
   const now = Date.now();
@@ -7,5 +5,5 @@ export const getAnnualisedValue = (value: number, startDate: number) => {
   const profitPerDay = value / diffInDays;
   const profitPerYear = profitPerDay * 365;
 
-  return getFloatString(profitPerYear, 2);
+  return profitPerYear;
 };

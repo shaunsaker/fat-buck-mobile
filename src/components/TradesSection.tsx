@@ -12,7 +12,6 @@ import {
 } from '../store/trades/utils';
 import { getTimeSince } from '../utils/getTimeSince';
 import { Table, Column, Row } from './Table';
-import { selectExchangeRate } from '../store/currency/selectors';
 import { selectBTCPrice } from '../store/balance/selectors';
 
 const TradesSectionContainer = styled.View`
