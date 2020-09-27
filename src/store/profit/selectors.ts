@@ -12,7 +12,7 @@ export const selectProfitPercent = (state: ApplicationState) => {
   const data = state.profit.data;
 
   if (!Object.keys(data).length) {
-    return 0;
+    return '0';
   }
 
   const isToDateProfitType = state.profit.profitType === ProfitTypes.toDate;
