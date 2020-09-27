@@ -13,6 +13,10 @@ export const selectBalance = (state: ApplicationState) => {
   const firstActiveBotId = state.activeBots.botIds[0];
   const firstBalanceData = state.balance.data[firstActiveBotId];
 
+  if (!firstBalanceData) {
+    return '0';
+  }
+
   if (isBTCBalanceType) {
     return getFloatString(firstBalanceData.total, 6);
   } else {
@@ -38,3 +42,6 @@ export const selectBTCPrice = (state: ApplicationState) => {
   );
   return roundedBTCPrice;
 };
+
+export const selectBalanceLoading = (state: ApplicationState) =>
+  state.balance.loading;

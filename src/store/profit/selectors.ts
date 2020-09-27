@@ -50,3 +50,6 @@ export const selectProfitCurrencyValue = createSelector(
   selectExchangeRate,
   (currency, exchangeRate) => getFloatString(Number(currency) * exchangeRate),
 );
+
+export const selectProfitLoading = (state: ApplicationState) =>
+  state.profit.loading;

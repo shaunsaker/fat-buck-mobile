@@ -23,3 +23,6 @@ export const selectTrades = (state: ApplicationState) => {
 
   return sortedTrades;
 };
+
+export const selectTradesLoading = (state: ApplicationState) =>
+  state.trades.loading;

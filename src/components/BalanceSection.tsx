@@ -12,9 +12,11 @@ import {
   selectBalance,
   selectBTCPrice,
   selectBalanceType,
+  selectBalanceLoading,
 } from '../store/balance/selectors';
 import { setBalanceType } from '../store/actions';
 import { selectSelectedCurrency } from '../store/currency/selectors';
+import { Loader } from './Loader';
 
 enum BalanceTypes {
   btc = 'BTC',
@@ -63,6 +65,12 @@ const BalanceSectionActionButtonContainer = styled.View<
   left: ${({ left }) => (left ? `${dimensions.rhythm}px` : 'auto')};
 `;
 
+const BalanceSectionLoaderContainer = styled.View`
+  position: absolute;
+  top: ${dimensions.rhythm}px;
+  right: ${dimensions.rhythm}px;
+`;
+
 interface BalanceSectionBaseProps {
   value: string;
   currencyValue: string;
@@ -70,6 +78,7 @@ interface BalanceSectionBaseProps {
   balanceTypes: BalanceTypes[];
   balanceType: BalanceTypes;
   showActionButtons?: boolean;
+  isLoading?: boolean;
   handleSelectBalanceType: (balanceType: BalanceTypes) => void;
   handleDeposit: () => void;
   handleWithdraw: () => void;
@@ -82,6 +91,7 @@ const BalanceSectionBase = ({
   balanceTypes,
   balanceType,
   showActionButtons,
+  isLoading,
   handleSelectBalanceType,
   handleDeposit,
   handleWithdraw,
@@ -129,6 +139,12 @@ const BalanceSectionBase = ({
           </Button>
         </BalanceSectionActionButtonContainer>
       ) : null}
+
+      {isLoading ? (
+        <BalanceSectionLoaderContainer>
+          <Loader />
+        </BalanceSectionLoaderContainer>
+      ) : null}
     </BalanceSectionContainer>
   );
 };
@@ -139,6 +155,7 @@ export const BalanceSection = () => {
   const value = useSelector(selectBalance);
   const currencyValue = useSelector(selectBTCPrice);
   const currency = useSelector(selectSelectedCurrency);
+  const isLoading = useSelector(selectBalanceLoading);
   const balanceTypes = [BalanceTypes.btc, BalanceTypes.zar];
   const showActionButtons = false;
 
@@ -161,6 +178,7 @@ export const BalanceSection = () => {
       balanceTypes={balanceTypes}
       balanceType={balanceType}
       showActionButtons={showActionButtons}
+      isLoading={isLoading}
       handleSelectBalanceType={onSelectBalanceType}
       handleDeposit={onDeposit}
       handleWithdraw={onWithdraw}

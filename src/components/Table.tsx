@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { ReactNode, useCallback } from 'react';
 import { FlatList, StyleProp, TextStyle } from 'react-native';
 import styled from 'styled-components/native';
 import { colors } from '../colors';
@@ -54,9 +54,10 @@ interface TableProps {
   title: string;
   columns: Column[];
   rows: Row[];
+  children?: ReactNode;
 }
 
-export const Table = ({ title, columns, rows }: TableProps) => {
+export const Table = ({ title, columns, rows, children }: TableProps) => {
   const renderRow = useCallback(
     ({ item: row, index: rowIndex }: { item: Row; index: number }) => {
       return (
@@ -95,12 +96,16 @@ export const Table = ({ title, columns, rows }: TableProps) => {
         ))}
       </TableRowContainer>
 
-      <FlatList
-        data={rows}
-        keyExtractor={(row) => row.id}
-        renderItem={renderRow}
-        style={{ flex: 1 }}
-      />
+      {rows.length ? (
+        <FlatList
+          data={rows}
+          keyExtractor={(row) => row.id}
+          renderItem={renderRow}
+          style={{ flex: 1 }}
+        />
+      ) : null}
+
+      {children}
     </TableContainer>
   );
 };

@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components/native';
 import { colors } from '../colors';
-import { selectTrades } from '../store/trades/selectors';
+import { selectTrades, selectTradesLoading } from '../store/trades/selectors';
 import {
   getTradeCoin,
   getTradeLoss,
@@ -13,6 +13,7 @@ import {
 import { getTimeSince } from '../utils/getTimeSince';
 import { Table, Column, Row } from './Table';
 import { selectBTCPrice } from '../store/balance/selectors';
+import { TableLoader } from './TableLoader';
 
 const TradesSectionContainer = styled.View`
   flex: 1;
@@ -64,9 +65,10 @@ interface TradeRow extends Omit<Row, 'cells' | 'style'> {
 
 interface TradesSectionBaseProps {
   rows: TradeRow[];
+  isLoading: boolean;
 }
 
-const TradesSectionBase = ({ rows }: TradesSectionBaseProps) => {
+const TradesSectionBase = ({ rows, isLoading }: TradesSectionBaseProps) => {
   // attach styles
   const rowsWithStyles = rows.map((row) => {
     return {
@@ -93,7 +95,9 @@ const TradesSectionBase = ({ rows }: TradesSectionBaseProps) => {
 
   return (
     <TradesSectionContainer>
-      <Table title="Trades" columns={COLUMNS} rows={rowsWithStyles} />
+      <Table title="Trades" columns={COLUMNS} rows={rowsWithStyles}>
+        {isLoading ? <TableLoader /> : null}
+      </Table>
     </TradesSectionContainer>
   );
 };
@@ -103,6 +107,7 @@ interface TradesSectionProps {}
 export const TradesSection = ({}: TradesSectionProps) => {
   const trades = useSelector(selectTrades);
   const BTCPrice = useSelector(selectBTCPrice);
+  const isLoading = useSelector(selectTradesLoading);
   const rows: TradeRow[] = trades.map((trade) => ({
     id: trade.id,
     labels: [
@@ -116,5 +121,5 @@ export const TradesSection = ({}: TradesSectionProps) => {
     isLoss: getTradeLoss(trade),
   }));
 
-  return <TradesSectionBase rows={rows} />;
+  return <TradesSectionBase rows={rows} isLoading={isLoading} />;
 };
