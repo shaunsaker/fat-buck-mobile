@@ -1,5 +1,5 @@
 import React, { Dispatch } from 'react';
-import { Sentry } from '../sentry';
+import { Sentry } from '../services/sentry';
 import { Error } from './Error';
 import RNRestart from 'react-native-restart';
 import { persistor } from '../store';
