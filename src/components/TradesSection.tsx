@@ -56,7 +56,8 @@ const COLUMNS: Column[] = [
   },
 ];
 
-interface TradeRow extends Omit<Row, 'style'> {
+interface TradeRow extends Omit<Row, 'cells' | 'style'> {
+  labels: string[];
   isProfit?: boolean;
   isLoss?: boolean;
 }
@@ -67,16 +68,26 @@ interface TradesSectionBaseProps {
 
 const TradesSectionBase = ({ rows }: TradesSectionBaseProps) => {
   // attach styles
-  const rowsWithStyles = rows.map((row) => ({
-    ...row,
-    style: {
-      backgroundColor: row.isProfit
-        ? colors.lightSuccess
-        : row.isLoss
-        ? colors.lightDanger
-        : undefined,
-    },
-  }));
+  const rowsWithStyles = rows.map((row) => {
+    return {
+      ...row,
+      cells: row.labels.map((label, labelIndex) => {
+        const isLastLabel = labelIndex === row.labels.length - 1;
+        return {
+          label,
+          style: {
+            color: isLastLabel
+              ? row.isProfit
+                ? colors.success
+                : row.isLoss
+                ? colors.danger
+                : colors.white
+              : colors.white,
+          },
+        };
+      }),
+    };
+  });
 
   return (
     <TradesSectionContainer>

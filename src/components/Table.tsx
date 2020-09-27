@@ -39,9 +39,14 @@ export interface Column {
   style?: StyleProp<TextStyle>;
 }
 
+export interface Cell {
+  label: string;
+  style?: StyleProp<TextStyle>;
+}
+
 export interface Row {
   id: string;
-  labels: string[];
+  cells: Cell[];
   style?: StyleProp<TextStyle>;
 }
 
@@ -63,11 +68,11 @@ export const Table = ({ title, columns, rows }: TableProps) => {
               : {},
             row.style,
           ]}>
-          {row.labels.map((label, columnIndex) => (
+          {row.cells.map((cell, columnIndex) => (
             <TableCellText
-              key={`${label}${columnIndex}`}
-              style={columns[columnIndex].style}>
-              {label}
+              key={`${cell.label}${columnIndex}`}
+              style={[columns[columnIndex].style, cell.style]}>
+              {cell.label}
             </TableCellText>
           ))}
         </TableRowContainer>
@@ -95,7 +100,6 @@ export const Table = ({ title, columns, rows }: TableProps) => {
         keyExtractor={(row) => row.id}
         renderItem={renderRow}
         style={{ flex: 1 }}
-        // contentContainerStyle={{ paddingBottom: 100 }}
       />
     </TableContainer>
   );
