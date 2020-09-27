@@ -73,6 +73,7 @@ const TradesSectionBase = ({ rows }: TradesSectionBaseProps) => {
       ...row,
       cells: row.labels.map((label, labelIndex) => {
         const isLastLabel = labelIndex === row.labels.length - 1;
+
         return {
           label,
           style: {
@@ -83,6 +84,7 @@ const TradesSectionBase = ({ rows }: TradesSectionBaseProps) => {
                 ? colors.danger
                 : colors.white
               : colors.white,
+            fontFamily: isLastLabel ? 'Recursive-Bold' : 'Recursive-Regular',
           },
         };
       }),
