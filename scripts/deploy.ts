@@ -1,5 +1,6 @@
-import * as fs from 'fs';
-import { spawnSync } from 'child_process';
+import { createBranchAndTag } from './utils/createBranchAndTag';
+import { execGit } from './utils/execGit';
+import { updatePackageVersion } from './utils/updatePackageVersion';
 
 // Only proceed if there are no uncommitted changes
 execGit(
@@ -16,7 +17,7 @@ const { newVersion } = getNewVersion(baseVersion);
 const newBaseVersion = newVersion.split('-')[0];
 const newBuildVersion = newVersion.split('-')[1];
 
-updatePackageVersion(newBaseVersion, newBuildVersion);
+updatePackageVersion({ version: newBaseVersion, build: newBuildVersion });
 createBranchAndTag(newVersion);
 
 // done
@@ -61,44 +62,4 @@ function getNewVersion(base: string): { newVersion: string } {
   return {
     newVersion: versionString,
   };
-}
-
-/**
- * Updates the package.json version with the given version string
- */
-function updatePackageVersion(version: string, build: string): void {
-  const pkg = JSON.parse(fs.readFileSync('package.json').toString());
-  pkg.version = version;
-  pkg.build = build;
-  fs.writeFileSync('package.json', `${JSON.stringify(pkg, undefined, 2)}\n`);
-  console.log('Package version updated');
-}
-
-/**
- * Creates and checkout a new branch `release/${version}`,
- * creates a commit and tags it with the given version and pushes them to origin.
- */
-function createBranchAndTag(version: string): void {
-  const branchName = `release/${version}`;
-  const tagName = version;
-  execGit(['checkout', '-b', branchName]);
-  const commitMessage = version;
-  console.log(`Created branch ${branchName}`);
-  execGit(['commit', '--no-verify', '-m', `${commitMessage}`, 'package.json']);
-  execGit(['tag', tagName]);
-  console.log(`Created tag ${tagName}`);
-  execGit(['push', '--no-verify', '--set-upstream', 'origin', branchName]);
-  console.log('Pushed branch to origin');
-  execGit(['push', 'origin', `${tagName}`, '--no-verify']);
-  console.log('Pushed tag to origin');
-}
-
-function execGit(gitArgs: string[], message?: string): string {
-  const ret = spawnSync('git', gitArgs);
-  if (ret.status !== 0) {
-    console.error(`git ${gitArgs.join(' ')}:`);
-    console.error(message || ret.stderr.toString());
-    process.exit(ret.status || 1);
-  }
-  return ret.stdout.toString();
 }
