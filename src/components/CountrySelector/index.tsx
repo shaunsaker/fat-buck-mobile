@@ -6,7 +6,6 @@ import { Input, INPUT_PADDING } from '../Input';
 import { InputContainer } from '../InputContainer';
 import { LayoutContainer } from '../LayoutContainer';
 import { PageHeader } from '../PageHeader';
-import countriesInfo from 'countries-information';
 import { dimensions } from '../../dimensions';
 import { FlatList } from 'react-native';
 import Button, { ButtonKinds } from '../Button';
@@ -16,7 +15,7 @@ import { selectCountrySelectorSearchField } from '../../store/forms/selectors';
 import { setCountryName, setFormField } from '../../store/actions';
 import { CountrySelectorFields, Forms } from '../../store/forms/models';
 import { navigate } from '../../Router';
-import { CountryInfo } from '../../store/country/models';
+import { filterCountries, getCountries } from './utils';
 
 const CountrySelectorInputContainer = styled.View`
   margin-bottom: ${dimensions.rhythm}px;
@@ -96,26 +95,12 @@ const CountrySelectorBase = ({
   );
 };
 
-const getCountries = (searchValue: string) => {
-  const countries: CountryInfo[] = countriesInfo
-    .getAllCountries()
-    .filter((country: CountryInfo) => country.ioc)
-    .filter((country: CountryInfo) => {
-      if (searchValue.length) {
-        return country.name.toLowerCase().includes(searchValue.toLowerCase());
-      }
-      return country;
-    });
-
-  return countries;
-};
-
 interface CountrySelectorProps {}
 
 export const CountrySelector = ({}: CountrySelectorProps) => {
   const searchValue = useSelector(selectCountrySelectorSearchField);
   const dispatch = useDispatch();
-  const countries = getCountries(searchValue);
+  const countries = filterCountries(getCountries(), searchValue);
 
   const onChangeSearchValue = useCallback(
     (text: string) => {
