@@ -11,7 +11,6 @@ import {
   signInSuccess,
   sendPasswordResetEmailSuccess,
   sendPasswordResetEmail,
-  sendPasswordResetEmailError,
 } from './actions';
 import { AuthActionTypes } from './models';
 import { selectAuthConfirmationResult } from './selectors';
@@ -118,7 +117,7 @@ export function* watchPasswordResetFlow(): SagaIterator {
       yield put(showSnackbar(PASSWORD_RESET_SUCCESS_MESSAGE));
       yield call(navigate, Screens.signIn);
     } catch (error) {
-      yield put(sendPasswordResetEmailError());
+      yield put(signOutError());
       yield put(showSnackbar(error.message));
     }
   });

@@ -1,37 +1,21 @@
 import { Reducer } from 'redux';
 import { REHYDRATE } from 'redux-persist';
-import { ActionType, getType } from 'typesafe-actions';
-import {
-  setSelectedCurrency,
-  syncCurrency,
-  syncCurrencyError,
-  syncCurrencySuccess,
-} from './actions';
-import { CurrencyState } from './models';
+import { CurrencyActionTypes, CurrencyState } from './models';
 
 export const initialState: CurrencyState = {
   loading: false,
-  selectedCurrency: 'ZAR', // default
   base: '',
   dateUpdated: '',
   symbol: '',
   rate: 0,
-  id: '',
-};
-
-const reducerActions = {
-  setSelectedCurrency,
-  syncCurrency,
-  syncCurrencyError,
-  syncCurrencySuccess,
+  selectedCurrency: 'ZAR', // default
 };
 
 export const currencyReducer: Reducer<CurrencyState> = (
   state = initialState,
-  action: ActionType<typeof reducerActions>,
+  action,
 ) => {
   switch (action.type) {
-    // FIXME: how to type this
     case REHYDRATE: {
       return {
         ...state,
@@ -39,26 +23,26 @@ export const currencyReducer: Reducer<CurrencyState> = (
         loading: false,
       };
     }
-    case getType(syncCurrency): {
+    case CurrencyActionTypes.SYNC_CURRENCY: {
       return {
         ...state,
         loading: true,
       };
     }
-    case getType(syncCurrencySuccess): {
+    case CurrencyActionTypes.SYNC_CURRENCY_SUCCESS: {
       return {
         ...state,
         loading: false,
         ...action.payload.currency,
       };
     }
-    case getType(syncCurrencyError): {
+    case CurrencyActionTypes.SYNC_CURRENCY_ERROR: {
       return {
         ...state,
         loading: false,
       };
     }
-    case getType(setSelectedCurrency): {
+    case CurrencyActionTypes.SET_SELECTED_CURRENCY: {
       return {
         ...state,
         loading: false,

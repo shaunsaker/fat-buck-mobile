@@ -1,23 +1,16 @@
 import { Reducer } from 'redux';
-import { ActionType, getType } from 'typesafe-actions';
-import { setHasSeenWelcome } from './actions';
-import { WelcomeState } from './models';
+import { WelcomeActionTypes, WelcomeState } from './models';
 
 export const initialState: WelcomeState = {
   hasSeenWelcome: false,
 };
 
-const reducerActions = {
-  setHasSeenWelcome,
-};
-
-// FIXME
 export const welcomeReducer: Reducer<WelcomeState> = (
   state = initialState,
-  action: ActionType<typeof reducerActions>,
+  action,
 ) => {
   switch (action.type) {
-    case getType(setHasSeenWelcome): {
+    case WelcomeActionTypes.SET_HAS_SEEN_WELCOME: {
       return { ...state, hasSeenWelcome: action.payload.hasSeenWelcome };
     }
     default: {

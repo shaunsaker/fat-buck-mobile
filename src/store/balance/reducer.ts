@@ -1,13 +1,6 @@
 import { Reducer } from 'redux';
 import { REHYDRATE } from 'redux-persist';
-import { ActionType, getType } from 'typesafe-actions';
-import {
-  setBalanceType,
-  syncBalance,
-  syncBalanceError,
-  syncBalanceSuccess,
-} from './actions';
-import { BalanceState, BalanceTypes } from './models';
+import { BalanceActionTypes, BalanceState, BalanceTypes } from './models';
 
 export const initialState: BalanceState = {
   loading: false,
@@ -15,19 +8,11 @@ export const initialState: BalanceState = {
   data: {},
 };
 
-const reducerActions = {
-  syncBalance,
-  syncBalanceError,
-  syncBalanceSuccess,
-  setBalanceType,
-};
-
 export const balanceReducer: Reducer<BalanceState> = (
   state = initialState,
-  action: ActionType<typeof reducerActions>,
+  action,
 ) => {
   switch (action.type) {
-    // FIXME: how to type this
     case REHYDRATE: {
       return {
         ...state,
@@ -35,13 +20,13 @@ export const balanceReducer: Reducer<BalanceState> = (
         loading: false,
       };
     }
-    case getType(syncBalance): {
+    case BalanceActionTypes.SYNC_BALANCE: {
       return {
         ...state,
         loading: true,
       };
     }
-    case getType(syncBalanceSuccess): {
+    case BalanceActionTypes.SYNC_BALANCE_SUCCESS: {
       return {
         ...state,
         loading: false,
@@ -51,13 +36,13 @@ export const balanceReducer: Reducer<BalanceState> = (
         },
       };
     }
-    case getType(syncBalanceError): {
+    case BalanceActionTypes.SYNC_BALANCE_ERROR: {
       return {
         ...state,
         loading: false,
       };
     }
-    case getType(setBalanceType): {
+    case BalanceActionTypes.SET_BALANCE_TYPE: {
       return {
         ...state,
         balanceType: action.payload.balanceType,

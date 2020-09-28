@@ -1,23 +1,16 @@
 import { Reducer } from 'redux';
-import { ActionType, getType } from 'typesafe-actions';
-import { setSideMenuIsOpen } from './actions';
-import { SideMenuState } from './models';
+import { SideMenuActionTypes, SideMenuState } from './models';
 
 export const initialState: SideMenuState = {
   isOpen: false,
 };
 
-const reducerActions = {
-  setSideMenuIsOpen,
-};
-
-// FIXME
 export const sideMenuReducer: Reducer<SideMenuState> = (
   state = initialState,
-  action: ActionType<typeof reducerActions>,
+  action,
 ) => {
   switch (action.type) {
-    case getType(setSideMenuIsOpen): {
+    case SideMenuActionTypes.SET_SIDE_MENU_IS_OPEN: {
       return { ...state, isOpen: action.payload.isOpen };
     }
     default: {
