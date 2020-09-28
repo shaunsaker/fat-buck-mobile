@@ -29,11 +29,13 @@ export const selectProfitPercent = (state: ApplicationState) => {
   } else {
     // get the annualised average total profit % of all bots
     let totalAnnualisedProfitPercent = 0;
+    const now = Date.now();
 
     Object.keys(data).forEach((botId) => {
       totalAnnualisedProfitPercent += getAnnualisedValue(
         data[botId].profitAllPercent,
         data[botId].firstTradeTimestamp,
+        now,
       );
     });
     const avgAnnualisedProfitPercent =

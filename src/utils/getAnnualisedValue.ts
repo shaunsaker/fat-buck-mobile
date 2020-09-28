@@ -1,9 +1,12 @@
-export const getAnnualisedValue = (value: number, startDate: number) => {
-  // calculate the annualised %
-  const now = Date.now();
-  const diffInDays = (now - startDate) / (1000 * 60 * 60 * 24); // ms * s * min * hrs in one day
-  const profitPerDay = value / diffInDays;
-  const profitPerYear = profitPerDay * 365;
+export const getAnnualisedValue = (
+  value: number,
+  startDate: number,
+  endDate: number,
+) => {
+  // calculate the annualised value from startDate to now
+  const diffInDays = (endDate - startDate) / (1000 * 60 * 60 * 24); // ms * s * min * hrs in one day
+  const changePerDay = value / diffInDays;
+  const changePerYear = changePerDay * 365;
 
-  return profitPerYear;
+  return changePerYear;
 };
