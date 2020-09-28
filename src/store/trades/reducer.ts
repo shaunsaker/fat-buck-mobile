@@ -1,17 +1,26 @@
 import { Reducer } from 'redux';
 import { REHYDRATE } from 'redux-persist';
-import { TradesActionTypes, TradesState } from './models';
+import { ActionType, getType } from 'typesafe-actions';
+import { syncTrades, syncTradesError, syncTradesSuccess } from './actions';
+import { TradesState } from './models';
 
 export const initialState: TradesState = {
   loading: false,
   data: {},
 };
 
+const reducerActions = {
+  syncTrades,
+  syncTradesError,
+  syncTradesSuccess,
+};
+
 export const tradesReducer: Reducer<TradesState> = (
   state = initialState,
-  action,
+  action: ActionType<typeof reducerActions>,
 ) => {
   switch (action.type) {
+    // FIXME: how to type this
     case REHYDRATE: {
       return {
         ...state,
@@ -19,20 +28,20 @@ export const tradesReducer: Reducer<TradesState> = (
         loading: false,
       };
     }
-    case TradesActionTypes.SYNC_TRADES: {
+    case getType(syncTrades): {
       return {
         ...state,
         loading: true,
       };
     }
-    case TradesActionTypes.SYNC_TRADES_SUCCESS: {
+    case getType(syncTradesSuccess): {
       return {
         ...state,
         loading: false,
         data: { ...state.data, ...action.payload.trades },
       };
     }
-    case TradesActionTypes.SYNC_TRADES_ERROR: {
+    case getType(syncTradesError): {
       return {
         ...state,
         loading: false,

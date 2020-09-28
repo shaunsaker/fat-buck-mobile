@@ -1,17 +1,30 @@
 import { Reducer } from 'redux';
 import { REHYDRATE } from 'redux-persist';
-import { ActiveBotsActionTypes, ActiveBotsState } from './models';
+import { ActionType, getType } from 'typesafe-actions';
+import {
+  syncActiveBots,
+  syncActiveBotsError,
+  syncActiveBotsSuccess,
+} from './actions';
+import { ActiveBotsState } from './models';
 
 export const initialState: ActiveBotsState = {
   loading: false,
   botIds: [],
 };
 
+const reducerActions = {
+  syncActiveBots,
+  syncActiveBotsSuccess,
+  syncActiveBotsError,
+};
+
 export const activeBotsReducer: Reducer<ActiveBotsState> = (
   state = initialState,
-  action,
+  action: ActionType<typeof reducerActions>,
 ) => {
   switch (action.type) {
+    // FIXME: how to type this
     case REHYDRATE: {
       return {
         ...state,
@@ -19,20 +32,20 @@ export const activeBotsReducer: Reducer<ActiveBotsState> = (
         loading: false,
       };
     }
-    case ActiveBotsActionTypes.SYNC_ACTIVE_BOTS: {
+    case getType(syncActiveBots): {
       return {
         ...state,
         loading: true,
       };
     }
-    case ActiveBotsActionTypes.SYNC_ACTIVE_BOTS_SUCCESS: {
+    case getType(syncActiveBotsSuccess): {
       return {
         ...state,
         loading: false,
         botIds: action.payload.botIds,
       };
     }
-    case ActiveBotsActionTypes.SYNC_ACTIVE_BOTS_ERROR: {
+    case getType(syncActiveBotsError): {
       return {
         ...state,
         loading: false,

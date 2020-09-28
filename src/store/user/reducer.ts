@@ -1,6 +1,8 @@
 import { Reducer } from 'redux';
 import { REHYDRATE } from 'redux-persist';
-import { UserActionTypes, UserState } from './models';
+import { ActionType, getType } from 'typesafe-actions';
+import { saveUser, saveUserError, saveUserSuccess } from './actions';
+import { UserState } from './models';
 
 export const initialState: UserState = {
   loading: false,
@@ -8,13 +10,21 @@ export const initialState: UserState = {
   email: '',
   cellphone: '',
   country: '',
+  dateLastSignedIn: '',
+};
+
+const reducerActions = {
+  saveUser,
+  saveUserError,
+  saveUserSuccess,
 };
 
 export const userReducer: Reducer<UserState> = (
   state = initialState,
-  action,
+  action: ActionType<typeof reducerActions>,
 ) => {
   switch (action.type) {
+    // FIXME: how to type this
     case REHYDRATE: {
       return {
         ...state,
@@ -22,20 +32,20 @@ export const userReducer: Reducer<UserState> = (
         loading: false,
       };
     }
-    case UserActionTypes.SAVE_USER: {
+    case getType(saveUser): {
       return {
         ...state,
         loading: true,
         ...action.payload.user,
       };
     }
-    case UserActionTypes.SAVE_USER_SUCCESS: {
+    case getType(saveUserSuccess): {
       return {
         ...state,
         loading: false,
       };
     }
-    case UserActionTypes.SAVE_USER_ERROR: {
+    case getType(saveUserError): {
       return {
         ...state,
         loading: false,

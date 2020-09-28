@@ -1,5 +1,7 @@
 import { Reducer } from 'redux';
-import { FormsActionTypes, FormsState } from './models';
+import { ActionType, getType } from 'typesafe-actions';
+import { setFormField } from './actions';
+import { FormsState } from './models';
 
 export const initialState: FormsState = {
   signIn: {
@@ -13,12 +15,17 @@ export const initialState: FormsState = {
   },
 };
 
+const reducerActions = {
+  setFormField,
+};
+
+// FIXME
 export const formsReducer: Reducer<FormsState> = (
   state = initialState,
-  action,
+  action: ActionType<typeof reducerActions>,
 ) => {
   switch (action.type) {
-    case FormsActionTypes.SET_FORM_FIELD: {
+    case getType(setFormField): {
       return {
         ...state,
         [action.payload.form]: {

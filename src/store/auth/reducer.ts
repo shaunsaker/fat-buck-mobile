@@ -1,6 +1,20 @@
 import { Reducer } from 'redux';
 import { REHYDRATE } from 'redux-persist';
-import { AuthActionTypes, AuthState } from './models';
+import { ActionType, getType } from 'typesafe-actions';
+import {
+  initiateSignIn,
+  initiateSignInSuccess,
+  sendPasswordResetEmail,
+  sendPasswordResetEmailSuccess,
+  sendPasswordResetEmailError,
+  signIn,
+  signInError,
+  signInSuccess,
+  signOut,
+  signOutError,
+  signOutSuccess,
+} from './actions';
+import { AuthState } from './models';
 
 // TODO: empty Firebase user state
 export const initialState: AuthState = {
@@ -9,11 +23,26 @@ export const initialState: AuthState = {
   isNewUser: false,
 };
 
+const reducerActions = {
+  initiateSignIn,
+  initiateSignInSuccess,
+  sendPasswordResetEmail,
+  sendPasswordResetEmailSuccess,
+  sendPasswordResetEmailError,
+  signIn,
+  signInError,
+  signInSuccess,
+  signOut,
+  signOutError,
+  signOutSuccess,
+};
+
 export const authReducer: Reducer<AuthState> = (
   state = initialState,
-  action,
+  action: ActionType<typeof reducerActions>,
 ) => {
   switch (action.type) {
+    // FIXME: how to type this
     case REHYDRATE: {
       return {
         ...state,
@@ -21,26 +50,26 @@ export const authReducer: Reducer<AuthState> = (
         loading: false,
       };
     }
-    case AuthActionTypes.INITIATE_SIGN_IN: {
+    case getType(initiateSignIn): {
       return {
         ...state,
         loading: true,
       };
     }
-    case AuthActionTypes.INITIATE_SIGN_IN_SUCCESS: {
+    case getType(initiateSignInSuccess): {
       return {
         ...state,
         loading: false,
         confirmationResult: action.payload.confirmationResult,
       };
     }
-    case AuthActionTypes.SIGN_IN: {
+    case getType(signIn): {
       return {
         ...state,
         loading: true,
       };
     }
-    case AuthActionTypes.SIGN_IN_SUCCESS: {
+    case getType(signInSuccess): {
       return {
         ...state,
         loading: false,
@@ -48,34 +77,40 @@ export const authReducer: Reducer<AuthState> = (
         ...action.payload.user,
       };
     }
-    case AuthActionTypes.SIGN_IN_ERROR: {
+    case getType(signInError): {
       return {
         ...state,
         loading: false,
       };
     }
-    case AuthActionTypes.SIGN_OUT: {
+    case getType(signOut): {
       return {
         ...state,
         loading: true,
       };
     }
-    case AuthActionTypes.SIGN_OUT_SUCCESS: {
+    case getType(signOutSuccess): {
       return initialState;
     }
-    case AuthActionTypes.SIGN_OUT_ERROR: {
+    case getType(signOutError): {
       return {
         ...state,
         loading: false,
       };
     }
-    case AuthActionTypes.SEND_PASSWORD_RESET_EMAIL: {
+    case getType(sendPasswordResetEmail): {
       return {
         ...state,
         loading: true,
       };
     }
-    case AuthActionTypes.SEND_PASSWORD_RESET_EMAIL_SUCCESS: {
+    case getType(sendPasswordResetEmailSuccess): {
+      return {
+        ...state,
+        loading: false,
+      };
+    }
+    case getType(sendPasswordResetEmailError): {
       return {
         ...state,
         loading: false,

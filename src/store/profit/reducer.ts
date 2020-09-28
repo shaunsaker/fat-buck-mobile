@@ -1,6 +1,13 @@
 import { Reducer } from 'redux';
 import { REHYDRATE } from 'redux-persist';
-import { ProfitActionTypes, ProfitState, ProfitTypes } from './models';
+import { ActionType, getType } from 'typesafe-actions';
+import {
+  setProfitType,
+  syncProfit,
+  syncProfitError,
+  syncProfitSuccess,
+} from './actions';
+import { ProfitState, ProfitTypes } from './models';
 
 export const initialState: ProfitState = {
   loading: false,
@@ -8,11 +15,19 @@ export const initialState: ProfitState = {
   data: {},
 };
 
+const reducerActions = {
+  setProfitType,
+  syncProfit,
+  syncProfitError,
+  syncProfitSuccess,
+};
+
 export const profitReducer: Reducer<ProfitState> = (
   state = initialState,
-  action,
+  action: ActionType<typeof reducerActions>,
 ) => {
   switch (action.type) {
+    // FIXME: how to type this
     case REHYDRATE: {
       return {
         ...state,
@@ -20,13 +35,13 @@ export const profitReducer: Reducer<ProfitState> = (
         loading: false,
       };
     }
-    case ProfitActionTypes.SYNC_PROFIT: {
+    case getType(syncProfit): {
       return {
         ...state,
         loading: true,
       };
     }
-    case ProfitActionTypes.SYNC_PROFIT_SUCCESS: {
+    case getType(syncProfitSuccess): {
       return {
         ...state,
         loading: false,
@@ -36,13 +51,13 @@ export const profitReducer: Reducer<ProfitState> = (
         },
       };
     }
-    case ProfitActionTypes.SYNC_PROFIT_ERROR: {
+    case getType(syncProfitError): {
       return {
         ...state,
         loading: false,
       };
     }
-    case ProfitActionTypes.SET_PROFIT_TYPE: {
+    case getType(setProfitType): {
       return {
         ...state,
         profitType: action.payload.profitType,
