@@ -3,11 +3,12 @@ import CodePush from 'react-native-code-push';
 import Snackbar from 'react-native-snackbar';
 import { AppState, AppStateStatus } from 'react-native';
 import { useDispatch } from 'react-redux';
+import { showSnackbar } from '../store/actions';
 
 export const CodePushHandler = () => {
   const dispatch = useDispatch();
 
-  const showSnackbar = useCallback(
+  const dispatchShowSnackbar = useCallback(
     (text: string) => {
       dispatch(showSnackbar(text));
     },
@@ -18,7 +19,7 @@ export const CodePushHandler = () => {
     const codePushStatusDidChange = (status: CodePush.SyncStatus) => {
       switch (status) {
         case CodePush.SyncStatus.DOWNLOADING_PACKAGE:
-          showSnackbar('Downloading update...');
+          dispatchShowSnackbar('Downloading update...');
           break;
 
         case CodePush.SyncStatus.UPDATE_INSTALLED:
@@ -34,7 +35,7 @@ export const CodePushHandler = () => {
       { installMode: CodePush.InstallMode.IMMEDIATE, updateDialog: {} },
       codePushStatusDidChange,
     );
-  }, [showSnackbar]);
+  }, [dispatchShowSnackbar]);
 
   const onAppStateChange = useCallback(
     (appState: AppStateStatus) => {
