@@ -1,3 +1,4 @@
+import { argv } from 'yargs';
 import * as fs from 'fs';
 import { spawnSync } from 'child_process';
 
@@ -7,17 +8,72 @@ execGit(
   'Uncommitted changes, please commit/stash first!',
 );
 
-const args = process.argv.slice(2);
-// base version e.g. 2.6.0
-const baseVersion = checkBaseVersion(args[0]);
+const releaseBranchBase = 'release/';
 
-// the new version e.g. 2.6.0-5
-const { newVersion } = getNewVersion(baseVersion);
-const newBaseVersion = newVersion.split('-')[0];
-const newBuildVersion = newVersion.split('-')[1];
+const codeReleaseVersion = argv.code as string;
 
-updatePackageVersion(newBaseVersion, newBuildVersion);
-createBranchAndTag(newVersion);
+if (codeReleaseVersion) {
+  // RELEASE CODE FLOW
+
+  // get the latest build release branch for the given version
+  const latestReleaseBranchName = getLatestReleaseBranchName(
+    codeReleaseVersion,
+  );
+
+  // check out that release branch
+  execGit(['checkout', latestReleaseBranchName]);
+
+  // get the new code version
+  const currentCodeVersion = require('../package.json').code;
+  const nextCodeVersion = (Number(currentCodeVersion) + 1).toString();
+
+  updatePackageVersion({
+    code: nextCodeVersion,
+  });
+
+  // commit the updated package.json
+  const latestReleaseVersionString = latestReleaseBranchName.split(
+    releaseBranchBase,
+  )[1]; // e.g. 1.0.0-1
+  const versionString = `${latestReleaseVersionString}-${nextCodeVersion}`; // e.g. 1.0.0-1-1 === VERSION-BUILD-CODE
+  const commitMessage = versionString;
+  execGit(['commit', '--no-verify', '-m', `${commitMessage}`, 'package.json']);
+  console.log(`Created commit ${commitMessage}`);
+
+  // create a new tag with the code version
+  const tagName = versionString;
+  execGit(['tag', tagName]);
+  console.log(`Created tag ${tagName}`);
+
+  // Push
+  execGit([
+    'push',
+    '--no-verify',
+    '--set-upstream',
+    'origin',
+    latestReleaseBranchName,
+  ]);
+  console.log('Pushed branch to origin');
+  execGit(['push', 'origin', `${tagName}`, '--no-verify']);
+  console.log('Pushed tag to origin');
+} else {
+  // RELEASE BUILD FLOW
+
+  // base version e.g. 2.6.0
+  const baseVersion = checkBaseVersion(process.argv.slice(2)[0]);
+
+  // the new version e.g. 2.6.0-5
+  const { newVersion } = getNewVersion(baseVersion);
+  const newBaseVersion = newVersion.split('-')[0];
+  const newBuildVersion = newVersion.split('-')[1];
+
+  updatePackageVersion({
+    version: newBaseVersion,
+    build: newBuildVersion,
+    code: '',
+  });
+  createBranchAndTag(newVersion);
+}
 
 // done
 process.exit();
@@ -29,6 +85,21 @@ function checkBaseVersion(version: string): string {
     process.exit(1);
   }
   return version;
+}
+
+function getLatestReleaseBranchName(base: string) {
+  const oldReleaseBranches = execGit([
+    'branch',
+    '-l',
+    `${releaseBranchBase}${base}-*`,
+  ])
+    .split('\n')
+    .map((l) => l.trim())
+    .filter((l) => l)
+    .sort()
+    .reverse();
+
+  return oldReleaseBranches[0];
 }
 
 /**
@@ -66,10 +137,29 @@ function getNewVersion(base: string): { newVersion: string } {
 /**
  * Updates the package.json version with the given version string
  */
-function updatePackageVersion(version: string, build: string): void {
-  const pkg = JSON.parse(fs.readFileSync('package.json').toString());
-  pkg.version = version;
-  pkg.build = build;
+function updatePackageVersion({
+  version,
+  build,
+  code,
+}: {
+  version?: string;
+  build?: string;
+  code?: string;
+}): void {
+  const pkg = require('../package.json');
+
+  if (version) {
+    pkg.version = version;
+  }
+
+  if (build) {
+    pkg.build = build;
+  }
+
+  if (code) {
+    pkg.code = code;
+  }
+
   fs.writeFileSync('package.json', `${JSON.stringify(pkg, undefined, 2)}\n`);
   console.log('Package version updated');
 }
@@ -79,7 +169,7 @@ function updatePackageVersion(version: string, build: string): void {
  * creates a commit and tags it with the given version and pushes them to origin.
  */
 function createBranchAndTag(version: string): void {
-  const branchName = `release/${version}`;
+  const branchName = `${releaseBranchBase}${version}`;
   const tagName = version;
   execGit(['checkout', '-b', branchName]);
   const commitMessage = version;

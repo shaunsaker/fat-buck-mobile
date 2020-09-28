@@ -177,7 +177,7 @@ export const SideMenu = ({ children }: SideMenuProps) => {
   const { openLink } = useLinking();
   const isAuthenticated = useSelector(selectIsAuthenticated);
   const isWelcomeScreen = isCurrentRoute(Screens.welcomeStatic);
-  const version = `v${pkg.version}.${pkg.build}.${pkg.code}`;
+  const version = `v${pkg.version}-${pkg.build}-${pkg.code}`;
 
   const closeSideMenu = useCallback(() => {
     dispatch(setSideMenuIsOpen(false));

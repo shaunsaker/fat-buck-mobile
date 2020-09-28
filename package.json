@@ -2,6 +2,7 @@
   "name": "FatBuck",
   "version": "1.0.0",
   "build": "1",
+  "code": "1",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -12,7 +13,8 @@
     "test": "jest",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "postinstall": "npx pod-install",
-    "deploy": "yarn ts-node ./scripts/deploy.ts",
+    "release": "yarn ts-node ./scripts/deploy.ts",
+    "release:code": "yarn ts-node ./scripts/deploy.ts --code",
     "deploy:android": "cd android && bundle exec fastlane deploy",
     "deploy:ios": "cd ios && bundle exec fastlane deploy",
     "deploy:code": "npx code-push release-react fat-buck-ios ios -d Production && PACKAGE_VERSION=$(cat package.json | grep version | head -1 | awk -F: '{ print $2 }' | sed 's/[\",]//g' | tr -d '[[:space:]]') && npx code-push release-react fat-buck-android android -d Production -t $PACKAGE_VERSION"
@@ -80,7 +82,8 @@
     "react-test-renderer": "16.13.1",
     "redux-saga-test-plan": "^4.0.0-rc.3",
     "ts-node": "^9.0.0",
-    "typescript": "^3.8.3"
+    "typescript": "^3.8.3",
+    "yargs": "^16.0.3"
   },
   "jest": {
     "preset": "react-native",

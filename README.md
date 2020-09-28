@@ -4,10 +4,10 @@
 
 ### App Builds
 
-1. Run the deploy script. This will update the `package.json` version and build fields, create a release branch and tag.
+1. Run the release script. This will update the `package.json` version and build fields, create a release branch and tag.
 
 ```
-yarn deploy 1.0.0
+yarn release 1.0.0
 ```
 
 1. Deploy to each platform:
@@ -19,7 +19,13 @@ yarn deploy:android
 
 ### Code Updates (via CodePush)
 
-Make sure you're on a release branch.
+Make sure that the 1.0.0 release branch exists (it should if you've deployed a build for that version).
+
+```
+yarn release:code 1.0.0
+```
+
+1. Deploy:
 
 ```
 yarn deploy:code
