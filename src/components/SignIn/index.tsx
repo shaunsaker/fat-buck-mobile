@@ -3,7 +3,7 @@ import styled from 'styled-components/native';
 import { HeaderBar } from '../HeaderBar';
 import { Input } from '../Input';
 import Button, { ButtonKinds } from '../Button';
-import { Keyboard, View } from 'react-native';
+import { Keyboard } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { initiateSignIn, signIn } from '../../store/auth/actions';
 import {
@@ -35,6 +35,7 @@ import { PhoneInput } from '../PhoneInput';
 import { InputContainer } from '../InputContainer';
 import { LayoutContainer } from '../LayoutContainer';
 import { selectCountry } from '../../store/country/selectors';
+import { Snackbar } from '../Snackbar';
 
 const SignInContainer = styled.View`
   flex: 1;
@@ -257,7 +258,10 @@ export const SignIn = () => {
         const parsedCellphone_ = userCellphone.replace(countryCallingCode, '');
         onChangeCellphone(parsedCellphone_);
       }
+
+      Snackbar.show('Hello');
     },
+
     [], // eslint-disable-line
   );
 
