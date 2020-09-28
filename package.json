@@ -2,7 +2,6 @@
   "name": "FatBuck",
   "version": "1.0.0",
   "build": "1",
-  "code": "1",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -16,7 +15,6 @@
     "deploy": "yarn ts-node ./scripts/deploy.ts",
     "deploy:android": "cd android && bundle exec fastlane deploy",
     "deploy:ios": "cd ios && bundle exec fastlane deploy",
-    "predeploy:code": "yarn ts-node ./scripts/deployCode",
     "deploy:code": "npx code-push release-react fat-buck-ios ios -d Production && PACKAGE_VERSION=$(cat package.json | grep version | head -1 | awk -F: '{ print $2 }' | sed 's/[\",]//g' | tr -d '[[:space:]]') && npx code-push release-react fat-buck-android android -d Production -t $PACKAGE_VERSION"
   },
   "dependencies": {
