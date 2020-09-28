@@ -70,7 +70,6 @@ if (codeReleaseVersion) {
   updatePackageVersion({
     version: newBaseVersion,
     build: newBuildVersion,
-    code: '',
   });
   createBranchAndTag(newVersion);
 }
@@ -175,6 +174,7 @@ function createBranchAndTag(version: string): void {
   const commitMessage = version;
   console.log(`Created branch ${branchName}`);
   execGit(['commit', '--no-verify', '-m', `${commitMessage}`, 'package.json']);
+  console.log(`Created commit ${commitMessage}`);
   execGit(['tag', tagName]);
   console.log(`Created tag ${tagName}`);
   execGit(['push', '--no-verify', '--set-upstream', 'origin', branchName]);
