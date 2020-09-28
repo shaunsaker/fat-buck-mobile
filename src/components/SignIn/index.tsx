@@ -3,7 +3,7 @@ import styled from 'styled-components/native';
 import { HeaderBar } from '../HeaderBar';
 import { Input } from '../Input';
 import Button, { ButtonKinds } from '../Button';
-import { Keyboard } from 'react-native';
+import { Keyboard, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { initiateSignIn, signIn } from '../../store/auth/actions';
 import {
@@ -48,6 +48,12 @@ const SignInInputContainer = styled.View`
 const SignInFooterContainer = styled.View`
   flex: 1;
   justify-content: flex-end;
+  align-items: center;
+`;
+
+const SignInFooterTextContainer = styled.View`
+  flex-direction: row;
+  align-items: center;
 `;
 
 const SignInButtonContainer = styled.View`
@@ -59,8 +65,6 @@ const ForgotPasswordContainer = styled.View`
   align-items: flex-end;
   margin-bottom: ${dimensions.rhythm}px;
 `;
-
-const TermsLinkContainer = styled.View``;
 
 const PinCodeTextContainer = styled.View`
   margin-bottom: ${dimensions.rhythm}px;
@@ -194,13 +198,13 @@ const SignInBase = ({
           </LayoutContainer>
 
           <SignInFooterContainer>
-            <ParagraphText>
-              By signing {isNewUser ? 'up' : 'in'}, you agree to our{' '}
-              <TermsLinkContainer>
-                <Link onPress={() => {}}>terms</Link>
-              </TermsLinkContainer>
-              .
-            </ParagraphText>
+            <SignInFooterTextContainer>
+              <ParagraphText>
+                By signing {isNewUser ? 'up' : 'in'}, you agree to our{' '}
+              </ParagraphText>
+              <Link onPress={() => {}}>terms</Link>
+              <ParagraphText>.</ParagraphText>
+            </SignInFooterTextContainer>
 
             <SignInButtonContainer>
               <Button
