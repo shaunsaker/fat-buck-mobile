@@ -103,9 +103,9 @@ export const Table = ({ title, columns, rows, children }: TableProps) => {
           renderItem={renderRow}
           style={{ flex: 1 }}
         />
-      ) : null}
-
-      {children}
+      ) : (
+        children
+      )}
     </TableContainer>
   );
 };
