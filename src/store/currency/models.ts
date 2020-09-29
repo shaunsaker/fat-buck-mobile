@@ -7,7 +7,7 @@ export enum CurrencyActionTypes {
 
 type Symbol = string;
 
-export interface Currency {
+export interface CurrencyData {
   base: string;
   dateUpdated: string;
   symbol: Symbol;
@@ -15,7 +15,7 @@ export interface Currency {
   id: Symbol;
 }
 
-export interface CurrencyState extends Currency {
+export interface CurrencyState extends CurrencyData {
   loading: boolean;
   selectedCurrency: Symbol;
 }

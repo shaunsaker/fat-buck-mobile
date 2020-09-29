@@ -1,10 +1,10 @@
 import { action } from 'typesafe-actions';
 
-import { UserActionTypes, User } from './models';
+import { UserActionTypes, UserData } from './models';
 
-export const saveUser = (user: User) =>
+export const saveUser = (userData: UserData) =>
   action(UserActionTypes.SAVE_USER, {
-    user,
+    userData,
   });
 
 export const saveUserSuccess = () => action(UserActionTypes.SAVE_USER_SUCCESS);

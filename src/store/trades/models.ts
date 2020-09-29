@@ -4,7 +4,7 @@ export enum TradesActionTypes {
   SYNC_TRADES_ERROR = '@@trades/SYNC_TRADES_ERROR',
 }
 
-export interface Trade {
+export interface TradeData {
   id: string;
   botId: string;
   amount: number;
@@ -20,9 +20,7 @@ export interface Trade {
   sellReason: string;
 }
 
-export type Trades = {
-  [key: string]: Trade;
-};
+export type Trades = Record<string, TradeData>;
 
 export interface TradesState {
   loading: boolean;

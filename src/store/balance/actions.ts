@@ -5,10 +5,10 @@ import { BalanceActionTypes, BalanceData, BalanceTypes } from './models';
 export const syncBalance = (botId: string) =>
   action(BalanceActionTypes.SYNC_BALANCE, { botId });
 
-export const syncBalanceSuccess = (botId: string, balance: BalanceData) =>
+export const syncBalanceSuccess = (botId: string, balanceData: BalanceData) =>
   action(BalanceActionTypes.SYNC_BALANCE_SUCCESS, {
     botId,
-    balance,
+    balanceData,
   });
 
 export const syncBalanceError = () =>

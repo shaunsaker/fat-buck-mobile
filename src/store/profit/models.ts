@@ -6,11 +6,9 @@ export enum ProfitActionTypes {
 }
 
 export interface ProfitData {
-  [key: string]: {
-    profitAllPercent: number;
-    profitAllFiat: number;
-    firstTradeTimestamp: number; // CFO: assumes first trade date was first deposit date
-  };
+  profitAllPercent: number;
+  profitAllFiat: number;
+  firstTradeTimestamp: number; // CFO: assumes first trade date was first deposit date
 }
 
 export enum ProfitTypes {
@@ -21,5 +19,5 @@ export enum ProfitTypes {
 export interface ProfitState {
   loading: boolean;
   profitType: ProfitTypes;
-  data: ProfitData;
+  data: Record<string, ProfitData>;
 }

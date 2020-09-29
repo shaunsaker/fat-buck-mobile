@@ -10,7 +10,7 @@ import {
 import { createFirestoreSyncChannel } from '../../services/db';
 import { showSnackbar } from '../actions';
 import firestore from '@react-native-firebase/firestore';
-import { Trade, Trades, TradesActionTypes } from './models';
+import { TradeData, Trades, TradesActionTypes } from './models';
 import { syncTrades, syncTradesSuccess } from './actions';
 import { onlySelectorTruthyOrChanged } from '../../utils/onlySelectorTruthyOrChanged';
 import { selectIsAuthenticated } from '../auth/selectors';
@@ -30,8 +30,8 @@ export function* watchSyncTradesFlow(): SagaIterator {
         .collection('trades');
       const channel = yield call(createFirestoreSyncChannel, ref);
 
-      yield takeEvery(channel, function* (data: Trade[]) {
-        // attach botId
+      yield takeEvery(channel, function* (data: TradeData[]) {
+        // attach botId and return an object
         const newData: Trades = {};
         data.forEach((trade) => {
           newData[trade.id] = {

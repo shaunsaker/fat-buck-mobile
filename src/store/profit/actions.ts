@@ -5,10 +5,10 @@ import { ProfitActionTypes, ProfitData, ProfitTypes } from './models';
 export const syncProfit = (botId: string) =>
   action(ProfitActionTypes.SYNC_PROFIT, { botId });
 
-export const syncProfitSuccess = (botId: string, profit: ProfitData) =>
+export const syncProfitSuccess = (botId: string, profitData: ProfitData) =>
   action(ProfitActionTypes.SYNC_PROFIT_SUCCESS, {
     botId,
-    profit,
+    profitData,
   });
 
 export const syncProfitError = () =>

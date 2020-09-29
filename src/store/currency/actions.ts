@@ -1,12 +1,12 @@
 import { action } from 'typesafe-actions';
 
-import { Currency, CurrencyActionTypes } from './models';
+import { CurrencyData, CurrencyActionTypes } from './models';
 
 export const syncCurrency = () => action(CurrencyActionTypes.SYNC_CURRENCY);
 
-export const syncCurrencySuccess = (currency: Currency) =>
+export const syncCurrencySuccess = (currencyData: CurrencyData) =>
   action(CurrencyActionTypes.SYNC_CURRENCY_SUCCESS, {
-    currency,
+    currencyData,
   });
 
 export const syncCurrencyError = () =>

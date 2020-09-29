@@ -32,7 +32,7 @@ export const profitReducer: Reducer<ProfitState> = (
         loading: false,
         data: {
           ...state.data,
-          [action.payload.botId]: action.payload.profit,
+          [action.payload.botId]: action.payload.profitData,
         },
       };
     }

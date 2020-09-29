@@ -18,7 +18,7 @@ import {
 } from './actions';
 import { selectIsAuthenticated } from '../auth/selectors';
 import { onlySelectorTruthyOrChanged } from '../../utils/onlySelectorTruthyOrChanged';
-import { Currency, CurrencyActionTypes } from './models';
+import { CurrencyData, CurrencyActionTypes } from './models';
 import { AuthActionTypes } from '../auth/models';
 import { CountryActionTypes, CountryInfo } from '../country/models';
 import { ActionType } from 'typesafe-actions';
@@ -50,7 +50,7 @@ export function* watchSyncCurrencyFlow(): SagaIterator {
           .doc(selectedCurrency);
         const channel = yield call(createFirestoreSyncChannel, ref);
 
-        yield takeEvery(channel, function* (currency: Currency) {
+        yield takeEvery(channel, function* (currency: CurrencyData) {
           // if there is no currency rate available (e.g. the exchange does not support AED), set it to USD
           if (!currency.rate) {
             const defaultCurrency = 'USD';

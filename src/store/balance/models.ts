@@ -6,10 +6,8 @@ export enum BalanceActionTypes {
 }
 
 export interface BalanceData {
-  [key: string]: {
-    total: number;
-    value: number;
-  };
+  total: number;
+  value: number;
 }
 
 export enum BalanceTypes {
@@ -20,5 +18,5 @@ export enum BalanceTypes {
 export interface BalanceState {
   loading: boolean;
   balanceType: BalanceTypes;
-  data: BalanceData;
+  data: Record<string, BalanceData>;
 }

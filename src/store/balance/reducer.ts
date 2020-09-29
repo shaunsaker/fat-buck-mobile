@@ -32,7 +32,7 @@ export const balanceReducer: Reducer<BalanceState> = (
         loading: false,
         data: {
           ...state.data,
-          [action.payload.botId]: action.payload.balance,
+          [action.payload.botId]: action.payload.balanceData,
         },
       };
     }

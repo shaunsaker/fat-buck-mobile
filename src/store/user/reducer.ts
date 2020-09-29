@@ -8,6 +8,7 @@ export const initialState: UserState = {
   email: '',
   cellphone: '',
   country: '',
+  dateLastSignedIn: '',
 };
 
 export const userReducer: Reducer<UserState> = (
@@ -26,7 +27,7 @@ export const userReducer: Reducer<UserState> = (
       return {
         ...state,
         loading: true,
-        ...action.payload.user,
+        ...action.payload.userData,
       };
     }
     case UserActionTypes.SAVE_USER_SUCCESS: {

@@ -4,7 +4,7 @@ export enum UserActionTypes {
   SAVE_USER_ERROR = '@@user/SAVE_USER_ERROR',
 }
 
-export interface User {
+export interface UserData {
   uid: string | null;
   email: string | null;
   cellphone: string | null;
@@ -12,6 +12,6 @@ export interface User {
   dateLastSignedIn: string;
 }
 
-export interface UserState extends User {
+export interface UserState extends UserData {
   loading: boolean;
 }

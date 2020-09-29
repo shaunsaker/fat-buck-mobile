@@ -4,11 +4,12 @@ import { CurrencyActionTypes, CurrencyState } from './models';
 
 export const initialState: CurrencyState = {
   loading: false,
+  selectedCurrency: 'ZAR', // default
   base: '',
   dateUpdated: '',
   symbol: '',
   rate: 0,
-  selectedCurrency: 'ZAR', // default
+  id: '',
 };
 
 export const currencyReducer: Reducer<CurrencyState> = (
@@ -33,7 +34,7 @@ export const currencyReducer: Reducer<CurrencyState> = (
       return {
         ...state,
         loading: false,
-        ...action.payload.currency,
+        ...action.payload.currencyData,
       };
     }
     case CurrencyActionTypes.SYNC_CURRENCY_ERROR: {

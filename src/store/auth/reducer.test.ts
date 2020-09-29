@@ -11,7 +11,6 @@ import {
   sendPasswordResetEmail,
   sendPasswordResetEmailSuccess,
 } from './actions';
-import { setHasSeenWelcome } from '../actions';
 import { testUser } from './mocks';
 
 describe('auth reducer', () => {
@@ -87,12 +86,6 @@ describe('auth reducer', () => {
     nextState = authReducer(nextState, signOutError());
 
     expect(nextState.loading).toEqual(false);
-  });
-
-  it('sets isNewUser to true on SET_HAS_SEEN_WELCOME', () => {
-    let nextState = authReducer(initialState, setHasSeenWelcome(true));
-
-    expect(nextState.isNewUser).toEqual(true);
   });
 
   it('sets state correctly on SEND_PASSWORD_RESET_EMAIL', () => {

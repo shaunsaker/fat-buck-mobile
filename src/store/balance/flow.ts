@@ -27,12 +27,12 @@ export function* watchSyncBalanceFlow(): SagaIterator {
       const ref = firestore()
         .collection('bots')
         .doc(botId)
-        .collection('balance');
+        .collection('balance')
+        .doc('latest');
       const channel = yield call(createFirestoreSyncChannel, ref);
 
-      yield takeEvery(channel, function* (data: BalanceData[]) {
-        const latest = data[0];
-        yield put(syncBalanceSuccess(botId, latest));
+      yield takeEvery(channel, function* (data: BalanceData) {
+        yield put(syncBalanceSuccess(botId, data));
       });
 
       // TODO: this isn't working entirely, still getting firestore permission errors

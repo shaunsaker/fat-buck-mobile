@@ -27,12 +27,12 @@ export function* watchSyncProfitFlow(): SagaIterator {
       const ref = firestore()
         .collection('bots')
         .doc(botId)
-        .collection('profit');
+        .collection('profit')
+        .doc('latest');
       const channel = yield call(createFirestoreSyncChannel, ref);
 
-      yield takeEvery(channel, function* (data: ProfitData[]) {
-        const latest = data[0];
-        yield put(syncProfitSuccess(botId, latest));
+      yield takeEvery(channel, function* (data: ProfitData) {
+        yield put(syncProfitSuccess(botId, data));
       });
 
       // TODO: this isn't working entirely, still getting firestore permission errors
