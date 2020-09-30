@@ -1,4 +1,4 @@
-import { filterCountries } from './utils';
+import { filterCountries } from '.';
 import { CountryInfo } from '../../store/country/models';
 
 const getTestCountryInfo = (name: string, withIoc?: boolean): CountryInfo => {

@@ -76,6 +76,7 @@
     "babel-loader": "^8.1.0",
     "eslint": "^6.5.1",
     "jest": "^25.1.0",
+    "jest-transform-stub": "^2.0.0",
     "metro-react-native-babel-preset": "^0.59.0",
     "prettier": "^2.1.1",
     "react-dom": "^17.0.0-rc.1",
@@ -86,16 +87,5 @@
     "ts-node": "^9.0.0",
     "typescript": "^3.8.3",
     "yargs": "^16.0.3"
-  },
-  "jest": {
-    "preset": "react-native",
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "jsx",
-      "json",
-      "node"
-    ]
   }
 }

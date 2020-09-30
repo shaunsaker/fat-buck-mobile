@@ -5,14 +5,16 @@ import { ActionType } from 'typesafe-actions';
 import { SagaIterator } from 'redux-saga';
 import { Snackbar } from '../../components/Snackbar';
 
-function* showSnackbarFlow(): SagaIterator {
-  yield takeLatest(SnackbarActionTypes.SHOW_SNACKBAR, function* (
-    action: ActionType<typeof showSnackbar>,
-  ): SagaIterator {
-    Snackbar.show(action.payload.text);
-  });
+function* onShowSnackbarFlow(
+  action: ActionType<typeof showSnackbar>,
+): SagaIterator {
+  Snackbar.show(action.payload.text);
+}
+
+function* watchShowSnackbarFlow(): SagaIterator {
+  yield takeLatest(SnackbarActionTypes.SHOW_SNACKBAR, onShowSnackbarFlow);
 }
 
 export function* snackbarFlow(): SagaIterator {
-  yield fork(showSnackbarFlow);
+  yield fork(watchShowSnackbarFlow);
 }

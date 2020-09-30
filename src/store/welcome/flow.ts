@@ -1,11 +1,14 @@
 import { SagaIterator } from 'redux-saga';
-import { fork, take, put } from 'redux-saga/effects';
+import { fork, put, takeLatest } from 'redux-saga/effects';
 import { AuthActionTypes } from '../auth/models';
 import { setHasSeenWelcome } from './actions';
 
-export function* watchSignInSuccessFlow(): SagaIterator {
-  yield take(AuthActionTypes.SIGN_IN_SUCCESS);
+export function* onSignInSuccessFlow() {
   yield put(setHasSeenWelcome(true));
+}
+
+export function* watchSignInSuccessFlow(): SagaIterator {
+  yield takeLatest(AuthActionTypes.SIGN_IN_SUCCESS, onSignInSuccessFlow);
 }
 
 // on sign in success, set welcome

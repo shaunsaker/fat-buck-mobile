@@ -6,7 +6,6 @@ export enum TradesActionTypes {
 
 export interface TradeData {
   id: string;
-  botId: string;
   amount: number;
   closeProfitAbs: number;
   closeProfit: number;
@@ -20,7 +19,11 @@ export interface TradeData {
   sellReason: string;
 }
 
-export type Trades = Record<string, TradeData>;
+export interface Trade extends TradeData {
+  botId: string;
+}
+
+export type Trades = Record<string, Trade>;
 
 export interface TradesState {
   loading: boolean;

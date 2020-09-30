@@ -81,6 +81,12 @@ export const authReducer: Reducer<AuthState> = (
         loading: false,
       };
     }
+    case AuthActionTypes.SEND_PASSWORD_RESET_EMAIL_ERROR: {
+      return {
+        ...state,
+        loading: false,
+      };
+    }
     default: {
       return state;
     }

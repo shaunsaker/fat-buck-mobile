@@ -6,9 +6,9 @@ export const firebaseSignInWithPhoneNumber = async (cellphone: string) => {
 
 export const firebaseVerifyPinCode = async (
   pinCode: string,
-  confirmationResult: FirebaseAuthTypes.ConfirmationResult,
+  confirmationResult: FirebaseAuthTypes.ConfirmationResult | undefined,
 ) => {
-  return await confirmationResult.confirm(pinCode);
+  return await confirmationResult?.confirm(pinCode);
 };
 
 export const firebaseGetEmailCredential = async (

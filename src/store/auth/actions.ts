@@ -36,3 +36,6 @@ export const sendPasswordResetEmail = (email: string) =>
 
 export const sendPasswordResetEmailSuccess = () =>
   action(AuthActionTypes.SEND_PASSWORD_RESET_EMAIL_SUCCESS);
+
+export const sendPasswordResetEmailError = () =>
+  action(AuthActionTypes.SEND_PASSWORD_RESET_EMAIL_ERROR);

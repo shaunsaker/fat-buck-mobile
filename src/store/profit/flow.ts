@@ -18,30 +18,36 @@ import { AuthActionTypes } from '../auth/models';
 import { ActionType } from 'typesafe-actions';
 import { watchSyncActiveBotsSuccessFlow } from '../activeBots/flow';
 
+export function* onSyncProfitChannelFlow(botId: string, data: ProfitData) {
+  yield put(syncProfitSuccess(botId, data));
+}
+
+export function* onSyncProfitFlow(
+  action: ActionType<typeof syncProfit>,
+): SagaIterator {
+  try {
+    const { botId } = action.payload;
+    const ref = firestore()
+      .collection('bots')
+      .doc(botId)
+      .collection('profit')
+      .doc('latest');
+    const channel = yield call(createFirestoreSyncChannel, ref);
+
+    yield takeEvery(channel, (data: ProfitData) =>
+      onSyncProfitChannelFlow(botId, data),
+    );
+
+    // TODO: this isn't working entirely, still getting firestore permission errors
+    yield take(AuthActionTypes.SIGN_OUT_SUCCESS);
+    channel.close();
+  } catch (error) {
+    yield put(showSnackbar(error.message));
+  }
+}
+
 export function* watchSyncProfitFlow(): SagaIterator {
-  yield takeLatest(ProfitActionTypes.SYNC_PROFIT, function* (
-    action: ActionType<typeof syncProfit>,
-  ): SagaIterator {
-    try {
-      const { botId } = action.payload;
-      const ref = firestore()
-        .collection('bots')
-        .doc(botId)
-        .collection('profit')
-        .doc('latest');
-      const channel = yield call(createFirestoreSyncChannel, ref);
-
-      yield takeEvery(channel, function* (data: ProfitData) {
-        yield put(syncProfitSuccess(botId, data));
-      });
-
-      // TODO: this isn't working entirely, still getting firestore permission errors
-      yield take(AuthActionTypes.SIGN_OUT_SUCCESS);
-      channel.close();
-    } catch (error) {
-      yield put(showSnackbar(error.message));
-    }
-  });
+  yield takeLatest(ProfitActionTypes.SYNC_PROFIT, onSyncProfitFlow);
 }
 
 export function* profitFlow(): SagaIterator {

@@ -19,5 +19,9 @@ export function* onlyFlow<S extends Saga>(
     yield call(waitFor, selector, previousValue); // wait for selector to be different to previousValue
 
     yield call(saga, ...args);
+
+    // call this saga again so we that can detect future changes
+    const currentValue = yield* select(selector);
+    yield call(onlyFlow, selector, currentValue, saga, ...args);
   }
 }

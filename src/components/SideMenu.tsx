@@ -215,6 +215,7 @@ export const SideMenu = ({ children }: SideMenuProps) => {
 
   const onSignOut = useCallback(() => {
     dispatch(signOut());
+    dispatch(setSideMenuIsOpen(false));
   }, [dispatch]);
 
   return (

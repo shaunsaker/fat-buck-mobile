@@ -15,7 +15,8 @@ import { selectCountrySelectorSearchField } from '../../store/forms/selectors';
 import { setCountryName, setFormField } from '../../store/actions';
 import { CountrySelectorFields, Forms } from '../../store/forms/models';
 import { navigate } from '../../Router';
-import { filterCountries, getCountries } from './utils';
+import { CountryInfo } from '../../store/country/models';
+import { getAllCountries } from '../../services/countriesInfo';
 
 const CountrySelectorInputContainer = styled.View`
   margin-bottom: ${dimensions.rhythm}px;
@@ -95,12 +96,26 @@ const CountrySelectorBase = ({
   );
 };
 
+export const filterCountries = (
+  countries: CountryInfo[],
+  searchValue: string,
+) => {
+  const filteredCountries = countries.filter((country: CountryInfo) => {
+    if (searchValue.length) {
+      return country.name.toLowerCase().includes(searchValue.toLowerCase());
+    }
+    return country;
+  });
+
+  return filteredCountries;
+};
+
 interface CountrySelectorProps {}
 
 export const CountrySelector = ({}: CountrySelectorProps) => {
   const searchValue = useSelector(selectCountrySelectorSearchField);
   const dispatch = useDispatch();
-  const countries = filterCountries(getCountries(), searchValue);
+  const countries = filterCountries(getAllCountries(), searchValue);
 
   const onChangeSearchValue = useCallback(
     (text: string) => {

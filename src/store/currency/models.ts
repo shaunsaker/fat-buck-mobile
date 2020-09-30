@@ -19,3 +19,5 @@ export interface CurrencyState extends CurrencyData {
   loading: boolean;
   selectedCurrency: Symbol;
 }
+
+export const DEFAULT_CURRENCY = 'USD';
