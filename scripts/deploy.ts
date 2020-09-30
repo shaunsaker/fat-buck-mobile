@@ -14,6 +14,10 @@ const codeReleaseVersion = argv.code as string;
 
 if (codeReleaseVersion) {
   // RELEASE CODE FLOW
+  if (!codeReleaseVersion) {
+    console.log('Please supply a version and try again.');
+    process.exit(1);
+  }
 
   // get the latest build release branch for the given version
   const latestReleaseBranchName = getLatestReleaseBranchName(
