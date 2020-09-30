@@ -27,7 +27,7 @@ export const Error = ({
 }: ErrorProps) => {
   return (
     <Background>
-      <HeaderBar />
+      <HeaderBar hideMenu />
 
       <PageHeader>Shit. We fucked up somewhere.</PageHeader>
 

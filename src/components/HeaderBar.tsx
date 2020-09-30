@@ -55,20 +55,24 @@ const HeaderBarCloseButtonContainer = styled.View`
 `;
 
 interface HeaderBarBaseProps extends HeaderBarProps {
+  hideMenu?: boolean;
   handleMenuPress: () => void;
   handleClose?: () => void;
 }
 
 const HeaderBarBase = ({
+  hideMenu,
   handleMenuPress,
   handleClose,
 }: HeaderBarBaseProps) => {
   return (
     <HeaderBarContainer>
       <HeaderBarAlignmentContainer>
-        <HeaderBarMenuIconContainer onPress={handleMenuPress}>
-          <MenuIcon width={24} height={24} fill={colors.white} />
-        </HeaderBarMenuIconContainer>
+        {!hideMenu ? (
+          <HeaderBarMenuIconContainer onPress={handleMenuPress}>
+            <MenuIcon width={24} height={24} fill={colors.white} />
+          </HeaderBarMenuIconContainer>
+        ) : null}
 
         <Logo />
       </HeaderBarAlignmentContainer>
@@ -92,9 +96,14 @@ const HeaderBarBase = ({
 
 interface HeaderBarProps {
   showClose?: boolean;
+  hideMenu?: boolean;
 }
 
-export const HeaderBar = ({ showClose, ...props }: HeaderBarProps) => {
+export const HeaderBar = ({
+  showClose,
+  hideMenu,
+  ...props
+}: HeaderBarProps) => {
   const dispatch = useDispatch();
 
   const onMenuPress = useCallback(() => {
@@ -108,6 +117,7 @@ export const HeaderBar = ({ showClose, ...props }: HeaderBarProps) => {
   return (
     <HeaderBarBase
       {...props}
+      hideMenu={hideMenu}
       handleMenuPress={onMenuPress}
       handleClose={showClose ? onClose : undefined}
     />
