@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback } from 'react';
 import QRCode from 'react-native-qrcode-svg';
 import styled from 'styled-components/native';
 import { ParagraphText } from '../ParagraphText';
@@ -6,7 +6,6 @@ import { SmallText } from '../SmallText';
 import CopyIcon from '../../icons/copy.svg';
 import { colors } from '../../colors';
 import { TouchableOpacity } from 'react-native';
-import Clipboard from '@react-native-community/clipboard';
 import { showSnackbar } from '../../store/actions';
 import { useDispatch, useSelector } from 'react-redux';
 import { Step } from '../Step';
@@ -14,6 +13,7 @@ import { selectDepositSliderIndex } from '../../store/sliders/selectors';
 import { slides } from './slides';
 import { RHYTHM } from '../../constants';
 import { DEPOSIT_COMMISSION_PERCENT, POOL_ADDRESS } from '../../config';
+import { copyTextToClipboard } from '../../store/clipboard/actions';
 
 const PoolAddressSlideContainer = styled.View`
   align-items: center;
@@ -36,11 +36,12 @@ const AddressTextContainer = styled.View`
 
 const CopyIconContainer = styled(TouchableOpacity)``;
 
+export const COPY_BUTTON_TEST_ID = 'copyButtonTestId';
+
 interface PoolAddressSlideBaseProps {
   poolAddress: string;
   commission: number;
   isActive: boolean;
-  isDone: boolean;
   onCopyPoolAddress: () => void;
 }
 
@@ -48,7 +49,6 @@ const PoolAddressSlideBase = ({
   poolAddress,
   commission,
   isActive,
-  isDone,
   onCopyPoolAddress,
 }: PoolAddressSlideBaseProps) => {
   return (
@@ -58,7 +58,6 @@ const PoolAddressSlideBase = ({
         title="Transfer to the Pool"
         subtitle="Grab our Pool address and transfer BTC to it."
         isActive={isActive}
-        isDone={isDone}
       />
 
       <QRCodeContainer>
@@ -70,7 +69,9 @@ const PoolAddressSlideBase = ({
           <ParagraphText bold>{poolAddress}</ParagraphText>
         </AddressTextContainer>
 
-        <CopyIconContainer onPress={onCopyPoolAddress}>
+        <CopyIconContainer
+          onPress={onCopyPoolAddress}
+          testID={COPY_BUTTON_TEST_ID}>
           <CopyIcon width={24} height={24} fill={colors.white} />
         </CopyIconContainer>
       </AddressContainer>
@@ -84,29 +85,21 @@ const PoolAddressSlideBase = ({
   );
 };
 
+export const COPY_ADDRESS_SUCCESS_TEXT =
+  'The pool address has been copied to your clipboard!';
+
 interface PoolAddressSlideProps {}
 
 export const PoolAddressSlide = ({}: PoolAddressSlideProps) => {
-  const [isDone, setIsDone] = useState(false);
   const dispatch = useDispatch();
   const poolAddress = POOL_ADDRESS;
   const commission = DEPOSIT_COMMISSION_PERCENT;
   const slideIndex = useSelector(selectDepositSliderIndex);
   const isActive = slides.poolAddress.slideIndex === slideIndex;
 
-  useEffect(() => {
-    const isCurrentSlidePastPoolAddressSlide =
-      slideIndex > slides.poolAddress.slideIndex;
-    if (isCurrentSlidePastPoolAddressSlide) {
-      setIsDone(true);
-    }
-  }, [slideIndex]);
-
   const onCopyPoolAddress = useCallback(() => {
-    Clipboard.setString(poolAddress);
-    dispatch(
-      showSnackbar('The pool address has been copied to your clipboard!'),
-    );
+    dispatch(copyTextToClipboard(poolAddress));
+    dispatch(showSnackbar(COPY_ADDRESS_SUCCESS_TEXT));
   }, [dispatch, poolAddress]);
 
   return (
@@ -114,7 +107,6 @@ export const PoolAddressSlide = ({}: PoolAddressSlideProps) => {
       poolAddress={poolAddress}
       commission={commission}
       isActive={isActive}
-      isDone={isDone}
       onCopyPoolAddress={onCopyPoolAddress}
     />
   );

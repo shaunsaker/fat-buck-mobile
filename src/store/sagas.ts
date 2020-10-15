@@ -12,6 +12,7 @@ import { walletsFlow } from './wallets/flow';
 import { transactionsFlow } from './transactions/flow';
 import { depositCallsFlow } from './depositCalls/flow';
 import { navigationFlow } from './navigation/flow';
+import { clipboardFlow } from './clipboard/flow';
 
 function* rootSaga() {
   yield all([fork(authFlow)]);
@@ -27,6 +28,7 @@ function* rootSaga() {
   yield all([fork(transactionsFlow)]);
   yield all([fork(depositCallsFlow)]);
   yield all([fork(navigationFlow)]);
+  yield all([fork(clipboardFlow)]);
 }
 
 export default rootSaga;

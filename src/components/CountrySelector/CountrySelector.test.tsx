@@ -12,7 +12,7 @@ import { setCountryName } from '../../store/actions';
 import { navigateBack } from '../../store/navigation/actions';
 
 describe('CountrySelector', () => {
-  const mountCountrySelector = () => {
+  const mountComponent = () => {
     const mockStore = store;
     store.dispatch = jest.fn();
 
@@ -26,7 +26,7 @@ describe('CountrySelector', () => {
   };
 
   it('filters the country list based on search query', () => {
-    const { getByPlaceholderText, getByText } = mountCountrySelector();
+    const { getByPlaceholderText, getByText } = mountComponent();
 
     fireEvent.changeText(
       getByPlaceholderText(SEARCH_COUNTRIES_PLACEHOLDER_TEXT),
@@ -37,7 +37,7 @@ describe('CountrySelector', () => {
   });
 
   it('sets the country name on press', () => {
-    const { getByText } = mountCountrySelector();
+    const { getByText } = mountComponent();
 
     const countryName = 'Afghanistan';
     fireEvent.press(getByText(countryName));
