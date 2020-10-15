@@ -11,10 +11,10 @@ import Button, { ButtonKinds } from '../Button';
 import { ParagraphText } from '../ParagraphText';
 import { useDispatch } from 'react-redux';
 import { setCountryName } from '../../store/actions';
-import { navigate } from '../../Router';
 import { CountryInfo } from '../../store/country/models';
 import { getAllCountries } from '../../services/countriesInfo';
 import { RHYTHM } from '../../constants';
+import { navigateBack } from '../../store/navigation/actions';
 
 const CountrySelectorInputContainer = styled.View`
   margin-bottom: ${RHYTHM}px;
@@ -38,6 +38,8 @@ interface CountrySelectorBaseProps {
   countries: CountryInfo[];
   onCountryPress: (country: CountryInfo) => void;
 }
+
+export const SEARCH_COUNTRIES_PLACEHOLDER_TEXT = 'Search countries';
 
 const countriesListKeyExtractor = (country: CountryInfo) => country.name;
 
@@ -72,10 +74,10 @@ const CountrySelectorBase = ({
       <InputContainer>
         <PageHeader>Select your Country</PageHeader>
 
-        <LayoutContainer>
+        <LayoutContainer style={{ flex: 1 }}>
           <CountrySelectorInputContainer>
             <Input
-              placeholder="Search countries"
+              placeholder={SEARCH_COUNTRIES_PLACEHOLDER_TEXT}
               autoFocus
               value={searchValue}
               onChangeText={onChangeSearchValue}
@@ -125,7 +127,7 @@ export const CountrySelector = ({}: CountrySelectorProps) => {
   const onCountryPress = useCallback(
     (country: CountryInfo) => {
       dispatch(setCountryName(country.name));
-      navigate();
+      dispatch(navigateBack());
     },
     [dispatch],
   );
