@@ -1,5 +1,7 @@
-export const MOCKED_MOMENT_ISO_STRING = '12345678';
+export const MOCKED_MOMENT_ISO_STRING = '2018-08-26T19:17:02.349Z';
 
-export default () => ({
+const mockedMoment = () => ({
   toISOString: () => MOCKED_MOMENT_ISO_STRING,
 });
+
+export default mockedMoment;

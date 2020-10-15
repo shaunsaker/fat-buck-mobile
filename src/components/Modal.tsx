@@ -4,13 +4,14 @@ import { colors } from '../colors';
 import RNModal from 'react-native-modal';
 import { Label, LabelKinds } from './Label';
 import { CloseButton } from './CloseButton';
+import { BORDER_WIDTH } from '../constants';
 
 const ExchangesModalContainer = styled.View``;
 
 const ExchangesModalContentContainer = styled.View`
   background-color: ${colors.black};
   margin: 0 20px;
-  border-width: 3px;
+  border-width: ${BORDER_WIDTH}px;
   border-style: solid;
   border-color: ${colors.primary};
   border-radius: 20px;

@@ -14,6 +14,7 @@ import { getTimeSince } from '../utils/getTimeSince';
 import { Table, Column, Row } from './Table';
 import { selectBTCPrice } from '../store/balance/selectors';
 import { TableLoader } from './TableLoader';
+import { FONT_BOLD, FONT_REGULAR, RHYTHM } from '../constants';
 
 const TradesSectionContainer = styled.View`
   flex: 1;
@@ -86,7 +87,7 @@ const TradesSectionBase = ({ rows, isLoading }: TradesSectionBaseProps) => {
                 ? colors.danger
                 : colors.white
               : colors.white,
-            fontFamily: isLastLabel ? 'Recursive-Bold' : 'Recursive-Regular',
+            fontFamily: isLastLabel ? FONT_BOLD : FONT_REGULAR,
           },
         };
       }),
@@ -95,7 +96,11 @@ const TradesSectionBase = ({ rows, isLoading }: TradesSectionBaseProps) => {
 
   return (
     <TradesSectionContainer>
-      <Table title="Trades" columns={COLUMNS} rows={rowsWithStyles}>
+      <Table
+        title="Trades"
+        columns={COLUMNS}
+        rows={rowsWithStyles}
+        paddingHorizontal={RHYTHM / 2}>
         {isLoading ? <TableLoader /> : null}
       </Table>
     </TradesSectionContainer>

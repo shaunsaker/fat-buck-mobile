@@ -16,12 +16,12 @@ import { setSideMenuIsOpen, signOut } from '../store/actions';
 import { useLinking } from './useLinking';
 import { selectIsAuthenticated } from '../store/auth/selectors';
 import { CONTACT } from '../config';
-import { dimensions } from '../dimensions';
 import { isCurrentRoute, navigate, Screens } from '../Router';
+import { BORDER_WIDTH, RHYTHM } from '../constants';
 
 const SideMenuContainer = styled.View`
   flex: 1;
-  border-right-width: 3px;
+  border-right-width: ${BORDER_WIDTH}px;
   border-style: solid;
   border-color: ${colors.transWhite};
 `;
@@ -30,7 +30,7 @@ const SideMenuHeaderContainer = styled.View`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding: ${dimensions.rhythm}px;
+  padding: ${RHYTHM}px;
 `;
 
 const SideMenuLogoContainer = styled.View``;
@@ -40,11 +40,11 @@ const SideMenuCloseIconContainer = styled(TouchableIcon)``;
 const SideMenuContentContainer = styled.View`
   flex: 1;
   align-items: center;
-  padding-bottom: ${dimensions.rhythm}px;
+  padding-bottom: ${RHYTHM}px;
 `;
 
 const SideMenuButtonContainer = styled.View`
-  margin-bottom: ${dimensions.rhythm}px;
+  margin-bottom: ${RHYTHM}px;
 `;
 
 const SideMenuVersionContainer = styled.View`

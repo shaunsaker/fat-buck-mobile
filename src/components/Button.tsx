@@ -4,6 +4,7 @@ import { colors } from '../colors';
 import LinearGradient from 'react-native-linear-gradient';
 import { Touchable } from './Touchable';
 import { ActivityIndicator } from 'react-native';
+import { BORDER_WIDTH, FONT_BOLD, RHYTHM } from '../constants';
 
 export enum ButtonKinds {
   primary,
@@ -11,6 +12,7 @@ export enum ButtonKinds {
   accent,
   accentFilled,
   disabled,
+  danger,
 }
 
 interface ButtonContainerProps {
@@ -20,15 +22,14 @@ interface ButtonContainerProps {
 }
 
 const WIDTH = 180;
-const SMALL_WIDTH = 90;
 const HEIGHT = 45;
 const SMALL_HEIGHT = 25;
 
 const ButtonContainer = styled(Touchable)<ButtonContainerProps>`
-  width: ${({ small, fullWidth }) =>
-    small ? `${SMALL_WIDTH}px` : fullWidth ? 'auto' : `${WIDTH}px`};
+  min-width: ${({ small, fullWidth }) =>
+    small ? 'auto' : fullWidth ? 'auto' : `${WIDTH}px`};
   height: ${({ small }) => (small ? SMALL_HEIGHT : HEIGHT)}px;
-  border-width: 3px;
+  border-width: ${BORDER_WIDTH}px;
   border-style: solid;
   border-color: ${({ kind }) =>
     kind === ButtonKinds.primary
@@ -37,6 +38,8 @@ const ButtonContainer = styled(Touchable)<ButtonContainerProps>`
       ? colors.lightTransWhite
       : kind === ButtonKinds.accent || kind === ButtonKinds.accentFilled
       ? colors.accent
+      : kind === ButtonKinds.danger
+      ? colors.danger
       : colors.white};
   border-radius: ${({ small }) => (small ? SMALL_HEIGHT / 2 : HEIGHT / 2)}px;
   background-color: ${({ kind }) =>
@@ -48,6 +51,7 @@ const ButtonCss = css`
   justify-content: center;
   align-items: center;
   border-radius: ${HEIGHT / 2}px;
+  padding: 0 ${RHYTHM / 2}px;
 `;
 
 const ButtonGradient = styled(LinearGradient)`
@@ -66,7 +70,7 @@ interface ButtonTextProps {
 
 const ButtonText = styled.Text<ButtonTextProps>`
   font-size: ${({ small }) => (small ? 12 : 16)}px;
-  font-family: 'Recursive-Bold';
+  font-family: ${FONT_BOLD};
   color: ${({ kind }) =>
     kind === ButtonKinds.disabled
       ? colors.transWhite

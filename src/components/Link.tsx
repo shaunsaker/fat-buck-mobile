@@ -2,11 +2,12 @@ import React from 'react';
 import { TextStyle } from 'react-native';
 import styled from 'styled-components/native';
 import { colors } from '../colors';
+import { FONT_REGULAR } from '../constants';
 
 const LinkContainer = styled.TouchableOpacity``;
 
 const LinkText = styled.Text`
-  font-family: 'Recursive-Regular';
+  font-family: ${FONT_REGULAR};
   font-size: 14px;
   color: ${colors.accent};
   text-decoration-line: underline;

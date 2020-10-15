@@ -2,6 +2,7 @@ import React, { useState, useCallback, ReactNode } from 'react';
 import styled from 'styled-components/native';
 import { colors } from '../colors';
 import { TextInputProperties, TextInput, Platform } from 'react-native';
+import { BORDER_WIDTH, FONT_BOLD } from '../constants';
 
 export const INPUT_HEIGHT = 50;
 export const INPUT_PADDING = INPUT_HEIGHT / 2;
@@ -15,7 +16,7 @@ interface StyledInputContainerProps {
 const StyledInputContainer = styled.View<StyledInputContainerProps>`
   flex-direction: row;
   border-radius: ${INPUT_HEIGHT / 2}px;
-  border-width: 3px;
+  border-width: ${BORDER_WIDTH}px;
   border-style: solid;
   border-color: ${({ isFocussed, hasValue, isValid }) =>
     isValid
@@ -32,7 +33,7 @@ const StyledInputContainer = styled.View<StyledInputContainerProps>`
 `;
 
 const StyledInput = styled(TextInput)`
-  font-family: 'Recursive-Bold';
+  font-family: ${FONT_BOLD};
   font-weight: ${Platform.OS === 'android'
     ? 'normal'
     : 'bold'}; /* fix font-family android */

@@ -2,10 +2,10 @@ import React from 'react';
 import styled from 'styled-components/native';
 import { colors } from '../colors';
 import Animator from 'react-native-simple-animators';
-import { dimensions } from '../dimensions';
+import { ANIMATION_DURATION_LONG, RHYTHM } from '../constants';
 
 const BASE_HEIGHT = 34.5;
-const MARGIN = dimensions.rhythm / 2;
+const MARGIN = RHYTHM / 2;
 
 const HorizontalLoaderContainer = styled.View`
   height: ${BASE_HEIGHT}px;
@@ -24,7 +24,7 @@ export const TableLoader = ({}: HorizontalLoaderProps) => {
         finalValue={0.75}
         shouldAnimateIn
         shouldRepeat
-        duration={600}>
+        duration={ANIMATION_DURATION_LONG}>
         <HorizontalLoaderContainer />
       </Animator>
 
@@ -34,7 +34,7 @@ export const TableLoader = ({}: HorizontalLoaderProps) => {
         finalValue={0.5}
         shouldAnimateIn
         shouldRepeat
-        duration={600}>
+        duration={ANIMATION_DURATION_LONG}>
         <HorizontalLoaderContainer />
       </Animator>
 
@@ -44,7 +44,7 @@ export const TableLoader = ({}: HorizontalLoaderProps) => {
         finalValue={0.25}
         shouldAnimateIn
         shouldRepeat
-        duration={600}>
+        duration={ANIMATION_DURATION_LONG}>
         <HorizontalLoaderContainer />
       </Animator>
     </>

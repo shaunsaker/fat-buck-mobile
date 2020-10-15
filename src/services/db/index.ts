@@ -70,3 +70,9 @@ export const firestoreSaveDocument = async <T>(
 ) => {
   await ref.set(data, { merge: true });
 };
+
+export const firestoreDeleteDocument = async <T>(
+  ref: FirebaseFirestoreTypes.DocumentReference,
+) => {
+  await ref.delete();
+};

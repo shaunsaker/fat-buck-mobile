@@ -1,20 +1,14 @@
 import React, { ReactNode } from 'react';
 import styled from 'styled-components/native';
 import { colors } from '../colors';
-import { dimensions } from '../dimensions';
+import { RHYTHM } from '../constants';
+import { TitleText } from './TitleText';
 
 const PageHeaderContainer = styled.View`
   align-items: center;
-  padding: ${dimensions.rhythm}px;
-  margin-bottom: ${dimensions.rhythm}px;
+  padding: ${RHYTHM}px;
+  margin-bottom: ${RHYTHM}px;
   background-color: ${colors.veryLightTransWhite};
-`;
-
-const PageHeaderHeadingText = styled.Text`
-  font-size: 24px;
-  font-family: 'Recursive-Bold';
-  color: ${colors.white};
-  text-align: center;
 `;
 
 interface PageHeaderProps {
@@ -24,7 +18,7 @@ interface PageHeaderProps {
 export const PageHeader = ({ children }: PageHeaderProps) => {
   return (
     <PageHeaderContainer>
-      <PageHeaderHeadingText>{children}</PageHeaderHeadingText>
+      <TitleText center>{children}</TitleText>
     </PageHeaderContainer>
   );
 };

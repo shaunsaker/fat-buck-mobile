@@ -55,7 +55,9 @@
 		</dict>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string>We do not need access to your location</string>
+	<key>NSCameraUsageDescription</key>
+	<string>We need your permission to use your camera so that we can scan the QR code</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Recursive-Regular.ttf</string>

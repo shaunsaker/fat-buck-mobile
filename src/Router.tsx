@@ -18,6 +18,10 @@ import { selectHasSeenWelcome } from './store/welcome/selectors';
 import { ForgotPassword } from './components/ForgotPassword';
 import { SideMenu } from './components/SideMenu';
 import { CountrySelector } from './components/CountrySelector';
+import { Deposit } from './components/Deposit';
+import { EditWallet } from './components/EditWallet';
+import { QRCodeScanner as QRCodeScannerComponent } from './components/QRCodeScanner';
+import { DepositCalls } from './components/DepositCalls';
 
 export enum Screens {
   welcome = 'welcome',
@@ -26,6 +30,10 @@ export enum Screens {
   forgotPassword = 'forgotPassword',
   home = 'home',
   countrySelector = 'countrySelector',
+  deposit = 'deposit',
+  editWallet = 'editWallet',
+  QRCodeScanner = 'QRCodeScanner',
+  depositCalls = 'depositCalls',
 }
 
 export type RouteStackParamList = {
@@ -35,6 +43,10 @@ export type RouteStackParamList = {
   [Screens.forgotPassword]: undefined;
   [Screens.home]: undefined;
   [Screens.countrySelector]: undefined;
+  [Screens.deposit]: undefined;
+  [Screens.editWallet]: { address: string } | undefined;
+  [Screens.QRCodeScanner]: undefined;
+  [Screens.depositCalls]: undefined;
 };
 
 export type ScreenNavigationProps<T extends Screens> = StackNavigationProp<
@@ -83,6 +95,20 @@ export const Router = () => {
               <Stack.Screen name={Screens.home} component={Home} />
 
               <Stack.Screen name={Screens.welcomeStatic} component={Welcome} />
+
+              <Stack.Screen name={Screens.deposit} component={Deposit} />
+
+              <Stack.Screen name={Screens.editWallet} component={EditWallet} />
+
+              <Stack.Screen
+                name={Screens.QRCodeScanner}
+                component={QRCodeScannerComponent}
+              />
+
+              <Stack.Screen
+                name={Screens.depositCalls}
+                component={DepositCalls}
+              />
             </>
           ) : (
             <>

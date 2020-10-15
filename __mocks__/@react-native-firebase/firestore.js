@@ -1,5 +1,9 @@
 export default () => ({
   collection: () => ({
-    doc: () => {},
+    doc: () => ({
+      collection: () => ({
+        doc: () => {},
+      }),
+    }),
   }),
 });

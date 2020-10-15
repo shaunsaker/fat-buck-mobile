@@ -1,6 +1,5 @@
 import React, { useCallback } from 'react';
 import styled from 'styled-components/native';
-import { dimensions } from '../dimensions';
 import { HeadingText } from './HeadingText';
 import { BigText } from './BigText';
 import { ParagraphText } from './ParagraphText';
@@ -17,6 +16,9 @@ import {
 import { setBalanceType } from '../store/actions';
 import { selectSelectedCurrency } from '../store/currency/selectors';
 import { Loader } from './Loader';
+import { navigate, Screens } from '../Router';
+import { RHYTHM } from '../constants';
+import { selectHasPendingDepositCalls } from '../store/depositCalls/selectors';
 
 enum BalanceTypes {
   btc = 'BTC',
@@ -24,17 +26,17 @@ enum BalanceTypes {
 }
 
 const BalanceSectionContainer = styled.View`
-  padding: ${dimensions.rhythm}px;
+  padding: ${RHYTHM}px;
   align-items: center;
   background-color: ${colors.veryLightTransWhite};
 `;
 
 const BalanceSectionHeadingContainer = styled.View`
-  margin-bottom: ${dimensions.rhythm / 2}px;
+  margin-bottom: ${RHYTHM / 2}px;
 `;
 
 const BalanceSectionBalanceContainer = styled.View`
-  margin-bottom: ${dimensions.rhythm / 2}px;
+  margin-bottom: ${RHYTHM / 2}px;
   flex-direction: row;
   align-items: flex-end;
 `;
@@ -46,7 +48,7 @@ const BalanceSectionProfilePercentageContainer = styled.View`
 `;
 
 const BalanceSectionCurrencyValueContainer = styled.View`
-  margin-bottom: ${dimensions.rhythm / 2}px;
+  margin-bottom: ${RHYTHM / 2}px;
 `;
 
 const BalanceSectionBalanceTypeContainer = styled.View``;
@@ -60,15 +62,15 @@ const BalanceSectionActionButtonContainer = styled.View<
   BalanceSectionActionButtonContainerProps
 >`
   position: absolute;
-  top: ${dimensions.rhythm + 3}px;
-  right: ${({ right }) => (right ? `${dimensions.rhythm}px` : 'auto')};
-  left: ${({ left }) => (left ? `${dimensions.rhythm}px` : 'auto')};
+  top: ${RHYTHM - 2}px;
+  right: ${({ right }) => (right ? `${RHYTHM}px` : 'auto')};
+  left: ${({ left }) => (left ? `${RHYTHM}px` : 'auto')};
 `;
 
 const BalanceSectionLoaderContainer = styled.View`
   position: absolute;
-  top: ${dimensions.rhythm}px;
-  right: ${dimensions.rhythm}px;
+  top: ${RHYTHM}px;
+  right: ${RHYTHM}px;
 `;
 
 interface BalanceSectionBaseProps {
@@ -94,8 +96,8 @@ const BalanceSectionBase = ({
   isLoading,
   handleSelectBalanceType,
   handleDeposit,
-  handleWithdraw,
-}: BalanceSectionBaseProps) => {
+}: // handleWithdraw,
+BalanceSectionBaseProps) => {
   return (
     <BalanceSectionContainer>
       <BalanceSectionHeadingContainer>
@@ -132,13 +134,13 @@ const BalanceSectionBase = ({
         </BalanceSectionActionButtonContainer>
       ) : null}
 
-      {showActionButtons ? (
+      {/* {showActionButtons ? (
         <BalanceSectionActionButtonContainer left>
           <Button kind={ButtonKinds.accent} small onPress={handleWithdraw}>
             WITHDRAW
           </Button>
         </BalanceSectionActionButtonContainer>
-      ) : null}
+      ) : null} */}
 
       {isLoading ? (
         <BalanceSectionLoaderContainer>
@@ -149,15 +151,21 @@ const BalanceSectionBase = ({
   );
 };
 
-export const BalanceSection = () => {
+interface BalanceSectionProps {
+  showActionButtons?: boolean;
+}
+
+export const BalanceSection = ({
+  showActionButtons = true,
+}: BalanceSectionProps) => {
   const dispatch = useDispatch();
   const balanceType = useSelector(selectBalanceType);
-  const value = useSelector(selectBalance);
+  const value = useSelector(selectBalance); // TODO: handle personal balance
   const currencyValue = useSelector(selectBTCPrice);
   const currency = useSelector(selectSelectedCurrency);
   const isLoading = useSelector(selectBalanceLoading);
   const balanceTypes = [BalanceTypes.btc, BalanceTypes.zar];
-  const showActionButtons = false;
+  const hasPendingDepositCalls = useSelector(selectHasPendingDepositCalls);
 
   const onSelectBalanceType = useCallback(
     (type: BalanceTypes) => {
@@ -166,7 +174,13 @@ export const BalanceSection = () => {
     [dispatch],
   );
 
-  const onDeposit = useCallback(() => {}, []);
+  const onDeposit = useCallback(() => {
+    if (hasPendingDepositCalls) {
+      navigate(Screens.depositCalls);
+    } else {
+      navigate(Screens.deposit);
+    }
+  }, [hasPendingDepositCalls]);
 
   const onWithdraw = useCallback(() => {}, []);
 

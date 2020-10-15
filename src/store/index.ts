@@ -29,7 +29,7 @@ const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
   stateReconciler: autoMergeLevel2,
-  blacklist: ['sideMenu', 'snackbar', 'forms'],
+  blacklist: ['sideMenu', 'snackbar', 'sliders'],
 };
 
 const persistedReducer = persistReducer(persistConfig, reducers);

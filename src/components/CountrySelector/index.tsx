@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import styled from 'styled-components/native';
 import { Background } from '../Background';
 import { HeaderBar } from '../HeaderBar';
@@ -6,24 +6,22 @@ import { Input, INPUT_PADDING } from '../Input';
 import { InputContainer } from '../InputContainer';
 import { LayoutContainer } from '../LayoutContainer';
 import { PageHeader } from '../PageHeader';
-import { dimensions } from '../../dimensions';
 import { FlatList } from 'react-native';
 import Button, { ButtonKinds } from '../Button';
 import { ParagraphText } from '../ParagraphText';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectCountrySelectorSearchField } from '../../store/forms/selectors';
-import { setCountryName, setFormField } from '../../store/actions';
-import { CountrySelectorFields, Forms } from '../../store/forms/models';
+import { useDispatch } from 'react-redux';
+import { setCountryName } from '../../store/actions';
 import { navigate } from '../../Router';
 import { CountryInfo } from '../../store/country/models';
 import { getAllCountries } from '../../services/countriesInfo';
+import { RHYTHM } from '../../constants';
 
 const CountrySelectorInputContainer = styled.View`
-  margin-bottom: ${dimensions.rhythm}px;
+  margin-bottom: ${RHYTHM}px;
 `;
 
 const CountryButtonContainer = styled.View`
-  margin-bottom: ${dimensions.rhythm}px;
+  margin-bottom: ${RHYTHM}px;
 `;
 
 const CountryFlagContainer = styled.View`
@@ -113,17 +111,15 @@ export const filterCountries = (
 interface CountrySelectorProps {}
 
 export const CountrySelector = ({}: CountrySelectorProps) => {
-  const searchValue = useSelector(selectCountrySelectorSearchField);
+  const [searchValue, setSearchValue] = useState('');
   const dispatch = useDispatch();
   const countries = filterCountries(getAllCountries(), searchValue);
 
   const onChangeSearchValue = useCallback(
     (text: string) => {
-      dispatch(
-        setFormField(Forms.countrySelector, CountrySelectorFields.search, text),
-      );
+      setSearchValue(text);
     },
-    [dispatch],
+    [setSearchValue],
   );
 
   const onCountryPress = useCallback(

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components/native';
 import { HeaderBar } from '../HeaderBar';
 import { Input } from '../Input';
@@ -13,19 +13,10 @@ import {
 } from '../../store/auth/selectors';
 import { Background } from '../Background';
 import { PageHeader } from '../PageHeader';
-import { dimensions } from '../../dimensions';
 import { Link } from '../Link';
 import { ParagraphText } from '../ParagraphText';
 import { validateEmail } from '../../utils/validateEmail';
 import { validatePhoneNumber } from '../../utils/validatePhoneNumber';
-import {
-  selectSignInCellphoneFormField,
-  selectSignInEmailFormField,
-  selectSignInPasswordFormField,
-  selectSignInPinCodeFormField,
-} from '../../store/forms/selectors';
-import { setFormField } from '../../store/forms/actions';
-import { Forms, SignInFields } from '../../store/forms/models';
 import { navigate, Screens } from '../../Router';
 import {
   selectUserCellphone,
@@ -35,14 +26,14 @@ import { PhoneInput } from '../PhoneInput';
 import { InputContainer } from '../InputContainer';
 import { LayoutContainer } from '../LayoutContainer';
 import { selectCountry } from '../../store/country/selectors';
-import { Snackbar } from '../Snackbar';
+import { RHYTHM } from '../../constants';
 
 const SignInContainer = styled.View`
   flex: 1;
 `;
 
 const SignInInputContainer = styled.View`
-  margin-bottom: ${dimensions.rhythm}px;
+  margin-bottom: ${RHYTHM}px;
   align-self: stretch;
 `;
 
@@ -58,17 +49,17 @@ const SignInFooterTextContainer = styled.View`
 `;
 
 const SignInButtonContainer = styled.View`
-  margin: ${dimensions.rhythm}px 0;
+  margin: ${RHYTHM}px 0;
   align-self: center;
 `;
 
 const ForgotPasswordContainer = styled.View`
   align-items: flex-end;
-  margin-bottom: ${dimensions.rhythm}px;
+  margin-bottom: ${RHYTHM}px;
 `;
 
 const PinCodeTextContainer = styled.View`
-  margin-bottom: ${dimensions.rhythm}px;
+  margin-bottom: ${RHYTHM}px;
 `;
 
 interface SignInBaseProps {
@@ -225,13 +216,17 @@ const SignInBase = ({
 
 export const SignIn = () => {
   const dispatch = useDispatch();
-  const email = useSelector(selectSignInEmailFormField);
-  const password = useSelector(selectSignInPasswordFormField);
-  const cellphone = useSelector(selectSignInCellphoneFormField);
-  const pinCode = useSelector(selectSignInPinCodeFormField);
+  const userEmail = useSelector(selectUserEmail);
+  const userCellphone = useSelector(selectUserCellphone);
+  const [email, setEmail] = useState(userEmail);
+  const [password, setPassword] = useState('');
   const country = useSelector(selectCountry);
   const countryFlagEmoji = country.emoji;
   const countryCallingCode = country.countryCallingCodes[0];
+  const [cellphone, setCellphone] = useState(
+    userCellphone ? userCellphone.replace(countryCallingCode, '') : '',
+  );
+  const [pinCode, setPinCode] = useState('');
   const isEmailValid = validateEmail(email);
   const isPasswordValid = password.length >= 6;
   const parsedCellphone = `${countryCallingCode}${cellphone}`;
@@ -245,63 +240,26 @@ export const SignIn = () => {
     (hasSubmitted
       ? !isPinCodeValid
       : !isEmailValid || !isPasswordValid || !isCellphoneValid);
-  const userEmail = useSelector(selectUserEmail);
-  const userCellphone = useSelector(selectUserCellphone);
 
-  useEffect(
-    () => {
-      // init with user values if present
-      if (!email && userEmail) {
-        onChangeEmail(userEmail);
-      }
-      if (!cellphone && userCellphone) {
-        const parsedCellphone_ = userCellphone.replace(countryCallingCode, '');
-        onChangeCellphone(parsedCellphone_);
-      }
+  const onChangeEmail = useCallback((text: string) => {
+    setEmail(text);
+  }, []);
 
-      Snackbar.show('Hello');
-    },
+  const onChangePassword = useCallback((text: string) => {
+    setPassword(text);
+  }, []);
 
-    [], // eslint-disable-line
-  );
-
-  useEffect(() => {
-    // if the country changes, reset the cellphone field
-    // NOTE: this won't work if the user already has a cellphone saved to the store
-    onChangeEmail('');
-  }, [country, onChangeEmail]);
-
-  const onChangeEmail = useCallback(
-    (text: string) => {
-      dispatch(setFormField(Forms.signIn, SignInFields.email, text));
-    },
-    [dispatch],
-  );
-
-  const onChangePassword = useCallback(
-    (text: string) => {
-      dispatch(setFormField(Forms.signIn, SignInFields.password, text));
-    },
-    [dispatch],
-  );
-
-  const onChangeCellphone = useCallback(
-    (text: string) => {
-      dispatch(setFormField(Forms.signIn, SignInFields.cellphone, text));
-    },
-    [dispatch],
-  );
+  const onChangeCellphone = useCallback((text: string) => {
+    setCellphone(text);
+  }, []);
 
   const onPhoneInputCountryCodePress = useCallback(() => {
     navigate(Screens.countrySelector);
   }, []);
 
-  const onChangePinCode = useCallback(
-    (text: string) => {
-      dispatch(setFormField(Forms.signIn, SignInFields.pinCode, text));
-    },
-    [dispatch],
-  );
+  const onChangePinCode = useCallback((text: string) => {
+    setPinCode(text);
+  }, []);
 
   const onDismissKeyboard = useCallback(() => {
     Keyboard.dismiss();
@@ -320,6 +278,13 @@ export const SignIn = () => {
   const onForgotPassword = useCallback(() => {
     navigate(Screens.forgotPassword);
   }, []);
+
+  useEffect(() => {
+    // if the country changes, reset the cellphone field
+    if (!userCellphone.includes(country.countryCallingCodes[0])) {
+      onChangeCellphone('');
+    }
+  }, [country, userCellphone, onChangeCellphone]);
 
   return (
     <SignInBase

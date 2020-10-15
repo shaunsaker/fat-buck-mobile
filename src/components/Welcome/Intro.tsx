@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components/native';
-import { dimensions } from '../../dimensions';
+import { RHYTHM } from '../../constants';
 import Logo from '../Logo';
 import { ParagraphText } from '../ParagraphText';
 
@@ -9,7 +9,7 @@ const IntroContainer = styled.View`
 `;
 
 const LogoContainer = styled.View`
-  margin-bottom: ${dimensions.rhythm}px;
+  margin-bottom: ${RHYTHM}px;
 `;
 
 interface IntroProps {}

@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react';
 import styled from 'styled-components/native';
 import { colors } from '../colors';
+import { FONT_BOLD } from '../constants';
 
 const ChipContainer = styled.View`
   background-color: ${colors.lightTransWhite};
@@ -12,7 +13,7 @@ const ChipContainer = styled.View`
 
 const ChipText = styled.Text`
   font-size: 14px;
-  font-family: 'Recursive-Bold';
+  font-family: ${FONT_BOLD};
   color: ${colors.white};
 `;
 

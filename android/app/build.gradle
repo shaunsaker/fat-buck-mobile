@@ -137,6 +137,7 @@ android {
         versionCode project.hasProperty('versionCode') ? Integer.parseInt(project.property('versionCode')) : 1
         versionName project.hasProperty('versionName') ? project.property('versionName') : "1.0.0"
         multiDexEnabled true
+        missingDimensionStrategy 'react-native-camera', 'general'
     }
     splits {
         abi {

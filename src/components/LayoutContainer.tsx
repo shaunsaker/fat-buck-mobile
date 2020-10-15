@@ -1,12 +1,12 @@
 import React, { ReactNode } from 'react';
 import styled from 'styled-components/native';
-import { dimensions } from '../dimensions';
+import { RHYTHM } from '../constants';
 
 const LayoutContainerContainer = styled.View`
   max-width: 360px;
   width: 100%;
   align-self: center;
-  padding: ${dimensions.rhythm}px;
+  padding: ${RHYTHM}px;
 `;
 
 interface LayoutContainerProps {

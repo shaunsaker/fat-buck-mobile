@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components/native';
 import { colors } from '../colors';
 import Animator from 'react-native-simple-animators';
+import { ANIMATION_DURATION_SHORT, FONT_BOLD } from '../constants';
 
 const WIDTH = 100;
 const HEIGHT = 30;
@@ -34,7 +35,7 @@ const ToggleSelectOptionBackground = styled(Animator)`
 `;
 
 const ToggleSelectOptionText = styled.Text`
-  font-family: 'Recursive-Bold';
+  font-family: ${FONT_BOLD};
   font-size: 14px;
   color: ${colors.white};
 `;
@@ -62,7 +63,7 @@ export const ToggleSelect = <T extends string>({
         finalValue={WIDTH}
         shouldAnimateIn={Boolean(selectedOptionIndex > 0)}
         shouldAnimateOut={Boolean(selectedOptionIndex === 0)}
-        duration={150}
+        duration={ANIMATION_DURATION_SHORT}
       />
 
       {options.map((option) => (

@@ -1,9 +1,10 @@
 import React, { ReactNode } from 'react';
 import styled from 'styled-components/native';
 import { colors } from '../colors';
+import { FONT_BOLD } from '../constants';
 
 const BigTextContainer = styled.Text`
-  font-family: 'Recursive-Bold';
+  font-family: ${FONT_BOLD};
   font-size: 48px;
   color: ${colors.white};
 `;

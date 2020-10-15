@@ -1,6 +1,5 @@
 import React, { useCallback } from 'react';
 import styled from 'styled-components/native';
-import { dimensions } from '../dimensions';
 import { HeadingText } from './HeadingText';
 import { BigText } from './BigText';
 import { ParagraphText } from './ParagraphText';
@@ -16,18 +15,19 @@ import { ProfitTypes } from '../store/profit/models';
 import { setProfitType } from '../store/actions';
 import { selectSelectedCurrency } from '../store/currency/selectors';
 import { Loader } from './Loader';
+import { RHYTHM } from '../constants';
 
 const ProfitSectionContainer = styled.View`
-  padding: 0 0 ${dimensions.rhythm}px;
+  padding: 0 0 ${RHYTHM}px;
   align-items: center;
 `;
 
 const ProfitSectionHeadingContainer = styled.View`
-  margin-bottom: ${dimensions.rhythm / 2}px;
+  margin-bottom: ${RHYTHM / 2}px;
 `;
 
 const ProfitSectionProfitContainer = styled.View`
-  margin-bottom: ${dimensions.rhythm / 2}px;
+  margin-bottom: ${RHYTHM / 2}px;
   flex-direction: row;
   align-items: flex-end;
 `;
@@ -39,7 +39,7 @@ const ProfitSectionProfilePercentageContainer = styled.View`
 `;
 
 const ProfitSectionCurrencyValueContainer = styled.View`
-  margin-bottom: ${dimensions.rhythm / 2}px;
+  margin-bottom: ${RHYTHM / 2}px;
 `;
 
 const ProfitSectionProfitTypeContainer = styled.View``;
@@ -47,7 +47,7 @@ const ProfitSectionProfitTypeContainer = styled.View``;
 const ProfitSectionLoaderContainer = styled.View`
   position: absolute;
   top: 0;
-  right: ${dimensions.rhythm}px;
+  right: ${RHYTHM}px;
 `;
 
 interface ProfitSectionBaseProps {

@@ -5,9 +5,9 @@ export enum UserActionTypes {
 }
 
 export interface UserData {
-  uid: string | null;
-  email: string | null;
-  cellphone: string | null;
+  uid: string;
+  email: string;
+  cellphone: string;
   country: string;
   dateLastSignedIn: string;
 }

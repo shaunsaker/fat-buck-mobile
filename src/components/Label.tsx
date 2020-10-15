@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react';
 import styled from 'styled-components/native';
 import { colors } from '../colors';
+import { FONT_REGULAR } from '../constants';
 
 export enum LabelKinds {
   primary,
@@ -13,7 +14,7 @@ interface LabelTextProps {
 
 const LabelText = styled.Text<LabelTextProps>`
   font-size: 14px;
-  font-family: 'Recursive-Regular';
+  font-family: ${FONT_REGULAR};
   color: ${({ kind }) =>
     kind === LabelKinds.primary ? colors.white : colors.grey};
 `;

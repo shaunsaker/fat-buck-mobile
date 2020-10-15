@@ -8,14 +8,15 @@ import { useDispatch } from 'react-redux';
 import { setSideMenuIsOpen } from '../store/actions';
 import app from '../../app.json';
 import { CloseButton } from './CloseButton';
-import { dimensions } from '../dimensions';
 import { navigate } from '../Router';
+import { SmallText } from './SmallText';
+import { FONT_BOLD, RHYTHM } from '../constants';
 
 const HeaderBarContainer = styled.View`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding: ${dimensions.rhythm}px;
+  padding: ${RHYTHM}px;
 `;
 
 const HeaderBarAlignmentContainer = styled.View`
@@ -25,20 +26,18 @@ const HeaderBarAlignmentContainer = styled.View`
 `;
 
 const HeaderBarMenuIconContainer = styled(TouchableIcon)`
-  margin-right: ${dimensions.rhythm / 2}px;
+  margin-right: ${RHYTHM / 2}px;
 `;
 
 const HeaderBarTextContainer = styled.View``;
 
 const HeaderBarText = styled.Text`
   font-size: 24px;
-  font-family: 'Recursive-Bold';
+  font-family: ${FONT_BOLD};
   color: ${colors.white};
 `;
 
-const HeaderBarBetaText = styled.Text`
-  font-size: 12px;
-  font-family: 'Recursive-Regular';
+const HeaderBarBetaText = styled(SmallText)`
   color: ${colors.transWhite};
   position: absolute;
   top: 0;
@@ -51,7 +50,7 @@ const HeaderBarCloseButtonContainer = styled.View`
   right: 0;
   bottom: 0;
   justify-content: center;
-  padding: ${dimensions.rhythm}px;
+  padding: ${RHYTHM}px;
 `;
 
 interface HeaderBarBaseProps extends HeaderBarProps {

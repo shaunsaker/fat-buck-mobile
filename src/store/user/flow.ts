@@ -8,9 +8,9 @@ import { ActionType } from 'typesafe-actions';
 import { signInSuccess } from '../auth/actions';
 import { firestoreSaveDocument } from '../../services/db';
 import firestore from '@react-native-firebase/firestore';
-import moment from 'moment';
 import { select } from '../../utils/typedSelect';
 import { selectCountry } from '../country/selectors';
+import { getDateString } from '../../utils/getDateString';
 
 export function* onSaveUserFlow(
   action: ActionType<typeof saveUser>,
@@ -34,7 +34,7 @@ export function* watchSaveUserFlow(): SagaIterator {
 export function* onSignInSuccessFlow(
   action: ActionType<typeof signInSuccess>,
 ): SagaIterator {
-  const dateLastSignedIn = moment().toISOString();
+  const dateLastSignedIn = getDateString();
   const country = (yield* select(selectCountry)).name;
   const user: UserData = {
     uid: action.payload.user.uid,
