@@ -5,39 +5,35 @@ import {
   SEARCH_COUNTRIES_PLACEHOLDER_TEXT,
 } from '.';
 import { CountryInfo } from '../../store/country/models';
-import { render, fireEvent } from '@testing-library/react-native';
-import { store } from '../../store';
-import { Provider } from 'react-redux';
+import { fireEvent } from '@testing-library/react-native';
 import { setCountryName } from '../../store/actions';
 import { navigateBack } from '../../store/navigation/actions';
+import { mountComponent } from '../../testUtils';
 
 describe('CountrySelector', () => {
-  const mountComponent = () => {
-    const mockStore = store;
-    store.dispatch = jest.fn();
-
-    const component = (
-      <Provider store={mockStore}>
-        <CountrySelector />
-      </Provider>
-    );
-
-    return render(component);
-  };
-
   it('filters the country list based on search query', () => {
-    const { getByPlaceholderText, getByText } = mountComponent();
-
-    fireEvent.changeText(
-      getByPlaceholderText(SEARCH_COUNTRIES_PLACEHOLDER_TEXT),
-      'South',
+    const { getByPlaceholderText, queryByText } = mountComponent(
+      <CountrySelector />,
     );
 
-    expect(getByText('South Africa')).toBeDefined();
+    const searchInput = getByPlaceholderText(SEARCH_COUNTRIES_PLACEHOLDER_TEXT);
+    fireEvent.changeText(searchInput, 'South');
+
+    expect(queryByText('South Africa')).not.toBeNull();
+    expect(queryByText('Afghanistan')).toBeNull();
+
+    fireEvent.changeText(searchInput, 'Afghan');
+
+    expect(queryByText('South Africa')).toBeNull();
+    expect(queryByText('Afghanistan')).not.toBeNull();
   });
 
   it('sets the country name on press', () => {
-    const { getByText } = mountComponent();
+    const { getByText, store } = mountComponent(
+      <CountrySelector />,
+      undefined,
+      true,
+    );
 
     const countryName = 'Afghanistan';
     fireEvent.press(getByText(countryName));
