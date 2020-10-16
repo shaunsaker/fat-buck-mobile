@@ -7,4 +7,7 @@ module.exports = {
     'react-native/no-inline-styles': 'off',
     'eslint-comments/no-unlimited-disable': 'off',
   },
+  env: {
+    'jest/globals': true,
+  },
 };
