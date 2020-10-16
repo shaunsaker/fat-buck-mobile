@@ -45,7 +45,7 @@ export interface ApplicationState {
   depositCalls: DepositCallsState;
 }
 
-const rootReducer = combineReducers({
+export const rootReducer = combineReducers({
   sideMenu: sideMenuReducer,
   auth: authReducer,
   welcome: welcomeReducer,
