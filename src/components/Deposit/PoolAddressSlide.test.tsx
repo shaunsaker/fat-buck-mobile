@@ -7,13 +7,11 @@ import {
   COPY_BUTTON_TEST_ID,
   PoolAddressSlide,
 } from './PoolAddressSlide';
-import { setSliderIndex, showSnackbar } from '../../store/actions';
+import { showSnackbar } from '../../store/actions';
 import { copyTextToClipboard } from '../../store/clipboard/actions';
 import { POOL_ADDRESS } from '../../config';
-import { Sliders } from '../../store/sliders/models';
-import { slides } from './slides';
 
-describe('CountrySelector', () => {
+describe('PoolAddressSlide', () => {
   const mountComponent = () => {
     const mockStore = store;
     store.dispatch = jest.fn();
