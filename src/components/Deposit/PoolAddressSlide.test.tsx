@@ -1,7 +1,5 @@
 import React from 'react';
-import { fireEvent, render } from '@testing-library/react-native';
-import { Provider } from 'react-redux';
-import { store } from '../../store';
+import { fireEvent } from '@testing-library/react-native';
 import {
   COPY_ADDRESS_SUCCESS_TEXT,
   COPY_BUTTON_TEST_ID,
@@ -10,23 +8,15 @@ import {
 import { showSnackbar } from '../../store/actions';
 import { copyTextToClipboard } from '../../store/clipboard/actions';
 import { POOL_ADDRESS } from '../../config';
+import { mountComponent } from '../../testUtils';
 
 describe('PoolAddressSlide', () => {
-  const mountComponent = () => {
-    const mockStore = store;
-    store.dispatch = jest.fn();
-
-    const component = (
-      <Provider store={mockStore}>
-        <PoolAddressSlide />
-      </Provider>
-    );
-
-    return render(component);
-  };
-
   it('copies text to the clipboard on copy press', () => {
-    const { getByTestId } = mountComponent();
+    const { getByTestId, store } = mountComponent(
+      <PoolAddressSlide />,
+      undefined,
+      true,
+    );
 
     fireEvent.press(getByTestId(COPY_BUTTON_TEST_ID));
 
