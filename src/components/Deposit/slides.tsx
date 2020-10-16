@@ -4,7 +4,9 @@ import { SelectWalletSlide } from './SelectWalletSlide';
 import { SuccessSlide } from './SuccessSlide';
 import { Slide } from '../Slider';
 
-export const slides: Record<string, Slide> = {
+type Slides = 'selectWallet' | 'poolAddress' | 'success';
+
+export const slides: Record<Slides, Slide> = {
   selectWallet: {
     slideIndex: 0,
     children: <SelectWalletSlide />,
