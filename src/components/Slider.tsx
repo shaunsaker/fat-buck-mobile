@@ -24,6 +24,9 @@ const ProgressContainer = styled.View`
 const WELCOME_SLIDE_PROGRESS_SIZE = 12;
 const WELCOME_SLIDE_PROGRESS_MARGIN = RHYTHM / 2;
 
+export const getProgressItemTestId = (index: number) =>
+  `progress-item-${index}`;
+
 interface ProgressItemContainerProps {
   isActive: boolean;
 }
@@ -100,6 +103,7 @@ const SliderBase = ({
           {slides.map((slide, index) => (
             <ProgressItemContainer
               key={slide.slideIndex}
+              testID={getProgressItemTestId(index)}
               isActive={index === slideIndex}
               hitSlop={{
                 top: WELCOME_SLIDE_PROGRESS_MARGIN,

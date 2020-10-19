@@ -18,9 +18,9 @@ import { Slider, SliderProps } from '../Slider';
 import { selectDepositSliderIndex } from '../../store/sliders/selectors';
 import { slides as depositSlides } from './slides';
 import { sortArrayOfObjectsByKey } from '../../utils/sortArrayOfObjectsByKey';
-import { navigate } from '../../Router';
 import { selectDepositCallsLoading } from '../../store/depositCalls/selectors';
 import { objectToArray } from '../../utils/objectToArray';
+import { navigateBack } from '../../store/navigation/actions';
 
 const DEPOSIT_SLIDES_ARRAY = sortArrayOfObjectsByKey(
   objectToArray(depositSlides),
@@ -59,6 +59,7 @@ export const Deposit = ({}: DepositProps) => {
     const isCurrentSlide = index === slideIndex;
     const isCurrentlyOnPoolAddressSlide =
       slideIndex === depositSlides.poolAddress.slideIndex;
+    const isSuccessSlide = index === depositSlides.success.slideIndex;
     const loading =
       isCurrentSlide && isCurrentlyOnPoolAddressSlide && isDepositCallsLoading;
 
@@ -67,8 +68,8 @@ export const Deposit = ({}: DepositProps) => {
     const userHasSelectedWallet = selectedWalletId;
     const disabled =
       loading ||
-      (isCurrentSlideBeforePoolAddressSlide && !userHasSelectedWallet);
-
+      (isCurrentSlideBeforePoolAddressSlide && !userHasSelectedWallet) ||
+      (isCurrentSlideBeforePoolAddressSlide && isSuccessSlide); // don't allow a jump from 0 => 2
     return {
       ...slide,
       disabled,
@@ -90,7 +91,7 @@ export const Deposit = ({}: DepositProps) => {
     if (isPoolAddressSlide) {
       dispatch(createDepositCall(selectedWallet.address));
     } else if (isLastSlide) {
-      navigate(); // pop the scene
+      dispatch(navigateBack());
     } else {
       dispatch(setSliderIndex(Sliders.deposit, slideIndex + 1));
     }

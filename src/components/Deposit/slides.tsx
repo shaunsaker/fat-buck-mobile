@@ -18,7 +18,7 @@ export const slides: Record<Slides, Slide> = {
     buttonText: "I'VE TRANSFERRED MY BTC",
   },
   success: {
-    slideIndex: 3,
+    slideIndex: 2,
     children: <SuccessSlide />,
     buttonText: 'DONE',
   },
