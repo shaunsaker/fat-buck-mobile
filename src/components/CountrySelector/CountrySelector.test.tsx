@@ -29,17 +29,13 @@ describe('CountrySelector', () => {
   });
 
   it('sets the country name on press', () => {
-    const { getByText, store } = mountComponent(
-      <CountrySelector />,
-      undefined,
-      true,
-    );
+    const { getByText, spy } = mountComponent(<CountrySelector />, undefined);
 
     const countryName = 'Afghanistan';
     fireEvent.press(getByText(countryName));
 
-    expect(store.dispatch).toHaveBeenCalledWith(setCountryName(countryName));
-    expect(store.dispatch).toHaveBeenCalledWith(navigateBack());
+    expect(spy).toHaveBeenCalledWith(setCountryName(countryName));
+    expect(spy).toHaveBeenCalledWith(navigateBack());
   });
 
   describe('filterCountries', () => {

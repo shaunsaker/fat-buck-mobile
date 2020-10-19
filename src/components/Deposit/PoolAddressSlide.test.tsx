@@ -12,19 +12,14 @@ import { mountComponent } from '../../testUtils';
 
 describe('PoolAddressSlide', () => {
   it('copies text to the clipboard on copy press', () => {
-    const { getByTestId, store } = mountComponent(
+    const { getByTestId, spy } = mountComponent(
       <PoolAddressSlide />,
       undefined,
-      true,
     );
 
     fireEvent.press(getByTestId(COPY_BUTTON_TEST_ID));
 
-    expect(store.dispatch).toHaveBeenCalledWith(
-      copyTextToClipboard(POOL_ADDRESS),
-    );
-    expect(store.dispatch).toHaveBeenCalledWith(
-      showSnackbar(COPY_ADDRESS_SUCCESS_TEXT),
-    );
+    expect(spy).toHaveBeenCalledWith(copyTextToClipboard(POOL_ADDRESS));
+    expect(spy).toHaveBeenCalledWith(showSnackbar(COPY_ADDRESS_SUCCESS_TEXT));
   });
 });
