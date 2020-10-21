@@ -27,6 +27,12 @@ if (codeReleaseVersion) {
   // check out that release branch
   execGit(['checkout', latestReleaseBranchName]);
 
+  // rebase master
+  execGit(['rebase', 'master']);
+
+  // push the rebase branch
+  execGit(['push', '-f']);
+
   // get the new code version
   const currentCodeVersion = require('../package.json').code;
   const nextCodeVersion = (Number(currentCodeVersion) + 1).toString();
