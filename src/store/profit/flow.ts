@@ -1,12 +1,5 @@
 import { SagaIterator } from 'redux-saga';
-import {
-  fork,
-  put,
-  call,
-  takeEvery,
-  takeLatest,
-  take,
-} from 'redux-saga/effects';
+import { fork, put, call, takeEvery, take } from 'redux-saga/effects';
 import { createFirestoreSyncChannel } from '../../services/db';
 import { showSnackbar } from '../actions';
 import firestore from '@react-native-firebase/firestore';
@@ -47,7 +40,7 @@ export function* onSyncProfitFlow(
 }
 
 export function* watchSyncProfitFlow(): SagaIterator {
-  yield takeLatest(ProfitActionTypes.SYNC_PROFIT, onSyncProfitFlow);
+  yield takeEvery(ProfitActionTypes.SYNC_PROFIT, onSyncProfitFlow);
 }
 
 export function* profitFlow(): SagaIterator {
