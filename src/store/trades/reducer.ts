@@ -1,6 +1,6 @@
 import { Reducer } from 'redux';
 import { REHYDRATE } from 'redux-persist';
-import { TradesActionTypes, TradesState } from './models';
+import { TradesActionTypes, TradesState, Trade } from './models';
 
 export const initialState: TradesState = {
   loading: false,
@@ -26,10 +26,26 @@ export const tradesReducer: Reducer<TradesState> = (
       };
     }
     case TradesActionTypes.SYNC_TRADES_SUCCESS: {
+      const data = { ...state.data, ...action.payload.trades };
+
+      // if a trade was deleted, remove it from state
+      const { botId } = action.payload.trades[
+        Object.keys(action.payload.trades)[0]
+      ] as Trade;
+
+      for (const tradeId in state.data) {
+        if (
+          state.data[tradeId].botId === botId &&
+          !action.payload.trades[tradeId]
+        ) {
+          delete data[tradeId];
+        }
+      }
+
       return {
         ...state,
         loading: false,
-        data: { ...state.data, ...action.payload.trades },
+        data,
       };
     }
     case TradesActionTypes.SYNC_TRADES_ERROR: {

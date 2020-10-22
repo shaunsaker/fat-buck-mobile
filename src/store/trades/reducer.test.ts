@@ -41,7 +41,7 @@ describe('trades reducer', () => {
     expect(nextState).toEqual(expected);
 
     // updated trade
-    const updatedTrades = {
+    let updatedTrades = {
       ...trades,
     };
     updatedTrades[tradeId].closeProfit = 1;
@@ -56,18 +56,25 @@ describe('trades reducer', () => {
 
     // new trade
     const newTradeId = '2';
-    const newTrades = {
+    updatedTrades = {
       ...updatedTrades,
       [newTradeId]: trade,
     };
     expected = {
       loading: false,
-      data: newTrades,
+      data: updatedTrades,
     };
 
-    nextState = tradesReducer(nextState, syncTradesSuccess(newTrades));
+    nextState = tradesReducer(nextState, syncTradesSuccess(updatedTrades));
 
     expect(nextState).toEqual(expected);
+
+    // delete old trade
+    delete updatedTrades[tradeId];
+
+    nextState = tradesReducer(nextState, syncTradesSuccess(updatedTrades));
+
+    expect(nextState.data[tradeId]).toBeUndefined();
   });
 
   it('sets loading to false on SYNC_CURRENCY_ERROR', () => {
