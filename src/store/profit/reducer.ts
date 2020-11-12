@@ -5,7 +5,11 @@ import { ProfitActionTypes, ProfitState, ProfitTypes } from './models';
 export const initialState: ProfitState = {
   loading: false,
   profitType: ProfitTypes.toDate,
-  data: {},
+  data: {
+    ratio: 0,
+    amount: 0,
+    lastUpdated: '',
+  },
 };
 
 export const profitReducer: Reducer<ProfitState> = (
@@ -30,10 +34,7 @@ export const profitReducer: Reducer<ProfitState> = (
       return {
         ...state,
         loading: false,
-        data: {
-          ...state.data,
-          [action.payload.botId]: action.payload.profitData,
-        },
+        data: action.payload.data,
       };
     }
     case ProfitActionTypes.SYNC_PROFIT_ERROR: {

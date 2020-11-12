@@ -10,8 +10,7 @@ import { showSnackbar } from '../snackbar/actions';
 import { saveUser, saveUserError, saveUserSuccess } from './actions';
 import { onSaveUserFlow, onSignInSuccessFlow } from './flow';
 import { UserData } from './models';
-import moment from 'moment';
-import { MOCKED_MOMENT_ISO_STRING } from '../../../__mocks__/moment';
+import { MOCKED_MOMENT_ISO_STRING } from '../../../jest/setup';
 
 describe('user flow', () => {
   describe('onSaveUserFlow', () => {
@@ -52,8 +51,8 @@ describe('user flow', () => {
     const state = rootReducer(undefined, setCountryName(countryName));
     const userData: UserData = {
       uid: testUser.userCredential.user.uid,
-      email: testUser.userCredential.user.email,
-      cellphone: testUser.userCredential.user.phoneNumber,
+      email: testUser.userCredential.user.email, // FIXME types
+      cellphone: testUser.userCredential.user.phoneNumber, // FIXME types
       country: countryName,
       dateLastSignedIn,
     };
@@ -63,7 +62,6 @@ describe('user flow', () => {
         onSignInSuccessFlow,
         signInSuccess(testUser.userCredential.user),
       )
-        .provide([[moment().toISOString, dateLastSignedIn]])
         .withState(state)
         .put(saveUser(userData))
         .run();

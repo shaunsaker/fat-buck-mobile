@@ -8,7 +8,7 @@ import { CountryInfo } from '../../store/country/models';
 import { fireEvent } from '@testing-library/react-native';
 import { setCountryName } from '../../store/actions';
 import { navigateBack } from '../../store/navigation/actions';
-import { mountComponent } from '../../testUtils';
+import { mountComponent } from '../../testUtils/mountComponent';
 
 describe('CountrySelector', () => {
   it('filters the country list based on search query', () => {

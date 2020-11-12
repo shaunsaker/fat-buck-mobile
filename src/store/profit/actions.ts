@@ -2,13 +2,11 @@ import { action } from 'typesafe-actions';
 
 import { ProfitActionTypes, ProfitData, ProfitTypes } from './models';
 
-export const syncProfit = (botId: string) =>
-  action(ProfitActionTypes.SYNC_PROFIT, { botId });
+export const syncProfit = () => action(ProfitActionTypes.SYNC_PROFIT);
 
-export const syncProfitSuccess = (botId: string, profitData: ProfitData) =>
+export const syncProfitSuccess = (data: ProfitData) =>
   action(ProfitActionTypes.SYNC_PROFIT_SUCCESS, {
-    botId,
-    profitData,
+    data,
   });
 
 export const syncProfitError = () =>

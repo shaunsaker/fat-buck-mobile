@@ -6,15 +6,14 @@ import { ProfitData } from './models';
 describe('profit flow', () => {
   describe('onSyncProfitChannelFlow', () => {
     it('puts syncProfitSuccess with the returned data', () => {
-      const botId = '1';
       const profitData: ProfitData = {
-        profitAllPercent: 1,
-        profitAllFiat: 1,
-        firstTradeTimestamp: 1,
+        ratio: 1,
+        amount: 1,
+        lastUpdated: '',
       };
 
-      return expectSaga(onSyncProfitChannelFlow, botId, profitData)
-        .put(syncProfitSuccess(botId, profitData))
+      return expectSaga(onSyncProfitChannelFlow, profitData)
+        .put(syncProfitSuccess(profitData))
         .run();
     });
   });

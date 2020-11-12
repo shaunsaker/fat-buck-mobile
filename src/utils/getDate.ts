@@ -1,5 +1,5 @@
 import moment from 'moment';
 
-export const getDateString = (): string => {
+export const getDate = (): string => {
   return moment().toISOString();
 };

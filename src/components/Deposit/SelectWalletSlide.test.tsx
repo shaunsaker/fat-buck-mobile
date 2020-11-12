@@ -1,6 +1,6 @@
 import React from 'react';
+import { mountComponent } from '../../testUtils/mountComponent';
 import { SelectWalletSlide } from './SelectWalletSlide';
-import { mountComponent } from '../../testUtils';
 
 describe('SelectWalletSlide', () => {
   it('renders', () => {

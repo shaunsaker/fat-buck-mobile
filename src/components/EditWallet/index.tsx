@@ -6,8 +6,8 @@ import { navigate, ScreenRouteProps, Screens } from '../../Router';
 import { deleteWallet, saveWallet } from '../../store/actions';
 import { WalletData, WalletId } from '../../store/wallets/models';
 import { selectWalletsLoading } from '../../store/wallets/selectors';
-import { getDateString } from '../../utils/getDateString';
-import { getRandomId } from '../../utils/getRandomId';
+import { getDate } from '../../utils/getDate';
+import { getUniqueId } from '../../utils/getUniqueId';
 import { Background } from '../Background';
 import Button, { ButtonKinds } from '../Button';
 import { HeaderBar } from '../HeaderBar';
@@ -143,8 +143,8 @@ export const EditWallet = ({ route }: EditWalletProps) => {
   }, []);
 
   const onSubmit = useCallback(() => {
-    const id = route.params?.id || getRandomId();
-    const dateAdded = getDateString();
+    const id = route.params?.id || getUniqueId();
+    const dateAdded = getDate();
     const wallet: WalletData = {
       id,
       name,

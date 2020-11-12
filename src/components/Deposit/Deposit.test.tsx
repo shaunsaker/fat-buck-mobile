@@ -1,7 +1,6 @@
 import React from 'react';
 import { fireEvent } from '@testing-library/react-native';
 import { Deposit } from '.';
-import { mountComponent } from '../../testUtils';
 import rootReducer, { initialState } from '../../store/reducers';
 import {
   createDepositCall,
@@ -12,9 +11,10 @@ import {
 import { slides } from './slides';
 import { getProgressItemTestId } from '../Slider';
 import { Wallets } from '../../store/wallets/models';
-import moment from 'moment';
 import { Sliders } from '../../store/sliders/models';
 import { navigateBack } from '../../store/navigation/actions';
+import { mountComponent } from '../../testUtils/mountComponent';
+import { getDate } from '../../utils/getDate';
 
 describe('Deposit', () => {
   const selectWalletSlideButtonText = slides.selectWallet.buttonText;
@@ -26,7 +26,7 @@ describe('Deposit', () => {
       id: selectedWalletId,
       name: '',
       address: '',
-      dateAdded: moment().toISOString(),
+      dateAdded: getDate(),
     },
   };
 

@@ -1,3 +1,4 @@
+import { getDate } from '../../utils/getDate';
 import {
   setProfitType,
   syncProfit,
@@ -9,63 +10,36 @@ import { profitReducer, initialState } from './reducer';
 
 describe('profit reducer', () => {
   it('sets loading to true on SYNC_PROFIT', () => {
-    const botId = '1';
-    const nextState = profitReducer(initialState, syncProfit(botId));
+    const nextState = profitReducer(initialState, syncProfit());
 
     expect(nextState.loading).toEqual(true);
   });
 
   it('sets state correctly on SYNC_PROFIT_SUCCESS', () => {
-    // handles first bot correctly
-    const botId = '1';
-    let nextState = profitReducer(initialState, syncProfit(botId));
+    let nextState = profitReducer(initialState, syncProfit());
     const profitData: ProfitData = {
-      profitAllPercent: 60,
-      profitAllFiat: 1200,
-      firstTradeTimestamp: Date.now(),
+      ratio: 1,
+      amount: 1,
+      lastUpdated: getDate(),
     };
-    let expected: Record<string, ProfitData> = {
-      [botId]: profitData,
-    };
-    nextState = profitReducer(nextState, syncProfitSuccess(botId, profitData));
+    nextState = profitReducer(nextState, syncProfitSuccess(profitData));
 
     expect(nextState.loading).toEqual(false);
-    expect(nextState.data).toEqual(expected);
+    expect(nextState.data).toEqual(profitData);
 
-    // handles update bot correctly
+    // handles update  correctly
     const updatedProfitData: ProfitData = {
-      profitAllPercent: 65,
-      profitAllFiat: 1300,
-      firstTradeTimestamp: Date.now() + 10,
+      ratio: 2,
+      amount: 2,
+      lastUpdated: getDate(),
     };
-    expected = {
-      [botId]: updatedProfitData,
-    };
-    nextState = profitReducer(
-      nextState,
-      syncProfitSuccess(botId, updatedProfitData),
-    );
+    nextState = profitReducer(nextState, syncProfitSuccess(updatedProfitData));
 
-    expect(nextState.data).toEqual(expected);
-
-    // handles new bot correctly
-    const newBotId = '2';
-    const newBotData: ProfitData = profitData;
-    nextState = profitReducer(
-      nextState,
-      syncProfitSuccess(newBotId, newBotData),
-    );
-    expected = {
-      ...expected,
-      [newBotId]: newBotData,
-    };
-
-    expect(nextState.data).toEqual(expected);
+    expect(nextState.data).toEqual(updatedProfitData);
   });
 
   it('sets loading to false on SYNC_PROFIT_ERROR', () => {
-    const botId = '1';
-    let nextState = profitReducer(initialState, syncProfit(botId));
+    let nextState = profitReducer(initialState, syncProfit());
     nextState = profitReducer(nextState, syncProfitError());
 
     expect(nextState.loading).toEqual(false);

@@ -4,31 +4,22 @@ import { createFirestoreSyncChannel } from '../../services/db';
 import { showSnackbar } from '../actions';
 import firestore from '@react-native-firebase/firestore';
 import { ProfitData, ProfitActionTypes } from './models';
-import { syncProfit, syncProfitSuccess } from './actions';
+import { syncProfitSuccess } from './actions';
 import { onlySelectorTruthyOrChanged } from '../../utils/onlySelectorTruthyOrChanged';
 import { selectIsAuthenticated } from '../auth/selectors';
 import { AuthActionTypes } from '../auth/models';
-import { ActionType } from 'typesafe-actions';
-import { watchSyncActiveBotsSuccessFlow } from '../activeBots/flow';
 
-export function* onSyncProfitChannelFlow(botId: string, data: ProfitData) {
-  yield put(syncProfitSuccess(botId, data));
+export function* onSyncProfitChannelFlow(data: ProfitData) {
+  yield put(syncProfitSuccess(data));
 }
 
-export function* onSyncProfitFlow(
-  action: ActionType<typeof syncProfit>,
-): SagaIterator {
+export function* syncProfitFlow(): SagaIterator {
   try {
-    const { botId } = action.payload;
-    const ref = firestore()
-      .collection('bots')
-      .doc(botId)
-      .collection('profit')
-      .doc('latest');
+    const ref = firestore().collection('pool').doc('profit');
     const channel = yield call(createFirestoreSyncChannel, ref);
 
     yield takeEvery(channel, (data: ProfitData) =>
-      onSyncProfitChannelFlow(botId, data),
+      onSyncProfitChannelFlow(data),
     );
 
     // TODO: this isn't working entirely, still getting firestore permission errors
@@ -40,7 +31,7 @@ export function* onSyncProfitFlow(
 }
 
 export function* watchSyncProfitFlow(): SagaIterator {
-  yield takeEvery(ProfitActionTypes.SYNC_PROFIT, onSyncProfitFlow);
+  yield takeEvery(ProfitActionTypes.SYNC_PROFIT, syncProfitFlow);
 }
 
 export function* profitFlow(): SagaIterator {
@@ -48,7 +39,6 @@ export function* profitFlow(): SagaIterator {
   yield fork(
     onlySelectorTruthyOrChanged,
     selectIsAuthenticated,
-    watchSyncActiveBotsSuccessFlow,
-    syncProfit,
+    syncProfitFlow,
   );
 }
