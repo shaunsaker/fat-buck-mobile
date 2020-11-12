@@ -8,37 +8,17 @@ export const selectBalanceType = (state: ApplicationState) =>
 export const selectBalance = (state: ApplicationState) => {
   const isBTCBalanceType = state.balance.balanceType === BalanceTypes.btc;
 
-  // grab the first active bot's balance (the other ones in the same exchange are exactly the same)
-  // CFO assumes one exchange
-  const firstActiveBotId = state.activeBots.botIds[0];
-  const firstBalanceData = state.balance.data[firstActiveBotId];
-
-  if (!firstBalanceData) {
-    return '0';
-  }
-
   if (isBTCBalanceType) {
-    return getFloatString(firstBalanceData.total, 6);
+    return getFloatString(state.balance.data.amount, 6);
   } else {
-    return getFloatString(firstBalanceData.value * state.currency.rate);
+    return getFloatString(state.balance.data.value * state.currency.rate);
   }
 };
 
 export const selectBTCPrice = (state: ApplicationState) => {
-  if (!Object.keys(state.activeBots.botIds).length) {
-    return '0';
-  }
-
-  // just grab the first active bot's balance and use the value/total to calculate the current BTC price
-  const firstActiveBotId = state.activeBots.botIds[0];
-  const firstBalanceData = state.balance.data[firstActiveBotId];
-
-  if (!firstBalanceData) {
-    return '0';
-  }
-
   const roundedBTCPrice = getFloatString(
-    (firstBalanceData.value * state.currency.rate) / firstBalanceData.total,
+    (state.balance.data.value * state.currency.rate) /
+      state.balance.data.amount,
   );
   return roundedBTCPrice;
 };

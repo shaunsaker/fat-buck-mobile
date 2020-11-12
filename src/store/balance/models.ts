@@ -6,8 +6,9 @@ export enum BalanceActionTypes {
 }
 
 export interface BalanceData {
-  total: number;
-  value: number;
+  amount: number;
+  value: number; // USD value
+  lastUpdated: string;
 }
 
 export enum BalanceTypes {
@@ -18,5 +19,5 @@ export enum BalanceTypes {
 export interface BalanceState {
   loading: boolean;
   balanceType: BalanceTypes;
-  data: Record<string, BalanceData>;
+  data: BalanceData;
 }

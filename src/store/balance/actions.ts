@@ -2,13 +2,11 @@ import { action } from 'typesafe-actions';
 
 import { BalanceActionTypes, BalanceData, BalanceTypes } from './models';
 
-export const syncBalance = (botId: string) =>
-  action(BalanceActionTypes.SYNC_BALANCE, { botId });
+export const syncBalance = () => action(BalanceActionTypes.SYNC_BALANCE);
 
-export const syncBalanceSuccess = (botId: string, balanceData: BalanceData) =>
+export const syncBalanceSuccess = (data: BalanceData) =>
   action(BalanceActionTypes.SYNC_BALANCE_SUCCESS, {
-    botId,
-    balanceData,
+    data,
   });
 
 export const syncBalanceError = () =>

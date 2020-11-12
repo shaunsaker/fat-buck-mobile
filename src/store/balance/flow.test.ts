@@ -6,14 +6,14 @@ import { BalanceData } from './models';
 describe('balance flow', () => {
   describe('onSyncBalanceChannelFlow', () => {
     it('puts syncBalanceSuccess with the returned data', () => {
-      const botId = '1';
       const balanceData: BalanceData = {
-        total: 1,
+        amount: 1,
         value: 1,
+        lastUpdated: '',
       };
 
-      return expectSaga(onSyncBalanceChannelFlow, botId, balanceData)
-        .put(syncBalanceSuccess(botId, balanceData))
+      return expectSaga(onSyncBalanceChannelFlow, balanceData)
+        .put(syncBalanceSuccess(balanceData))
         .run();
     });
   });

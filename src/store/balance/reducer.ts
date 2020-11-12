@@ -5,7 +5,11 @@ import { BalanceActionTypes, BalanceState, BalanceTypes } from './models';
 export const initialState: BalanceState = {
   loading: false,
   balanceType: BalanceTypes.btc,
-  data: {},
+  data: {
+    amount: 0,
+    value: 0,
+    lastUpdated: '',
+  },
 };
 
 export const balanceReducer: Reducer<BalanceState> = (
@@ -30,10 +34,7 @@ export const balanceReducer: Reducer<BalanceState> = (
       return {
         ...state,
         loading: false,
-        data: {
-          ...state.data,
-          [action.payload.botId]: action.payload.balanceData,
-        },
+        data: action.payload.data,
       };
     }
     case BalanceActionTypes.SYNC_BALANCE_ERROR: {

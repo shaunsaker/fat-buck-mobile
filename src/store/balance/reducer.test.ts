@@ -9,64 +9,40 @@ import { balanceReducer, initialState } from './reducer';
 
 describe('balance reducer', () => {
   it('sets loading to true on SYNC_BALANCE', () => {
-    const botId = '1';
-    const nextState = balanceReducer(initialState, syncBalance(botId));
+    const nextState = balanceReducer(initialState, syncBalance());
 
     expect(nextState.loading).toEqual(true);
   });
 
   it('sets state correctly on SYNC_BALANCE_SUCCESS', () => {
     // handles first bot correctly
-    const botId = '1';
-    let nextState = balanceReducer(initialState, syncBalance(botId));
+    let nextState = balanceReducer(initialState, syncBalance());
     const balanceData: BalanceData = {
-      total: 1,
+      amount: 1,
       value: 1,
+      lastUpdated: '',
     };
-    let expected: Record<string, BalanceData> = {
-      [botId]: balanceData,
-    };
-    nextState = balanceReducer(
-      nextState,
-      syncBalanceSuccess(botId, balanceData),
-    );
+    nextState = balanceReducer(nextState, syncBalanceSuccess(balanceData));
 
     expect(nextState.loading).toEqual(false);
-    expect(nextState.data).toEqual(expected);
+    expect(nextState.data).toEqual(balanceData);
 
-    // handles update bot correctly
+    // handles update correctly
     const updatedBalanceData: BalanceData = {
-      total: 2,
+      amount: 2,
       value: 2,
-    };
-    expected = {
-      [botId]: updatedBalanceData,
+      lastUpdated: '',
     };
     nextState = balanceReducer(
       nextState,
-      syncBalanceSuccess(botId, updatedBalanceData),
+      syncBalanceSuccess(updatedBalanceData),
     );
 
-    expect(nextState.data).toEqual(expected);
-
-    // handles new bot correctly
-    const newBotId = '2';
-    const newBalanceData: BalanceData = balanceData;
-    nextState = balanceReducer(
-      nextState,
-      syncBalanceSuccess(newBotId, newBalanceData),
-    );
-    expected = {
-      ...expected,
-      [newBotId]: newBalanceData,
-    };
-
-    expect(nextState.data).toEqual(expected);
+    expect(nextState.data).toEqual(updatedBalanceData);
   });
 
   it('sets loading to false on SYNC_BALANCE_ERROR', () => {
-    const botId = '1';
-    let nextState = balanceReducer(initialState, syncBalance(botId));
+    let nextState = balanceReducer(initialState, syncBalance());
     nextState = balanceReducer(nextState, syncBalanceError());
 
     expect(nextState.loading).toEqual(false);
