@@ -18,7 +18,6 @@ export const walletsReducer: Reducer<WalletsState> = (
         ...state,
         ...action.payload?.wallets,
         loading: false,
-        selectedWalletId: '',
       };
     }
     case WalletsActionTypes.SYNC_WALLETS: {
