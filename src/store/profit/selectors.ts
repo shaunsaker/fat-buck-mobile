@@ -19,7 +19,7 @@ export const selectProfitPercent = (state: ApplicationState) => {
     state.trades.data,
   );
 
-  return annualisedValue;
+  return getFloatString(annualisedValue);
 };
 
 export const selectProfitAmount = (state: ApplicationState) => {
@@ -38,7 +38,7 @@ export const selectProfitAmount = (state: ApplicationState) => {
 };
 
 export const selectProfitCurrencyValue = (state: ApplicationState) => {
-  const profitAmount = Number(selectProfitAmount(state));
+  const profitAmount = selectProfitAmount(state);
   const BTCPrice = Number(selectBTCPrice(state));
   const profitCurrencyValue = getFloatString(profitAmount * BTCPrice);
 

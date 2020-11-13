@@ -2,13 +2,12 @@ import { objectToArray } from './objectToArray';
 import { sortArrayOfObjectsByKey } from './sortArrayOfObjectsByKey';
 import moment from 'moment';
 import { Trade, Trades } from '../store/trades/models';
-import { getFloatString } from './getFloatString';
 
-export const getAnnualisedValue = (value: number, trades: Trades): string => {
+export const getAnnualisedValue = (value: number, trades: Trades): number => {
   const tradesArray = objectToArray<Trade>(trades);
 
   if (!tradesArray.length) {
-    return '0.00';
+    return 0;
   }
 
   // CFO: here we are using the first and last trade dates but what be more accurate is using the date of the first deposit and now
@@ -22,5 +21,5 @@ export const getAnnualisedValue = (value: number, trades: Trades): string => {
   const changePerDay = value / diffInDays;
   const changePerYear = changePerDay * 365;
 
-  return getFloatString(changePerYear);
+  return changePerYear;
 };
