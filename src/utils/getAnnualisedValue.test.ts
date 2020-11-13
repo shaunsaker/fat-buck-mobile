@@ -1,7 +1,6 @@
 import { Trades, Trade } from '../store/trades/models';
 import { getAnnualisedValue } from './getAnnualisedValue';
 import moment from 'moment';
-import { getFloatString } from './getFloatString';
 
 describe('getAnnualisedValue', () => {
   it('returns 0 if there were no trades', () => {
@@ -9,7 +8,7 @@ describe('getAnnualisedValue', () => {
     const trades: Trades = {};
     const result = getAnnualisedValue(value, trades);
 
-    expect(result).toEqual(getFloatString(0));
+    expect(result).toEqual(0);
   });
 
   it('returns the annualised value 1', () => {
@@ -27,7 +26,7 @@ describe('getAnnualisedValue', () => {
     };
     const result = getAnnualisedValue(value, trades);
 
-    expect(result).toEqual(getFloatString(value / years));
+    expect(result).toEqual(value / years);
   });
 
   it('returns the annualised value 2', () => {
@@ -45,6 +44,6 @@ describe('getAnnualisedValue', () => {
     };
     const result = getAnnualisedValue(value, trades);
 
-    expect(result).toEqual(getFloatString(value / years));
+    expect(result).toEqual(value / years);
   });
 });
