@@ -52,3 +52,7 @@ export type TransactionData =
   | CommissionTransactionData
   | TradeTransactionData
   | WithdrawalTransactionData;
+
+export interface Transactions {
+  [key: string]: TransactionData;
+}

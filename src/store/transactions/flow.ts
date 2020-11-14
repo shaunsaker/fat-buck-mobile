@@ -6,6 +6,7 @@ import {
   takeEvery,
   takeLatest,
   take,
+  all,
 } from 'redux-saga/effects';
 import { createFirestoreSyncChannel } from '../../services/db';
 import { showSnackbar } from '../actions';
@@ -31,7 +32,7 @@ export function* onSyncTransactionsChannelFlow(data: TransactionData[]) {
   yield put(syncTransactionsSuccess(newData));
 }
 
-export function* onSyncTransactionsFlow(): SagaIterator {
+export function* syncUserPoolTransactionsFlow(): SagaIterator {
   try {
     const userId = (yield* select(selectUserUid)) as string; // it is definitely defined at this point
     const ref = firestore()
@@ -47,6 +48,32 @@ export function* onSyncTransactionsFlow(): SagaIterator {
   } catch (error) {
     yield put(showSnackbar(error.message));
   }
+}
+
+export function* syncUserTransactionsFlow(): SagaIterator {
+  try {
+    const userId = (yield* select(selectUserUid)) as string; // it is definitely defined at this point
+    const ref = firestore()
+      .collection('users')
+      .doc(userId)
+      .collection('transactions');
+    const channel = yield call(createFirestoreSyncChannel, ref);
+
+    yield takeEvery(channel, onSyncTransactionsChannelFlow);
+
+    // TODO: this isn't working entirely, still getting firestore permission errors
+    yield take(AuthActionTypes.SIGN_OUT_SUCCESS);
+    channel.close();
+  } catch (error) {
+    yield put(showSnackbar(error.message));
+  }
+}
+
+export function* onSyncTransactionsFlow(): SagaIterator {
+  yield all([
+    call(syncUserPoolTransactionsFlow),
+    call(syncUserTransactionsFlow),
+  ]);
 }
 
 export function* watchSyncTransactionsFlow(): SagaIterator {
