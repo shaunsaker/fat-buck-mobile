@@ -1,18 +1,16 @@
 import React, { useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components/native';
+import { colors } from '../../colors';
 import { BLOCK_CHAIR_URL } from '../../config';
-import { RHYTHM } from '../../constants';
+import { FONT_BOLD, RHYTHM } from '../../constants';
 import { navigate, Screens } from '../../Router';
 import { DepositCallData } from '../../store/depositCalls/models';
 import { selectPendingDepositCalls } from '../../store/depositCalls/selectors';
 import { Wallets } from '../../store/wallets/models';
 import { selectWallets } from '../../store/wallets/selectors';
 import { getTimeSince } from '../../utils/getTimeSince';
-import { Background } from '../Background';
 import Button, { ButtonKinds } from '../Button';
-import { HeaderBar } from '../HeaderBar';
-import { PageHeader } from '../PageHeader';
 import { Table, Column, Row } from '../Table';
 import { useLinking } from '../useLinking';
 
@@ -34,13 +32,21 @@ const COLUMNS: Column[] = [
     style: { flex: 1 },
   },
   {
-    label: '',
+    label: 'Action',
     style: { flex: 1 },
   },
 ];
 
-const DepositCallsContainer = styled.View`
+const DepositCallsBaseContainer = styled.View`
   flex: 1;
+`;
+
+const EmptyStateText = styled.Text`
+  font-family: ${FONT_BOLD};
+  font-size: 16px;
+  color: ${colors.white};
+  text-align: center;
+  margin-bottom: ${RHYTHM}px;
 `;
 
 const ViewButtonContainer = styled.View``;
@@ -59,26 +65,24 @@ const DepositCallsBase = ({
   onCreateNewDeposit,
 }: DepositCallsBaseProps) => {
   return (
-    <Background>
-      <HeaderBar showClose />
-
-      <PageHeader>Deposit BTC</PageHeader>
-
-      <DepositCallsContainer>
+    <DepositCallsBaseContainer>
+      {rows.length ? (
         <Table
           title="My Pending Deposits"
           columns={COLUMNS}
           rows={rows}
           paddingHorizontal={RHYTHM / 2}
         />
-      </DepositCallsContainer>
+      ) : (
+        <EmptyStateText>You have no pending deposits.</EmptyStateText>
+      )}
 
       <CreateNewButtonContainer>
-        <Button kind={ButtonKinds.primary} onPress={onCreateNewDeposit}>
+        <Button kind={ButtonKinds.accent} onPress={onCreateNewDeposit}>
           CREATE NEW DEPOSIT
         </Button>
       </CreateNewButtonContainer>
-    </Background>
+    </DepositCallsBaseContainer>
   );
 };
 
@@ -111,7 +115,6 @@ export const DepositCalls = ({}: DepositCallsProps) => {
   );
 
   const onCreateNewDeposit = useCallback(() => {
-    navigate();
     navigate(Screens.deposit);
   }, []);
 

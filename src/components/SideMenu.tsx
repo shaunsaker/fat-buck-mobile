@@ -68,7 +68,7 @@ const SideMenuComponent = ({
   version,
   isAuthenticated,
   handleClose,
-  // handleProfile,
+  handleProfile,
   isWelcomeScreen,
   handleWelcome,
   handleGetInTouch,
@@ -89,13 +89,13 @@ const SideMenuComponent = ({
         </SideMenuHeaderContainer>
 
         <SideMenuContentContainer>
-          {/* {isAuthenticated ? (
+          {isAuthenticated ? (
             <SideMenuButtonContainer>
               <Button kind={ButtonKinds.primary} onPress={handleProfile}>
                 PROFILE
               </Button>
             </SideMenuButtonContainer>
-          ) : null} */}
+          ) : null}
 
           {isAuthenticated ? (
             <SideMenuButtonContainer>
@@ -195,8 +195,8 @@ export const SideMenu = ({ children }: SideMenuProps) => {
   }, [closeSideMenu]);
 
   const onProfile = useCallback(() => {
-    // TODO
     closeSideMenu();
+    navigate(Screens.profile);
   }, [closeSideMenu]);
 
   const onWelcome = useCallback(() => {
