@@ -12,6 +12,7 @@ export enum TransactionType {
 }
 
 export interface BaseTransactionData {
+  id?: string;
   date: string;
   amount: number;
   type: TransactionType;
@@ -55,4 +56,9 @@ export type TransactionData =
 
 export interface Transactions {
   [key: string]: TransactionData;
+}
+
+export interface TransactionsState {
+  data: Transactions;
+  loading: boolean;
 }

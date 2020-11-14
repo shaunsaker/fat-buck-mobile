@@ -1,27 +1,27 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components/native';
 import { colors } from '../colors';
 import { FONT_BOLD, RHYTHM } from '../constants';
+import { selectTransactions } from '../store/transactions/selectors';
+import { getTimeSince } from '../utils/getTimeSince';
+import { toBTCDigits } from '../utils/toBTCDigits';
 import { Column, Row, Table } from './Table';
 
 const COLUMNS: Column[] = [
   {
     label: 'Type',
     style: {
-      flex: 1,
+      flex: 0.75,
     },
   },
+  { label: 'Date', style: { flex: 1 } },
   {
     label: 'Amount',
     style: {
       flex: 1,
     },
   },
-  {
-    label: 'Wallet',
-    style: { flex: 1 },
-  },
-  { label: 'Date', style: { flex: 1 } },
 ];
 
 const TransactionHistoryContainer = styled.View`
@@ -48,92 +48,21 @@ const TransactionHistoryBase = ({ rows }: TransactionHistoryBaseProps) => {
 interface TransactionHistoryProps {}
 
 export const TransactionHistory = ({}: TransactionHistoryProps) => {
-  const rows: Row[] = [
-    {
-      id: '1',
-      cells: [
-        {
-          label: 'Deposit',
+  const transactions = useSelector(selectTransactions);
+  const rows: Row[] = transactions.map((transaction) => ({
+    id: transaction.id ?? '',
+    cells: [
+      { label: transaction.type },
+      { label: getTimeSince(transaction.date) },
+      {
+        label: toBTCDigits(transaction.amount).toString(),
+        style: {
+          fontFamily: FONT_BOLD,
+          color: transaction.amount < 0 ? colors.danger : colors.success,
         },
-        {
-          label: '0.001212',
-          style: {
-            fontFamily: FONT_BOLD,
-            color: colors.success,
-          },
-        },
-        {
-          label: 'Cash Stash',
-        },
-        {
-          label: '5 seconds ago',
-        },
-      ],
-    },
-    {
-      id: '2',
-      cells: [
-        {
-          label: 'Commission',
-        },
-        {
-          label: '0.000121',
-          style: {
-            fontFamily: FONT_BOLD,
-            color: colors.danger,
-          },
-        },
-        {
-          label: 'Cash Stash',
-        },
-        {
-          label: '25 seconds ago',
-        },
-      ],
-    },
-    {
-      id: '3',
-      cells: [
-        {
-          label: 'Withdrawal',
-        },
-        {
-          label: '0.001212',
-          style: {
-            fontFamily: FONT_BOLD,
-            color: colors.danger,
-          },
-        },
-        {
-          label: 'Cash Stash',
-        },
-        {
-          label: '15 seconds ago',
-        },
-      ],
-    },
-    {
-      id: '4',
-      cells: [
-        {
-          label: 'Profit Split',
-        },
-        {
-          label: '0.000121',
-          style: {
-            fontFamily: FONT_BOLD,
-            color: colors.success,
-          },
-        },
-        {
-          label: 'N/A',
-        },
-        {
-          label: '55 seconds ago',
-        },
-      ],
-    },
-  ];
+      },
+    ],
+  }));
 
   return <TransactionHistoryBase rows={rows} />;
 };

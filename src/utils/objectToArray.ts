@@ -1,6 +1,4 @@
-type Object = Record<string, any>;
-
-export const objectToArray = <T>(object: Object): T[] => {
+export const objectToArray = <T>(object: Record<string, T>): T[] => {
   if (!object) {
     return [];
   }

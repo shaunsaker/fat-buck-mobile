@@ -4,7 +4,7 @@ export const sortArrayOfObjectsByKey = <T>(
   array: T[],
   key: keyof T,
   reverseOrder?: boolean,
-): any[] => {
+): T[] => {
   const newArray = [...array];
   const sortedArray = newArray.sort((a, b) => {
     return a[key] > b[key] ? (reverseOrder ? -1 : 1) : reverseOrder ? 1 : -1;
