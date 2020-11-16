@@ -11,6 +11,7 @@ import { Wallets } from '../../store/wallets/models';
 import { selectWallets } from '../../store/wallets/selectors';
 import { getTimeSince } from '../../utils/getTimeSince';
 import Button, { ButtonKinds } from '../Button';
+import { EmptyStateText } from '../EmptyStateText';
 import { Table, Column, Row } from '../Table';
 import { useLinking } from '../useLinking';
 
@@ -39,14 +40,6 @@ const COLUMNS: Column[] = [
 
 const DepositCallsBaseContainer = styled.View`
   flex: 1;
-`;
-
-const EmptyStateText = styled.Text`
-  font-family: ${FONT_BOLD};
-  font-size: 16px;
-  color: ${colors.white};
-  text-align: center;
-  margin-bottom: ${RHYTHM}px;
 `;
 
 const ViewButtonContainer = styled.View``;

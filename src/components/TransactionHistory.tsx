@@ -6,6 +6,7 @@ import { FONT_BOLD, RHYTHM } from '../constants';
 import { selectTransactions } from '../store/transactions/selectors';
 import { getTimeSince } from '../utils/getTimeSince';
 import { toBTCDigits } from '../utils/toBTCDigits';
+import { EmptyStateText } from './EmptyStateText';
 import { Column, Row, Table } from './Table';
 
 const COLUMNS: Column[] = [
@@ -28,6 +29,10 @@ const TransactionHistoryContainer = styled.View`
   flex: 1;
 `;
 
+const EmptyStateContainer = styled.View`
+  padding-top: ${RHYTHM}px;
+`;
+
 interface TransactionHistoryBaseProps {
   rows: Row[];
 }
@@ -35,12 +40,18 @@ interface TransactionHistoryBaseProps {
 const TransactionHistoryBase = ({ rows }: TransactionHistoryBaseProps) => {
   return (
     <TransactionHistoryContainer>
-      <Table
-        title="Transaction History"
-        columns={COLUMNS}
-        rows={rows}
-        paddingHorizontal={RHYTHM / 2}
-      />
+      {!rows.length ? (
+        <Table
+          title="Transaction History"
+          columns={COLUMNS}
+          rows={rows}
+          paddingHorizontal={RHYTHM / 2}
+        />
+      ) : (
+        <EmptyStateContainer>
+          <EmptyStateText>You have no transactions.</EmptyStateText>
+        </EmptyStateContainer>
+      )}
     </TransactionHistoryContainer>
   );
 };
