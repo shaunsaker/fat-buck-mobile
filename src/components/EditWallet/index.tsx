@@ -2,8 +2,9 @@ import React, { useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components/native';
 import { RHYTHM } from '../../constants';
-import { navigate, ScreenRouteProps, Screens } from '../../Router';
+import { ScreenRouteProps, Screens } from '../../Router';
 import { deleteWallet, saveWallet } from '../../store/actions';
+import { navigate } from '../../store/navigation/actions';
 import { WalletData, WalletId } from '../../store/wallets/models';
 import { selectWalletsLoading } from '../../store/wallets/selectors';
 import { getDate } from '../../utils/getDate';
@@ -35,6 +36,12 @@ const SubmitButtonContainer = styled.View`
 const DeleteButtonContainer = styled.View`
   margin-bottom: ${RHYTHM}px;
 `;
+
+export const NAME_INPUT_PLACEHOLDER_TEXT = 'NAME';
+export const ADDRESS_INPUT_PLACEHOLDER_TEXT = 'ADDRESS';
+export const QR_CODE_BUTTON_TEXT = 'CAPTURE QR CODE INSTEAD';
+export const DELETE_BUTTON_TEXT = 'DELETE';
+export const SUBMIT_BUTTON_TEXT = 'SUBMIT';
 
 interface EditWalletBaseProps {
   name: string;
@@ -71,7 +78,7 @@ const EditWalletBase = ({
         <EditWalletContainer>
           <TextInputContainer>
             <Input
-              placeholder="NAME"
+              placeholder={NAME_INPUT_PLACEHOLDER_TEXT}
               value={name}
               autoFocus
               onChangeText={onChangeName}
@@ -80,7 +87,7 @@ const EditWalletBase = ({
 
           <TextInputContainer>
             <Input
-              placeholder="ADDRESS"
+              placeholder={ADDRESS_INPUT_PLACEHOLDER_TEXT}
               value={address}
               onChangeText={onChangeAddress}
             />
@@ -88,7 +95,7 @@ const EditWalletBase = ({
 
           <CaptureQRCodeButtonContainer>
             <Button kind={ButtonKinds.accent} onPress={onCaptureQRCode}>
-              CAPTURE QR CODE INSTEAD
+              {QR_CODE_BUTTON_TEXT}
             </Button>
           </CaptureQRCodeButtonContainer>
 
@@ -99,7 +106,7 @@ const EditWalletBase = ({
                   kind={ButtonKinds.danger}
                   disabled={isLoading}
                   onPress={onDelete}>
-                  DELETE
+                  {DELETE_BUTTON_TEXT}
                 </Button>
               </DeleteButtonContainer>
             ) : null}
@@ -109,7 +116,7 @@ const EditWalletBase = ({
               loading={isLoading}
               disabled={isDisabled}
               onPress={onSubmit}>
-              SUBMIT
+              {SUBMIT_BUTTON_TEXT}
             </Button>
           </SubmitButtonContainer>
         </EditWalletContainer>
@@ -118,7 +125,7 @@ const EditWalletBase = ({
   );
 };
 
-interface EditWalletProps {
+export interface EditWalletProps {
   route: ScreenRouteProps<Screens.editWallet>;
 }
 
@@ -139,8 +146,8 @@ export const EditWallet = ({ route }: EditWalletProps) => {
   }, []);
 
   const onCaptureQRCode = useCallback(() => {
-    navigate(Screens.QRCodeScanner);
-  }, []);
+    dispatch(navigate(Screens.QRCodeScanner));
+  }, [dispatch]);
 
   const onSubmit = useCallback(() => {
     const id = route.params?.id || getUniqueId();

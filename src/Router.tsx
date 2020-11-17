@@ -46,7 +46,9 @@ export type RouteStackParamList = {
   [Screens.home]: undefined;
   [Screens.countrySelector]: undefined;
   [Screens.deposit]: undefined;
-  [Screens.editWallet]: { address: string } | undefined;
+  [Screens.editWallet]:
+    | { id?: string; name?: string; address?: string }
+    | undefined;
   [Screens.QRCodeScanner]: undefined;
   [Screens.depositCalls]: undefined;
   [Screens.profile]: undefined;
