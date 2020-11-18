@@ -11,7 +11,7 @@ const LayoutContainerContainer = styled.View`
 `;
 
 interface LayoutContainerProps {
-  style: StyleProp<ViewStyle>;
+  style?: StyleProp<ViewStyle>;
   children: ReactNode;
 }
 
