@@ -3,7 +3,6 @@ import styled from 'styled-components/native';
 import { HeaderBar } from '../HeaderBar';
 import { Input } from '../Input';
 import Button, { ButtonKinds } from '../Button';
-import { Keyboard } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectIsAuthLoading } from '../../store/auth/selectors';
 import { Background } from '../Background';
@@ -15,6 +14,10 @@ import { InputContainer } from '../InputContainer';
 import { LayoutContainer } from '../LayoutContainer';
 import { RHYTHM } from '../../constants';
 import { selectUserEmail } from '../../store/user/selectors';
+import { dismissKeyboard } from '../../store/services/actions';
+
+export const FORGOT_PASSWORD_EMAIL_PLACEHOLDER_TEXT = 'Enter your email...';
+export const FORGOT_PASSWORD_SUBMIT_BUTTON_TEXT = 'SUBMIT';
 
 const ForgotPasswordContainer = styled.View`
   flex: 1;
@@ -74,7 +77,7 @@ const ForgotPasswordBase = ({
 
             <ForgotPasswordInputContainer>
               <Input
-                placeholder="Email"
+                placeholder={FORGOT_PASSWORD_EMAIL_PLACEHOLDER_TEXT}
                 keyboardType="email-address"
                 value={email}
                 autoFocus
@@ -92,7 +95,7 @@ const ForgotPasswordBase = ({
                 loading={isLoading}
                 disabled={isDisabled}
                 onPress={handleSubmit}>
-                SUBMIT
+                {FORGOT_PASSWORD_SUBMIT_BUTTON_TEXT}
               </Button>
             </ForgotPasswordSubmitButtonContainer>
           </ForgotPasswordFooterContainer>
@@ -115,7 +118,7 @@ export const ForgotPassword = () => {
   }, []);
 
   const onSubmit = useCallback(() => {
-    Keyboard.dismiss();
+    dispatch(dismissKeyboard());
     dispatch(sendPasswordResetEmail(email));
   }, [dispatch, email]);
 

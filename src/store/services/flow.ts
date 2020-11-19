@@ -7,6 +7,7 @@ import { openLinkService } from '../../services/linking';
 import { ActionType } from 'typesafe-actions';
 import { openLink } from './actions';
 import { showSnackbar } from '../snackbar/actions';
+import { dismissKeyboardService } from '../../services/rn';
 
 function* restartAppFlow(): SagaIterator {
   yield call(restartAppService);
@@ -39,8 +40,17 @@ function* watchOpenLinkFlow(): SagaIterator {
   yield takeLatest(ServicesActionsTypes.OPEN_LINK, openLinkFlow);
 }
 
+function* dismissKeyboardFlow(): SagaIterator {
+  yield call(dismissKeyboardService);
+}
+
+function* watchDismissKeyboardFlow(): SagaIterator {
+  yield takeLatest(ServicesActionsTypes.DISMISS_KEYBOARD, dismissKeyboardFlow);
+}
+
 export function* servicesFlow(): SagaIterator {
   yield fork(watchRestartAppFlow);
   yield fork(watchClearCacheFlow);
   yield fork(watchOpenLinkFlow);
+  yield fork(watchDismissKeyboardFlow);
 }

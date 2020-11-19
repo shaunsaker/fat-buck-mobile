@@ -7,3 +7,6 @@ export const clearCache = () => action(ServicesActionsTypes.CLEAR_CACHE);
 
 export const openLink = (link: string) =>
   action(ServicesActionsTypes.OPEN_LINK, { link });
+
+export const dismissKeyboard = () =>
+  action(ServicesActionsTypes.DISMISS_KEYBOARD);
