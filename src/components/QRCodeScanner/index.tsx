@@ -7,6 +7,7 @@ import { ParagraphText } from '../ParagraphText';
 import { colors } from '../../colors';
 import { navigate, Screens } from '../../Router';
 import { RHYTHM } from '../../constants';
+import { useDispatch } from 'react-redux';
 
 const TopSectionContainer = styled.SafeAreaView`
   align-self: stretch;
@@ -58,11 +59,18 @@ const QRCodeScannerBase = ({ onRead }: QRCodeScannerBaseProps) => {
 interface QRCodeScannerProps {}
 
 export const QRCodeScanner = ({}: QRCodeScannerProps) => {
-  const handleRead = useCallback((event: Event) => {
-    navigate(Screens.editWallet, {
-      address: event.data,
-    });
-  }, []);
+  const dispatch = useDispatch();
+
+  const handleRead = useCallback(
+    (event: Event) => {
+      dispatch(
+        navigate(Screens.editWallet, {
+          address: event.data,
+        }),
+      );
+    },
+    [dispatch],
+  );
 
   return <QRCodeScannerBase onRead={handleRead} />;
 };

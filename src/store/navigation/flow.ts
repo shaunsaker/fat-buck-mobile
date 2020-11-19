@@ -12,7 +12,7 @@ export function* onNavigateBackFlow(): SagaIterator {
 export function* onNavigateFlow(
   action: ActionType<typeof navigate>,
 ): SagaIterator {
-  _navigate(action.payload.screen);
+  _navigate(action.payload.screen, action.payload.props);
 }
 
 export function* watchNavigateBackFlow(): SagaIterator {
