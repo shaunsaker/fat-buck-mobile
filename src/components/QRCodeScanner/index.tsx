@@ -5,9 +5,10 @@ import { HeaderBar } from '../HeaderBar';
 import { HeadingText } from '../HeadingText';
 import { ParagraphText } from '../ParagraphText';
 import { colors } from '../../colors';
-import { navigate, Screens } from '../../Router';
+import { Screens } from '../../Router';
 import { RHYTHM } from '../../constants';
 import { useDispatch } from 'react-redux';
+import { navigate } from '../../store/navigation/actions';
 
 const TopSectionContainer = styled.SafeAreaView`
   align-self: stretch;
