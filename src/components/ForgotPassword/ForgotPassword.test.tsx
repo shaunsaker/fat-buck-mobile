@@ -11,10 +11,9 @@ import { mountComponent } from '../../testUtils/mountComponent';
 import { pressButton } from '../../testUtils/pressButton';
 
 describe('ForgotPassword', () => {
-  it('submits a valid email', () => {
+  const setupForgotPassword = (email: string) => {
     const component = mountComponent(<ForgotPassword />);
 
-    const email = 'test@gmail.com';
     changeInputText({
       component,
       placeholderText: FORGOT_PASSWORD_EMAIL_PLACEHOLDER_TEXT,
@@ -23,21 +22,20 @@ describe('ForgotPassword', () => {
 
     pressButton({ component, buttonText: FORGOT_PASSWORD_SUBMIT_BUTTON_TEXT });
 
+    return component;
+  };
+
+  it('submits a valid email', () => {
+    const email = 'test@gmail.com';
+    const component = setupForgotPassword(email);
+
     expect(component.spy).toHaveBeenCalledWith(dismissKeyboard());
     expect(component.spy).toHaveBeenCalledWith(sendPasswordResetEmail(email));
   });
 
   it('does not submit an invalid email', () => {
-    const component = mountComponent(<ForgotPassword />);
-
-    const invalidEmail = 'test';
-    changeInputText({
-      component,
-      placeholderText: FORGOT_PASSWORD_EMAIL_PLACEHOLDER_TEXT,
-      text: invalidEmail,
-    });
-
-    pressButton({ component, buttonText: FORGOT_PASSWORD_SUBMIT_BUTTON_TEXT });
+    const email = 'test';
+    const component = setupForgotPassword(email);
 
     expect(component.spy).not.toHaveBeenCalled();
   });
