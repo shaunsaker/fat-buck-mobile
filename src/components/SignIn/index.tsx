@@ -3,7 +3,6 @@ import styled from 'styled-components/native';
 import { HeaderBar } from '../HeaderBar';
 import { Input } from '../Input';
 import Button, { ButtonKinds } from '../Button';
-import { Keyboard } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { initiateSignIn, signIn } from '../../store/auth/actions';
 import {
@@ -17,7 +16,7 @@ import { Link } from '../Link';
 import { ParagraphText } from '../ParagraphText';
 import { validateEmail } from '../../utils/validateEmail';
 import { validatePhoneNumber } from '../../utils/validatePhoneNumber';
-import { navigate, Screens } from '../../Router';
+import { Screens } from '../../Router';
 import {
   selectUserCellphone,
   selectUserEmail,
@@ -27,6 +26,14 @@ import { InputContainer } from '../InputContainer';
 import { LayoutContainer } from '../LayoutContainer';
 import { selectCountry } from '../../store/country/selectors';
 import { RHYTHM } from '../../constants';
+import { navigate } from '../../store/navigation/actions';
+import { dismissKeyboard } from '../../store/services/actions';
+
+export const SIGN_IN_EMAIL_PLACEHOLDER_TEXT = 'Enter your email...';
+export const SIGN_IN_PASSWORD_PLACEHOLDER_TEXT = 'Enter your password...';
+export const SIGN_IN_PHONE_PLACEHOLDER_TEXT = 'E.g. 833771130';
+export const SIGN_IN_PIN_PLACEHOLDER_TEXT = 'Enter your PIN...';
+export const SIGN_IN_SUBMIT_BUTTON_TEXT = 'SUBMIT';
 
 const SignInContainer = styled.View`
   flex: 1;
@@ -122,7 +129,7 @@ const SignInBase = ({
           <LayoutContainer>
             <SignInInputContainer>
               <Input
-                placeholder="Email"
+                placeholder={SIGN_IN_EMAIL_PLACEHOLDER_TEXT}
                 keyboardType="email-address"
                 value={email}
                 autoFocus={!email}
@@ -134,7 +141,7 @@ const SignInBase = ({
 
             <SignInInputContainer>
               <Input
-                placeholder="Password"
+                placeholder={SIGN_IN_PASSWORD_PLACEHOLDER_TEXT}
                 secureTextEntry
                 value={password}
                 autoFocus={Boolean(email && !password)}
@@ -150,7 +157,7 @@ const SignInBase = ({
 
             <SignInInputContainer>
               <PhoneInput
-                placeholder="833771133"
+                placeholder={SIGN_IN_PHONE_PLACEHOLDER_TEXT}
                 value={cellphone}
                 countryFlagEmoji={countryFlagEmoji}
                 countryCallingCode={countryCallingCode}
@@ -174,7 +181,7 @@ const SignInBase = ({
 
                 <SignInInputContainer>
                   <Input
-                    placeholder="PIN Code"
+                    placeholder={SIGN_IN_PIN_PLACEHOLDER_TEXT}
                     keyboardType="number-pad"
                     value={pinCode}
                     isValid={isPinCodeValid}
@@ -204,7 +211,7 @@ const SignInBase = ({
                 loading={isLoading}
                 disabled={isDisabled}
                 onPress={handleSubmit}>
-                SUBMIT
+                {SIGN_IN_SUBMIT_BUTTON_TEXT}
               </Button>
             </SignInButtonContainer>
           </SignInFooterContainer>
@@ -254,19 +261,19 @@ export const SignIn = () => {
   }, []);
 
   const onPhoneInputCountryCodePress = useCallback(() => {
-    navigate(Screens.countrySelector);
-  }, []);
+    dispatch(navigate(Screens.countrySelector));
+  }, [dispatch]);
 
   const onChangePinCode = useCallback((text: string) => {
     setPinCode(text);
   }, []);
 
   const onDismissKeyboard = useCallback(() => {
-    Keyboard.dismiss();
-  }, []);
+    dispatch(dismissKeyboard());
+  }, [dispatch]);
 
   const onSubmit = useCallback(() => {
-    Keyboard.dismiss();
+    dispatch(dismissKeyboard());
 
     if (hasSubmitted) {
       dispatch(signIn(pinCode, email, password));
@@ -276,8 +283,8 @@ export const SignIn = () => {
   }, [dispatch, hasSubmitted, email, password, parsedCellphone, pinCode]);
 
   const onForgotPassword = useCallback(() => {
-    navigate(Screens.forgotPassword);
-  }, []);
+    dispatch(navigate(Screens.forgotPassword));
+  }, [dispatch]);
 
   useEffect(() => {
     // if the country changes, reset the cellphone field
