@@ -17,5 +17,4 @@ export enum AuthActionTypes {
 export interface AuthState extends FirebaseAuthTypes.User {
   loading: boolean;
   confirmationResult: FirebaseAuthTypes.ConfirmationResult | undefined;
-  isNewUser: boolean;
 }

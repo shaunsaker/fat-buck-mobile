@@ -6,7 +6,6 @@ import { AuthActionTypes, AuthState } from './models';
 export const initialState: AuthState = {
   loading: false,
   confirmationResult: undefined,
-  isNewUser: false,
 };
 
 export const authReducer: Reducer<AuthState> = (

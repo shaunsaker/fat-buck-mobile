@@ -2,9 +2,13 @@ import React, { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components/native';
 import { RHYTHM } from '../../constants';
-import { navigate, Screens } from '../../Router';
+import { Screens } from '../../Router';
 import { setSliderIndex } from '../../store/actions';
-import { selectIsAuthenticated } from '../../store/auth/selectors';
+import {
+  selectIsAuthenticated,
+  selectIsNewUser,
+} from '../../store/auth/selectors';
+import { navigate } from '../../store/navigation/actions';
 import { Sliders } from '../../store/sliders/models';
 import { selectWelcomeSliderIndex } from '../../store/sliders/selectors';
 import { sortArrayOfObjectsByKey } from '../../utils/sortArrayOfObjectsByKey';
@@ -60,7 +64,7 @@ const WelcomeBase = ({
 export const Welcome = () => {
   const dispatch = useDispatch();
   const slideIndex = useSelector(selectWelcomeSliderIndex);
-  const isNewUser = !useSelector(selectIsAuthenticated);
+  const isNewUser = useSelector(selectIsNewUser);
   const slides = getSlides(isNewUser);
   const slidesArray = sortArrayOfObjectsByKey(
     Object.keys(slides).map((slideId) => ({
@@ -79,15 +83,15 @@ export const Welcome = () => {
       dispatch(setSliderIndex(Sliders.welcome, slideIndex + 1));
     } else {
       if (isNewUser) {
-        navigate(Screens.signIn);
+        dispatch(navigate(Screens.signIn));
       } else {
-        navigate();
+        dispatch(navigate());
       }
     }
   }, [slideIndex, isNewUser, slidesArray, dispatch]);
 
   useEffect(() => {
-    // on unmount, reset the slide index and selected wallet
+    // on unmount, reset the slide index
     return () => {
       dispatch(setSliderIndex(Sliders.welcome, 0));
     };

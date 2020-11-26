@@ -5,7 +5,7 @@ import { NavigateActionTypes } from './models';
 export const navigateBack = () => action(NavigateActionTypes.NAVIGATE_BACK);
 
 export const navigate = <K extends keyof RouteStackParamList>(
-  screen: K,
+  screen?: K,
   props?: RouteStackParamList[K],
 ) =>
   action(NavigateActionTypes.NAVIGATE, {

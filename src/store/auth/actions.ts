@@ -18,7 +18,7 @@ export const initiateSignInSuccess = (
 export const signIn = (pinCode: string, email: string, password: string) =>
   action(AuthActionTypes.SIGN_IN, { pinCode, email, password });
 
-export const signInSuccess = (user: FirebaseAuthTypes.User) =>
+export const signInSuccess = (user: Partial<FirebaseAuthTypes.User>) =>
   action(AuthActionTypes.SIGN_IN_SUCCESS, {
     user,
   });

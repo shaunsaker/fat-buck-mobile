@@ -1,5 +1,6 @@
 import { FirebaseAuthTypes } from '@react-native-firebase/auth';
 
+const uid = '123123';
 const email = 'sakershaun@gmail.com';
 const password = '123123';
 const cellphone = '+27833771130';
@@ -16,7 +17,7 @@ const userCredential: FirebaseAuthTypes.UserCredential = {
     photoURL: '',
     providerData: [],
     providerId: '',
-    uid: '',
+    uid,
     delete: () => {
       return new Promise(() => {});
     },
@@ -76,6 +77,7 @@ const emailCredential = {
 };
 
 export const testUser = {
+  uid,
   email,
   password,
   cellphone,
