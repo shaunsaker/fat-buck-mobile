@@ -1,9 +1,8 @@
 import React, { useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components/native';
-import { colors } from '../../colors';
 import { BLOCK_CHAIR_URL } from '../../config';
-import { FONT_BOLD, RHYTHM } from '../../constants';
+import { RHYTHM } from '../../constants';
 import { navigate, Screens } from '../../Router';
 import { DepositCallData } from '../../store/depositCalls/models';
 import { selectPendingDepositCalls } from '../../store/depositCalls/selectors';

@@ -4,10 +4,7 @@ import styled from 'styled-components/native';
 import { RHYTHM } from '../../constants';
 import { Screens } from '../../Router';
 import { setSliderIndex } from '../../store/actions';
-import {
-  selectIsAuthenticated,
-  selectIsNewUser,
-} from '../../store/auth/selectors';
+import { selectIsNewUser } from '../../store/auth/selectors';
 import { navigate } from '../../store/navigation/actions';
 import { Sliders } from '../../store/sliders/models';
 import { selectWelcomeSliderIndex } from '../../store/sliders/selectors';
