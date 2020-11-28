@@ -23,6 +23,25 @@ const TradesSectionContainer = styled.View`
   flex: 1;
 `;
 
+const WinLossContainer = styled.View`
+  position: absolute;
+  top: 13px;
+  left: ${RHYTHM}px;
+  flex-direction: row;
+`;
+
+interface WinLossTextProps {
+  isWin?: boolean;
+  isLoss?: boolean;
+}
+
+const WinLossText = styled.Text<WinLossTextProps>`
+  font-size: 12px;
+  font-family: ${FONT_BOLD};
+  color: ${({ isWin, isLoss }) =>
+    isWin ? colors.success : isLoss ? colors.danger : colors.white};
+`;
+
 const ShowAlternateViewButtonContainer = styled.View`
   position: absolute;
   top: ${RHYTHM / 2 - 2}px;
@@ -76,12 +95,16 @@ interface TradeRow extends Omit<Row, 'cells' | 'style'> {
 
 interface TradesSectionBaseProps {
   rows: TradeRow[];
+  wins: number;
+  losses: number;
   isLoading: boolean;
   onShowGraphPress: () => void;
 }
 
 const TradesSectionBase = ({
   rows,
+  wins,
+  losses,
   isLoading,
   onShowGraphPress,
 }: TradesSectionBaseProps) => {
@@ -119,6 +142,16 @@ const TradesSectionBase = ({
 
   return (
     <TradesSectionContainer>
+      <WinLossContainer>
+        <WinLossText>W: </WinLossText>
+
+        <WinLossText isWin>{wins}</WinLossText>
+
+        <WinLossText> L: </WinLossText>
+
+        <WinLossText isLoss>{losses}</WinLossText>
+      </WinLossContainer>
+
       <Table
         title="Trades"
         columns={COLUMNS}
@@ -159,6 +192,8 @@ export const TradesSection = ({}: TradesSectionProps) => {
     isLoss: getTradeLoss(trade),
     isActive: trade.isOpen,
   }));
+  const wins = trades.filter((trade) => trade.closeProfitAbs >= 0).length;
+  const losses = trades.filter((trade) => trade.closeProfitAbs < 0).length;
 
   const onShowGraphPress = useCallback(() => {
     dispatch(navigate(Screens.tradesGraph));
@@ -167,6 +202,8 @@ export const TradesSection = ({}: TradesSectionProps) => {
   return (
     <TradesSectionBase
       rows={rows}
+      wins={wins}
+      losses={losses}
       isLoading={isLoading}
       onShowGraphPress={onShowGraphPress}
     />
