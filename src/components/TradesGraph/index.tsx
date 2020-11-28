@@ -7,7 +7,7 @@ import {
   XAxis,
   YAxis,
 } from 'react-native-svg-charts';
-import { FONT_REGULAR, RHYTHM } from '../../constants';
+import { BORDER_WIDTH, FONT_REGULAR, RHYTHM } from '../../constants';
 import moment from 'moment';
 import { useSelector } from 'react-redux';
 import { selectTrades } from '../../store/trades/selectors';
@@ -22,12 +22,23 @@ import { View } from 'react-native';
 
 const TradesGraphContainer = styled.View`
   flex: 1;
-  padding: 0 ${RHYTHM}px;
+  padding: 0 ${RHYTHM}px ${RHYTHM}px;
   margin-top: -${RHYTHM}px;
 `;
 
 const Row = styled.View`
+  flex: 1;
   flex-direction: row;
+  align-items: center;
+`;
+
+const YAxisLabel = styled.Text`
+  font-size: 14px;
+  font-family: ${FONT_REGULAR};
+  color: ${colors.white};
+  transform: rotate(-90deg);
+  margin-left: -65px;
+  margin-right: -55px;
 `;
 
 const CONTENT_INSET = {
@@ -40,6 +51,7 @@ const CONTENT_INSET = {
 interface Datum {
   date: Date;
   value: number;
+  svg?: any; // FIXME: how to type this
 }
 
 interface TradesGraphBaseProps {
@@ -48,6 +60,11 @@ interface TradesGraphBaseProps {
 }
 
 const TradesGraphBase = ({ data, trendlineData }: TradesGraphBaseProps) => {
+  const dataWithStyles = data.map((datum) => ({
+    ...datum,
+    svg: { fill: datum.value >= 0 ? colors.success : colors.danger },
+  }));
+
   return (
     <Background>
       <HeaderBar showClose />
@@ -56,6 +73,8 @@ const TradesGraphBase = ({ data, trendlineData }: TradesGraphBaseProps) => {
 
       <TradesGraphContainer>
         <Row>
+          <YAxisLabel>Profit Percentage (%)</YAxisLabel>
+
           <YAxis
             data={data.map(({ value }) => value)}
             contentInset={CONTENT_INSET}
@@ -64,14 +83,12 @@ const TradesGraphBase = ({ data, trendlineData }: TradesGraphBaseProps) => {
             numberOfTicks={8}
           />
 
-          <View>
+          <View style={{ flex: 1 }}>
             <BarChart
-              data={data}
+              data={dataWithStyles}
               yAccessor={({ item }) => item.value}
               contentInset={CONTENT_INSET}
-              animate
-              style={{ width: 360, height: 360 }}
-              svg={{ stroke: colors.primary, strokeWidth: 2 }}>
+              style={{ flex: 1 }}>
               <Grid
                 direction="HORIZONTAL"
                 svg={{ stroke: colors.lightTransWhite }}
@@ -82,7 +99,6 @@ const TradesGraphBase = ({ data, trendlineData }: TradesGraphBaseProps) => {
               data={trendlineData}
               yAccessor={({ item }) => item.value}
               contentInset={CONTENT_INSET}
-              animate
               style={{
                 position: 'absolute',
                 top: 0,
@@ -90,7 +106,7 @@ const TradesGraphBase = ({ data, trendlineData }: TradesGraphBaseProps) => {
                 bottom: 0,
                 left: 0,
               }}
-              svg={{ stroke: colors.accent, strokeWidth: 2 }}
+              svg={{ stroke: colors.white, strokeWidth: BORDER_WIDTH }}
             />
           </View>
         </Row>
