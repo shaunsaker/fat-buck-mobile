@@ -35,6 +35,8 @@
 	</array>
 	<key>CFBundleVersion</key>
 	<string>1</string>
+	<key>CodePushDeploymentKey</key>
+	<string>TzzvbL5nWAGT_F_1lQMNp54Z1Oc4tBc9iXjiI</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>mailto</string>
@@ -54,14 +56,19 @@
 			</dict>
 		</dict>
 	</dict>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>We do not need access to your location</string>
 	<key>NSCameraUsageDescription</key>
 	<string>We need your permission to use your camera so that we can scan the QR code</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>We do not need access to your location</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Recursive-Regular.ttf</string>
 		<string>Recursive-Bold.ttf</string>
+	</array>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>fetch</string>
+		<string>remote-notification</string>
 	</array>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
@@ -75,7 +82,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>CodePushDeploymentKey</key>
-	<string>TzzvbL5nWAGT_F_1lQMNp54Z1Oc4tBc9iXjiI</string>
 </dict>
 </plist>

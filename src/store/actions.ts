@@ -13,3 +13,4 @@ export * from './wallets/actions';
 export * from './sliders/actions';
 export * from './transactions/actions';
 export * from './depositCalls/actions';
+export * from './messaging/actions';
