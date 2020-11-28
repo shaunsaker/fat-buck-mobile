@@ -1,5 +1,5 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useCallback } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components/native';
 import { colors } from '../colors';
 import { selectTrades, selectTradesLoading } from '../store/trades/selectors';
@@ -14,10 +14,19 @@ import { getTimeSince } from '../utils/getTimeSince';
 import { Table, Column, Row } from './Table';
 import { selectBTCPrice } from '../store/balance/selectors';
 import { TableLoader } from './TableLoader';
-import { FONT_BOLD, FONT_REGULAR, RHYTHM } from '../constants';
+import { BORDER_WIDTH, FONT_BOLD, FONT_REGULAR, RHYTHM } from '../constants';
+import Button, { ButtonKinds } from './Button';
+import { navigate } from '../store/navigation/actions';
+import { Screens } from '../Router';
 
 const TradesSectionContainer = styled.View`
   flex: 1;
+`;
+
+const ShowAlternateViewButtonContainer = styled.View`
+  position: absolute;
+  top: ${RHYTHM / 2 - 2}px;
+  right: ${RHYTHM}px;
 `;
 
 const COLUMNS: Column[] = [
@@ -60,20 +69,34 @@ const COLUMNS: Column[] = [
 
 interface TradeRow extends Omit<Row, 'cells' | 'style'> {
   labels: string[];
-  isProfit?: boolean;
-  isLoss?: boolean;
+  isProfit: boolean;
+  isLoss: boolean;
+  isActive: boolean;
 }
 
 interface TradesSectionBaseProps {
   rows: TradeRow[];
   isLoading: boolean;
+  onShowGraphPress: () => void;
 }
 
-const TradesSectionBase = ({ rows, isLoading }: TradesSectionBaseProps) => {
+const TradesSectionBase = ({
+  rows,
+  isLoading,
+  onShowGraphPress,
+}: TradesSectionBaseProps) => {
   // attach styles
   const rowsWithStyles = rows.map((row) => {
     return {
       ...row,
+      style: row.isActive
+        ? {
+            backgroundColor: colors.lightTransWhite,
+            borderTopWidth: BORDER_WIDTH,
+            borderBottomWidth: BORDER_WIDTH,
+            borderColor: colors.primary,
+          }
+        : undefined,
       cells: row.labels.map((label, labelIndex) => {
         const isLastLabel = labelIndex === row.labels.length - 1;
 
@@ -103,6 +126,15 @@ const TradesSectionBase = ({ rows, isLoading }: TradesSectionBaseProps) => {
         paddingHorizontal={RHYTHM / 2}>
         {isLoading ? <TableLoader /> : null}
       </Table>
+
+      <ShowAlternateViewButtonContainer>
+        <Button
+          kind={ButtonKinds.accentFilled}
+          small
+          onPress={onShowGraphPress}>
+          SHOW GRAPH
+        </Button>
+      </ShowAlternateViewButtonContainer>
     </TradesSectionContainer>
   );
 };
@@ -110,6 +142,7 @@ const TradesSectionBase = ({ rows, isLoading }: TradesSectionBaseProps) => {
 interface TradesSectionProps {}
 
 export const TradesSection = ({}: TradesSectionProps) => {
+  const dispatch = useDispatch();
   const trades = useSelector(selectTrades);
   const BTCPrice = useSelector(selectBTCPrice);
   const isLoading = useSelector(selectTradesLoading);
@@ -124,7 +157,18 @@ export const TradesSection = ({}: TradesSectionProps) => {
     ],
     isProfit: getTradeProfit(trade),
     isLoss: getTradeLoss(trade),
+    isActive: trade.isOpen,
   }));
 
-  return <TradesSectionBase rows={rows} isLoading={isLoading} />;
+  const onShowGraphPress = useCallback(() => {
+    dispatch(navigate(Screens.tradesGraph));
+  }, [dispatch]);
+
+  return (
+    <TradesSectionBase
+      rows={rows}
+      isLoading={isLoading}
+      onShowGraphPress={onShowGraphPress}
+    />
+  );
 };

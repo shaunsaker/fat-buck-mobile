@@ -1,7 +1,10 @@
 import { ApplicationState } from '../reducers';
 import { sortArrayOfObjectsByKey } from '../../utils/sortArrayOfObjectsByKey';
 
-export const selectTrades = (state: ApplicationState) => {
+export const selectTrades = (
+  state: ApplicationState,
+  oldestToLatest?: boolean,
+) => {
   // if no closeTimestamp, it's active, sort by openTimestamp and put at top of list
   // if closeTimestamp, it's closed, sort by closeTimestamp
   const tradesArray = Object.keys(state.trades.data).map(
@@ -17,7 +20,7 @@ export const selectTrades = (state: ApplicationState) => {
   const sortedClosedTrades = sortArrayOfObjectsByKey(
     closedTrades,
     'closeTimestamp',
-    true,
+    oldestToLatest ? false : true,
   );
   const sortedTrades = [...sortedOpenTrades, ...sortedClosedTrades];
 

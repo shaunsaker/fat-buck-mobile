@@ -23,6 +23,7 @@ import { EditWallet } from './components/EditWallet';
 import { QRCodeScanner as QRCodeScannerComponent } from './components/QRCodeScanner';
 import { DepositCalls } from './components/DepositCalls';
 import { Profile } from './components/Profile';
+import { TradesGraph } from './components/TradesGraph';
 
 export enum Screens {
   welcome = 'welcome',
@@ -36,6 +37,7 @@ export enum Screens {
   QRCodeScanner = 'QRCodeScanner',
   depositCalls = 'depositCalls',
   profile = 'profile',
+  tradesGraph = 'tradesGraph',
 }
 
 export type RouteStackParamList = {
@@ -52,6 +54,7 @@ export type RouteStackParamList = {
   [Screens.QRCodeScanner]: undefined;
   [Screens.depositCalls]: undefined;
   [Screens.profile]: undefined;
+  [Screens.tradesGraph]: undefined;
 };
 
 export type ScreenNavigationProps<T extends Screens> = StackNavigationProp<
@@ -116,6 +119,11 @@ export const Router = () => {
               />
 
               <Stack.Screen name={Screens.profile} component={Profile} />
+
+              <Stack.Screen
+                name={Screens.tradesGraph}
+                component={TradesGraph}
+              />
             </>
           ) : (
             <>
