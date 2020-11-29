@@ -3,14 +3,14 @@ import styled from 'styled-components/native';
 import { colors } from '../colors';
 import Animator from 'react-native-simple-animators';
 import { ANIMATION_DURATION_SHORT, FONT_BOLD } from '../constants';
+import { SMALL_BUTTON_HEIGHT } from './Button';
 
 const WIDTH = 100;
-const HEIGHT = 30;
 
 const ToggleSelectContainer = styled.View`
   flex-direction: row;
   background-color: ${colors.veryLightTransWhite};
-  border-radius: ${HEIGHT / 2}px;
+  border-radius: ${SMALL_BUTTON_HEIGHT / 2}px;
 `;
 
 interface ToggleSelectOptionContainerProps {
@@ -21,22 +21,22 @@ const ToggleSelectOptionContainer = styled.TouchableOpacity<
   ToggleSelectOptionContainerProps
 >`
   width: ${WIDTH}px;
-  height: ${HEIGHT}px;
+  height: ${SMALL_BUTTON_HEIGHT}px;
   justify-content: center;
   align-items: center;
 `;
 
 const ToggleSelectOptionBackground = styled(Animator)`
-  background-color: ${colors.primary};
+  background-color: ${colors.accent};
   position: absolute;
   width: ${WIDTH}px;
-  height: ${HEIGHT}px;
-  border-radius: ${HEIGHT / 2}px;
+  height: ${SMALL_BUTTON_HEIGHT}px;
+  border-radius: ${SMALL_BUTTON_HEIGHT / 2}px;
 `;
 
 const ToggleSelectOptionText = styled.Text`
   font-family: ${FONT_BOLD};
-  font-size: 14px;
+  font-size: 12px;
   color: ${colors.white};
 `;
 

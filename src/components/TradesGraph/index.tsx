@@ -7,7 +7,7 @@ import {
   XAxis,
   YAxis,
 } from 'react-native-svg-charts';
-import { BORDER_WIDTH, FONT_REGULAR, RHYTHM } from '../../constants';
+import { FONT_REGULAR, RHYTHM } from '../../constants';
 import moment from 'moment';
 import { useSelector } from 'react-redux';
 import { selectTrades } from '../../store/trades/selectors';
@@ -106,7 +106,7 @@ const TradesGraphBase = ({ data, trendlineData }: TradesGraphBaseProps) => {
                 bottom: 0,
                 left: 0,
               }}
-              svg={{ stroke: colors.white, strokeWidth: BORDER_WIDTH }}
+              svg={{ stroke: colors.white, strokeWidth: 2 }}
             />
           </View>
         </Row>

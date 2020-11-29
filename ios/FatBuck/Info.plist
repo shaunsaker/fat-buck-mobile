@@ -62,8 +62,8 @@
 	<string>We do not need access to your location</string>
 	<key>UIAppFonts</key>
 	<array>
-		<string>Recursive-Regular.ttf</string>
-		<string>Recursive-Bold.ttf</string>
+		<string>Inter-Regular.ttf</string>
+		<string>Inter-Bold.ttf</string>
 	</array>
 	<key>UIBackgroundModes</key>
 	<array>
