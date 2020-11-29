@@ -28,7 +28,7 @@ const TabContainer = styled.TouchableOpacity<TabContainerProps>`
 
 const TabText = styled.Text`
   font-family: ${FONT_BOLD};
-  font-size: 14px;
+  font-size: 12px;
   color: ${colors.white};
 `;
 
