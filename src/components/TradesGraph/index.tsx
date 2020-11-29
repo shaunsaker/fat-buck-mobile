@@ -7,7 +7,7 @@ import {
   XAxis,
   YAxis,
 } from 'react-native-svg-charts';
-import { BORDER_WIDTH, FONT_REGULAR, RHYTHM } from '../../constants';
+import { FONT_REGULAR, RHYTHM } from '../../constants';
 import moment from 'moment';
 import { useSelector } from 'react-redux';
 import { selectTrades } from '../../store/trades/selectors';
