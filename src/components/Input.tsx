@@ -1,9 +1,8 @@
 import React, { useState, useCallback, ReactNode } from 'react';
 import styled from 'styled-components/native';
 import { colors } from '../colors';
-import { TextInputProperties, TextInput, Platform } from 'react-native';
-import { BORDER_WIDTH, FONT_BOLD } from '../constants';
-import { IS_IOS } from '../config';
+import { TextInputProperties, TextInput } from 'react-native';
+import { BORDER_WIDTH, FONT_BOLD, IS_IOS } from '../constants';
 
 export const INPUT_HEIGHT = 50;
 export const INPUT_PADDING = INPUT_HEIGHT / 2;
