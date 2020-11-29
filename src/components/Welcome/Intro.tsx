@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components/native';
 import { RHYTHM } from '../../constants';
-import Logo from '../Logo';
+import Logo, { LogoVariants } from '../Logo';
 import { ParagraphText } from '../ParagraphText';
 
 const IntroContainer = styled.View`
@@ -18,7 +18,7 @@ export const Intro = ({}: IntroProps) => {
   return (
     <IntroContainer>
       <LogoContainer>
-        <Logo size={120} />
+        <Logo variant={LogoVariants.initial} size={120} />
       </LogoContainer>
 
       <ParagraphText center>

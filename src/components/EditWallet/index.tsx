@@ -94,7 +94,10 @@ const EditWalletBase = ({
           </TextInputContainer>
 
           <CaptureQRCodeButtonContainer>
-            <Button kind={ButtonKinds.accent} onPress={onCaptureQRCode}>
+            <Button
+              kind={ButtonKinds.accentFilled}
+              small
+              onPress={onCaptureQRCode}>
               {QR_CODE_BUTTON_TEXT}
             </Button>
           </CaptureQRCodeButtonContainer>

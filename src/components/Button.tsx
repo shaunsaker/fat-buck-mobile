@@ -8,6 +8,7 @@ import { BORDER_WIDTH, FONT_BOLD, RHYTHM } from '../constants';
 
 export enum ButtonKinds {
   primary,
+  primaryFlat,
   secondary,
   accent,
   accentFilled,
@@ -23,16 +24,16 @@ interface ButtonContainerProps {
 
 const WIDTH = 180;
 const HEIGHT = 45;
-const SMALL_HEIGHT = 25;
+export const SMALL_BUTTON_HEIGHT = 25;
 
 const ButtonContainer = styled(Touchable)<ButtonContainerProps>`
   min-width: ${({ small, fullWidth }) =>
     small ? 'auto' : fullWidth ? 'auto' : `${WIDTH}px`};
-  height: ${({ small }) => (small ? SMALL_HEIGHT : HEIGHT)}px;
+  height: ${({ small }) => (small ? SMALL_BUTTON_HEIGHT : HEIGHT)}px;
   border-width: ${BORDER_WIDTH}px;
   border-style: solid;
   border-color: ${({ kind }) =>
-    kind === ButtonKinds.primary
+    kind === ButtonKinds.primary || kind === ButtonKinds.primaryFlat
       ? colors.primary
       : kind === ButtonKinds.disabled || kind === ButtonKinds.secondary
       ? colors.lightTransWhite
@@ -41,9 +42,14 @@ const ButtonContainer = styled(Touchable)<ButtonContainerProps>`
       : kind === ButtonKinds.danger
       ? colors.danger
       : colors.white};
-  border-radius: ${({ small }) => (small ? SMALL_HEIGHT / 2 : HEIGHT / 2)}px;
+  border-radius: ${({ small }) =>
+    small ? SMALL_BUTTON_HEIGHT / 2 : HEIGHT / 2}px;
   background-color: ${({ kind }) =>
-    kind === ButtonKinds.accentFilled ? colors.accent : 'transparent'};
+    kind === ButtonKinds.primaryFlat
+      ? colors.primary
+      : kind === ButtonKinds.accentFilled
+      ? colors.accent
+      : 'transparent'};
 `;
 
 const ButtonCss = css`
@@ -72,10 +78,12 @@ const ButtonText = styled.Text<ButtonTextProps>`
   font-size: ${({ small }) => (small ? 12 : 16)}px;
   font-family: ${FONT_BOLD};
   color: ${({ kind }) =>
-    kind === ButtonKinds.disabled
+    kind === ButtonKinds.primaryFlat
+      ? colors.black
+      : kind === ButtonKinds.disabled
       ? colors.transWhite
-      : kind === ButtonKinds.accent
-      ? colors.accent
+      : kind === ButtonKinds.accentFilled
+      ? colors.white
       : colors.white};
 `;
 

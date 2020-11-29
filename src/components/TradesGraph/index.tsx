@@ -106,7 +106,7 @@ const TradesGraphBase = ({ data, trendlineData }: TradesGraphBaseProps) => {
                 bottom: 0,
                 left: 0,
               }}
-              svg={{ stroke: colors.white, strokeWidth: BORDER_WIDTH }}
+              svg={{ stroke: colors.white, strokeWidth: 2 }}
             />
           </View>
         </Row>

@@ -9,7 +9,7 @@ const LinkContainer = styled.TouchableOpacity``;
 const LinkText = styled.Text`
   font-family: ${FONT_REGULAR};
   font-size: 14px;
-  color: ${colors.accent};
+  color: ${colors.primary};
   text-decoration-line: underline;
 `;
 

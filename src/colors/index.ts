@@ -1,10 +1,12 @@
 import tinycolor from 'tinycolor2';
 
-const BLACK = '#0B0B00';
-const WHITE = '#FCFCFD';
-const PRIMARY = '#9C9F02';
-const ACCENT = '#029F70';
+const BLACK = '#0A1C21';
+const WHITE = '#FFFFFF';
+const PRIMARY = '#D9A01F';
+const ACCENT = '#8C4C10';
+const SUCCESS = '#419268';
 const DANGER = '#D13F00';
+const LIGHT = '#E9D59C';
 
 export const colors = {
   // input colors
@@ -12,18 +14,18 @@ export const colors = {
   white: WHITE,
   primary: PRIMARY,
   accent: ACCENT,
-  success: ACCENT,
+  success: SUCCESS,
   danger: DANGER,
 
   // calculated colors
   transBlack: tinycolor(BLACK).setAlpha(0.5).toString(),
-  transWhite: tinycolor(WHITE).setAlpha(0.5).toString(),
-  darkTransWhite: tinycolor(WHITE).setAlpha(0.8).toString(),
-  lightTransWhite: tinycolor(WHITE).setAlpha(0.17).toString(),
-  veryLightTransWhite: tinycolor(WHITE).setAlpha(0.05).toString(),
+  transWhite: tinycolor(LIGHT).setAlpha(0.5).toString(),
+  darkTransWhite: tinycolor(LIGHT).setAlpha(0.8).toString(),
+  lightTransWhite: tinycolor(LIGHT).setAlpha(0.17).toString(),
+  veryLightTransWhite: tinycolor(LIGHT).setAlpha(0.05).toString(),
   lightPrimary: tinycolor(PRIMARY).setAlpha(0.33).toString(),
   lightAccent: tinycolor(ACCENT).setAlpha(0.33).toString(),
   grey: tinycolor(BLACK).setAlpha(0.33).toString(),
-  lightSuccess: tinycolor(ACCENT).setAlpha(0.33).toString(),
+  lightSuccess: tinycolor(SUCCESS).setAlpha(0.33).toString(),
   lightDanger: tinycolor(DANGER).setAlpha(0.33).toString(),
 };

@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components/native';
 import { RHYTHM } from '../../constants';
-import Logo from '../Logo';
+import Logo, { LogoVariants } from '../Logo';
 import { ParagraphText } from '../ParagraphText';
 
 const HowContainer = styled.View`
@@ -22,7 +22,7 @@ export const How = ({}: HowProps) => {
   return (
     <HowContainer>
       <LogoContainer>
-        <Logo size={120} />
+        <Logo variant={LogoVariants.eating} size={120} />
       </LogoContainer>
 
       <TextContainer>
