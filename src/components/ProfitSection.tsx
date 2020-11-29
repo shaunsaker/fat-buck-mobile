@@ -15,7 +15,7 @@ import { ProfitTypes } from '../store/profit/models';
 import { setProfitType } from '../store/actions';
 import { selectSelectedCurrency } from '../store/currency/selectors';
 import { Loader } from './Loader';
-import { RHYTHM } from '../constants';
+import { IS_IOS, RHYTHM } from '../constants';
 
 const ProfitSectionContainer = styled.View`
   padding: 0 0 ${RHYTHM}px;
@@ -34,7 +34,7 @@ const ProfitSectionProfitContainer = styled.View`
 
 const ProfitSectionProfilePercentageContainer = styled.View`
   position: absolute;
-  bottom: 5px;
+  bottom: ${IS_IOS ? 5 : 10}px;
   right: -15px;
 `;
 

@@ -37,8 +37,8 @@ const DeleteButtonContainer = styled.View`
   margin-bottom: ${RHYTHM}px;
 `;
 
-export const NAME_INPUT_PLACEHOLDER_TEXT = 'NAME';
-export const ADDRESS_INPUT_PLACEHOLDER_TEXT = 'ADDRESS';
+export const NAME_INPUT_PLACEHOLDER_TEXT = 'Enter your wallet name...';
+export const ADDRESS_INPUT_PLACEHOLDER_TEXT = 'Enter your wallet address...';
 export const QR_CODE_BUTTON_TEXT = 'CAPTURE QR CODE INSTEAD';
 export const DELETE_BUTTON_TEXT = 'DELETE';
 export const SUBMIT_BUTTON_TEXT = 'SUBMIT';

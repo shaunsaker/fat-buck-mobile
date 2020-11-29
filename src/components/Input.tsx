@@ -3,6 +3,7 @@ import styled from 'styled-components/native';
 import { colors } from '../colors';
 import { TextInputProperties, TextInput, Platform } from 'react-native';
 import { BORDER_WIDTH, FONT_BOLD } from '../constants';
+import { IS_IOS } from '../config';
 
 export const INPUT_HEIGHT = 50;
 export const INPUT_PADDING = INPUT_HEIGHT / 2;
@@ -34,9 +35,7 @@ const StyledInputContainer = styled.View<StyledInputContainerProps>`
 
 const StyledInput = styled(TextInput)`
   font-family: ${FONT_BOLD};
-  font-weight: ${Platform.OS === 'android'
-    ? 'normal'
-    : 'bold'}; /* fix font-family android */
+  font-weight: ${!IS_IOS ? 'normal' : 'bold'}; /* fix font-family android */
   font-size: 16px;
   color: ${colors.white};
   height: ${INPUT_HEIGHT}px;

@@ -44,7 +44,6 @@ const COLUMNS: Column[] = [
 
 const WalletsSectionContainer = styled.View`
   flex: 1;
-  margin: 0 -${RHYTHM}px;
 `;
 
 const WalletSectionTableContainer = styled.View`

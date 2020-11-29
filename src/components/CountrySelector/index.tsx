@@ -39,7 +39,7 @@ interface CountrySelectorBaseProps {
   onCountryPress: (country: CountryInfo) => void;
 }
 
-export const SEARCH_COUNTRIES_PLACEHOLDER_TEXT = 'Search countries';
+export const SEARCH_COUNTRIES_PLACEHOLDER_TEXT = 'Search countries...';
 
 const countriesListKeyExtractor = (country: CountryInfo) => country.name;
 

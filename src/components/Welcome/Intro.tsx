@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components/native';
-import { RHYTHM } from '../../constants';
+import { MAX_TEXT_WIDTH, RHYTHM } from '../../constants';
 import Logo, { LogoVariants } from '../Logo';
 import { ParagraphText } from '../ParagraphText';
 
@@ -10,6 +10,7 @@ const IntroContainer = styled.View`
 
 const LogoContainer = styled.View`
   margin-bottom: ${RHYTHM}px;
+  max-width: ${MAX_TEXT_WIDTH}px;
 `;
 
 interface IntroProps {}

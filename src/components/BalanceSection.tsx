@@ -17,7 +17,7 @@ import { setBalanceType } from '../store/actions';
 import { selectSelectedCurrency } from '../store/currency/selectors';
 import { Loader } from './Loader';
 import { navigate, Screens } from '../Router';
-import { RHYTHM } from '../constants';
+import { IS_IOS, RHYTHM } from '../constants';
 import { selectHasPendingDepositCalls } from '../store/depositCalls/selectors';
 
 enum BalanceTypes {
@@ -43,7 +43,7 @@ const BalanceSectionBalanceContainer = styled.View`
 
 const BalanceSectionProfilePercentageContainer = styled.View`
   position: absolute;
-  bottom: 5px;
+  bottom: ${IS_IOS ? 5 : 10}px;
   right: -32px;
 `;
 

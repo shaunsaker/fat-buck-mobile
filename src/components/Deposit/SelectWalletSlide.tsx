@@ -1,6 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components/native';
+import { RHYTHM } from '../../constants';
 import { selectDepositSliderIndex } from '../../store/sliders/selectors';
 import { selectSelectedWalletId } from '../../store/wallets/selectors';
 import { Step } from '../Step';
@@ -9,6 +10,11 @@ import { slides } from './slides';
 
 const SelectWalletSlideContainer = styled.View`
   flex: 1;
+`;
+
+const WalletsSectionContainer = styled.View`
+  flex: 1;
+  margin: 0 -${RHYTHM}px;
 `;
 
 interface SelectWalletSlideBaseProps {
@@ -30,7 +36,9 @@ const SelectWalletSlideBase = ({
         isDone={isDone}
       />
 
-      <WalletsSection />
+      <WalletsSectionContainer>
+        <WalletsSection />
+      </WalletsSectionContainer>
     </SelectWalletSlideContainer>
   );
 };

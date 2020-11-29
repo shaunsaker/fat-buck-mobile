@@ -43,7 +43,7 @@ const ProgressItemContainer = styled.TouchableOpacity<
 `;
 
 const ButtonContainer = styled.View`
-  margin-top: ${RHYTHM}px;
+  margin: ${RHYTHM}px 0;
   justify-content: flex-end;
   align-items: center;
 `;
