@@ -134,7 +134,7 @@ export const TradesGraph = ({}: TradesGraphProps) => {
     selectTrades(state, true),
   );
   const data = trades.map((trade) => ({
-    date: moment(trade.closeTimestamp).toDate(),
+    date: moment(trade.closeTimestamp || trade.openTimestamp).toDate(),
     value: parseFloat(getTradeProfitPercentage(trade)),
   }));
   const { data: trendlineData } = getTrendlineData(data);
