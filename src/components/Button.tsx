@@ -45,27 +45,15 @@ const ButtonContainer = styled(Touchable)<ButtonContainerProps>`
   border-radius: ${({ small }) =>
     small ? SMALL_BUTTON_HEIGHT / 2 : HEIGHT / 2}px;
   background-color: ${({ kind }) =>
-    kind === ButtonKinds.primaryFlat
+    kind === ButtonKinds.primary || kind === ButtonKinds.primaryFlat
       ? colors.primary
       : kind === ButtonKinds.accentFilled
       ? colors.accent
       : 'transparent'};
-`;
-
-const ButtonCss = css`
-  flex: 1;
   justify-content: center;
   align-items: center;
   border-radius: ${HEIGHT / 2}px;
   padding: 0 ${RHYTHM / 2}px;
-`;
-
-const ButtonGradient = styled(LinearGradient)`
-  ${ButtonCss}
-`;
-
-const ButtonBackground = styled.View`
-  ${ButtonCss}
 `;
 
 interface ButtonTextProps {
@@ -78,7 +66,7 @@ const ButtonText = styled.Text<ButtonTextProps>`
   font-size: ${({ small }) => (small ? 12 : 16)}px;
   font-family: ${FONT_BOLD};
   color: ${({ kind }) =>
-    kind === ButtonKinds.primaryFlat
+    kind === ButtonKinds.primary || kind === ButtonKinds.primaryFlat
       ? colors.black
       : kind === ButtonKinds.disabled
       ? colors.transWhite
@@ -122,16 +110,7 @@ export const Button = ({
       disabled={disabled}
       fullWidth={fullWidth}
       onPress={onPress}>
-      {renderedKind === ButtonKinds.primary ? (
-        <ButtonGradient
-          start={{ x: 0, y: 0.25 }}
-          end={{ x: 1.5, y: 1.5 }}
-          colors={[colors.primary, colors.black]}>
-          {childComponent}
-        </ButtonGradient>
-      ) : (
-        <ButtonBackground>{childComponent}</ButtonBackground>
-      )}
+      {childComponent}
     </ButtonContainer>
   );
 };
