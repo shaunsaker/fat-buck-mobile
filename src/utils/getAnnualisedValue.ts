@@ -4,7 +4,11 @@ import moment from 'moment';
 import { Trade, Trades } from '../store/trades/models';
 
 export const getAnnualisedValue = (value: number, trades: Trades): number => {
-  const tradesArray = objectToArray<Trade>(trades);
+  // convert to object
+  // filter out active trades
+  const tradesArray = objectToArray<Trade>(trades).filter(
+    (trade) => trade.closeTimestamp,
+  );
 
   if (!tradesArray.length) {
     return 0;
