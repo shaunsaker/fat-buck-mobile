@@ -41,7 +41,7 @@ const HeaderBarBetaText = styled(SmallText)`
   color: ${colors.transWhite};
   position: absolute;
   top: 0;
-  right: -30px;
+  right: -35px;
 `;
 
 const HeaderBarCloseButtonContainer = styled.View`
