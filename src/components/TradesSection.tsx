@@ -115,9 +115,6 @@ const TradesSectionBase = ({
       style: row.isActive
         ? {
             backgroundColor: colors.lightTransWhite,
-            borderTopWidth: BORDER_WIDTH,
-            borderBottomWidth: BORDER_WIDTH,
-            borderColor: colors.primary,
           }
         : undefined,
       cells: row.labels.map((label, labelIndex) => {
