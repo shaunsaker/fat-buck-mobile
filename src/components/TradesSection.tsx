@@ -11,10 +11,10 @@ import {
   getTradeProfitPercentage,
 } from '../store/trades/utils';
 import { getTimeSince } from '../utils/getTimeSince';
-import { Table, Column, Row } from './Table';
+import { Table, Column, Row, Cell } from './Table';
 import { selectBTCPrice } from '../store/balance/selectors';
 import { TableLoader } from './TableLoader';
-import { BORDER_WIDTH, FONT_BOLD, FONT_REGULAR, RHYTHM } from '../constants';
+import { FONT_BOLD, FONT_REGULAR, RHYTHM } from '../constants';
 import Button, { ButtonKinds } from './Button';
 import { navigate } from '../store/navigation/actions';
 import { Screens } from '../Router';
@@ -119,8 +119,7 @@ const TradesSectionBase = ({
         : undefined,
       cells: row.labels.map((label, labelIndex) => {
         const isLastLabel = labelIndex === row.labels.length - 1;
-
-        return {
+        const cell: Cell = {
           label,
           style: {
             color: isLastLabel
@@ -132,7 +131,12 @@ const TradesSectionBase = ({
               : colors.white,
             fontFamily: isLastLabel ? FONT_BOLD : FONT_REGULAR,
           },
+
+          // animate active trade values but only the last two columns
+          shouldAnimate: labelIndex > 2 && row.isActive,
         };
+
+        return cell;
       }),
     };
   });

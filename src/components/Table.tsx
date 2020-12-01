@@ -3,6 +3,7 @@ import { FlatList, StyleProp, TextStyle, ViewStyle } from 'react-native';
 import styled from 'styled-components/native';
 import { colors } from '../colors';
 import { RHYTHM } from '../constants';
+import { AnimatedNumber } from './AnimatedNumber';
 import { HeadingText } from './HeadingText';
 import { SmallText } from './SmallText';
 
@@ -39,6 +40,7 @@ export interface Cell {
   label: string;
   children?: ReactNode;
   style?: StyleProp<TextStyle>;
+  shouldAnimate?: boolean;
 }
 
 export interface Row {
@@ -98,7 +100,11 @@ export const Table = ({
                     cell.style,
                   ]}
                   numberOfLines={1}>
-                  {cell.label}
+                  {cell.shouldAnimate ? (
+                    <AnimatedNumber>{cell.label}</AnimatedNumber>
+                  ) : (
+                    cell.label
+                  )}
                 </SmallText>
               )
             );

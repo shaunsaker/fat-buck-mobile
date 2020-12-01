@@ -16,6 +16,7 @@ import { setProfitType } from '../store/actions';
 import { selectSelectedCurrency } from '../store/currency/selectors';
 import { Loader } from './Loader';
 import { IS_IOS, RHYTHM } from '../constants';
+import { AnimatedNumber } from './AnimatedNumber';
 
 const ProfitSectionContainer = styled.View`
   padding: 0 0 ${RHYTHM}px;
@@ -76,7 +77,9 @@ const ProfitSectionBase = ({
       </ProfitSectionHeadingContainer>
 
       <ProfitSectionProfitContainer>
-        <BigText>{value}</BigText>
+        <BigText>
+          <AnimatedNumber key={selectedProfitType}>{value}</AnimatedNumber>
+        </BigText>
 
         <ProfitSectionProfilePercentageContainer>
           <ParagraphText>%</ParagraphText>
@@ -85,7 +88,10 @@ const ProfitSectionBase = ({
 
       <ProfitSectionCurrencyValueContainer>
         <ParagraphText>
-          {currencyValue} {currency}
+          <AnimatedNumber key={selectedProfitType}>
+            {currencyValue}
+          </AnimatedNumber>{' '}
+          {currency}
         </ParagraphText>
       </ProfitSectionCurrencyValueContainer>
 

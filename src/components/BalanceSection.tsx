@@ -19,6 +19,7 @@ import { Loader } from './Loader';
 import { navigate, Screens } from '../Router';
 import { IS_IOS, RHYTHM } from '../constants';
 import { selectHasPendingDepositCalls } from '../store/depositCalls/selectors';
+import { AnimatedNumber } from './AnimatedNumber';
 
 enum BalanceTypes {
   btc = 'BTC',
@@ -105,7 +106,13 @@ BalanceSectionBaseProps) => {
       </BalanceSectionHeadingContainer>
 
       <BalanceSectionBalanceContainer>
-        <BigText>{value}</BigText>
+        <BigText>
+          <AnimatedNumber
+            key={balanceType}
+            digits={balanceType === BalanceTypes.btc ? 6 : 2}>
+            {value}
+          </AnimatedNumber>
+        </BigText>
 
         <BalanceSectionProfilePercentageContainer>
           <ParagraphText>{balanceType}</ParagraphText>
@@ -114,7 +121,7 @@ BalanceSectionBaseProps) => {
 
       <BalanceSectionCurrencyValueContainer>
         <ParagraphText>
-          1 BTC = {currencyValue} {currency}
+          1 BTC = <AnimatedNumber>{currencyValue}</AnimatedNumber> {currency}
         </ParagraphText>
       </BalanceSectionCurrencyValueContainer>
 
