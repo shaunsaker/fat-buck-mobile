@@ -1,7 +1,6 @@
 import React from 'react';
-import styled, { css } from 'styled-components/native';
+import styled from 'styled-components/native';
 import { colors } from '../colors';
-import LinearGradient from 'react-native-linear-gradient';
 import { Touchable } from './Touchable';
 import { ActivityIndicator } from 'react-native';
 import { BORDER_WIDTH, FONT_BOLD, RHYTHM } from '../constants';
