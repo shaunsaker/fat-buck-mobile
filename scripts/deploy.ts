@@ -14,10 +14,6 @@ const codeReleaseVersion = argv.code as string;
 
 if (codeReleaseVersion) {
   // RELEASE CODE FLOW
-  if (!codeReleaseVersion) {
-    console.log('Please supply a version and try again.');
-    process.exit(1);
-  }
 
   // get the latest build release branch for the given version
   const latestReleaseBranchName = getLatestReleaseBranchName(
@@ -47,7 +43,7 @@ if (codeReleaseVersion) {
   )[1]; // e.g. 1.0.0-1
   const versionString = `${latestReleaseVersionString}-${nextCodeVersion}`; // e.g. 1.0.0-1-1 === VERSION-BUILD-CODE
   const commitMessage = versionString;
-  execGit(['commit', '--no-verify', '-m', `${commitMessage}`, 'package.json']);
+  // execGit(['commit', '--no-verify', '-m', `${commitMessage}`, 'package.json']);
   console.log(`Created commit ${commitMessage}`);
 
   // create a new tag with the code version
@@ -105,8 +101,38 @@ function getLatestReleaseBranchName(base: string) {
     .split('\n')
     .map((l) => l.trim())
     .filter((l) => l)
-    .sort()
-    .reverse();
+    .sort((a, b) => {
+      // sort by version
+      const sortOnA = a.replace(releaseBranchBase, '').split('-')[0];
+      const sortOnB = b.replace(releaseBranchBase, '').split('-')[0];
+
+      if (sortOnA > sortOnB) {
+        return -1;
+      }
+      if (sortOnB > sortOnA) {
+        return 1;
+      }
+      return 0;
+    })
+    .sort((a, b) => {
+      // sort by build number
+      const sortOnA = parseInt(
+        a.replace(releaseBranchBase, '').split('-')[1],
+        10,
+      );
+      const sortOnB = parseInt(
+        b.replace(releaseBranchBase, '').split('-')[1],
+        10,
+      );
+
+      if (sortOnA > sortOnB) {
+        return -1;
+      }
+      if (sortOnB > sortOnA) {
+        return 1;
+      }
+      return 0;
+    });
 
   return oldReleaseBranches[0];
 }
