@@ -73,7 +73,7 @@ const TradesGraphBase = ({ data, trendlineData }: TradesGraphBaseProps) => {
 
       <TradesGraphContainer>
         <Row>
-          <YAxisLabel>Profit Percentage (%)</YAxisLabel>
+          <YAxisLabel>Profit Percentage Per Day (%)</YAxisLabel>
 
           <YAxis
             data={data.map(({ value }) => value)}
