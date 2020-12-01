@@ -43,7 +43,7 @@ if (codeReleaseVersion) {
   )[1]; // e.g. 1.0.0-1
   const versionString = `${latestReleaseVersionString}-${nextCodeVersion}`; // e.g. 1.0.0-1-1 === VERSION-BUILD-CODE
   const commitMessage = versionString;
-  // execGit(['commit', '--no-verify', '-m', `${commitMessage}`, 'package.json']);
+  execGit(['commit', '--no-verify', '-m', `${commitMessage}`, 'package.json']);
   console.log(`Created commit ${commitMessage}`);
 
   // create a new tag with the code version
