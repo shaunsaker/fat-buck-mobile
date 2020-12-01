@@ -12,7 +12,6 @@
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
-    "postinstall": "npx pod-install",
     "prerelease": "yarn lint && yarn test",
     "release": "yarn ts-node ./scripts/deploy.ts",
     "prerelease:code": "yarn lint && yarn test",
