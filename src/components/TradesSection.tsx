@@ -131,9 +131,6 @@ const TradesSectionBase = ({
               : colors.white,
             fontFamily: isLastLabel ? FONT_BOLD : FONT_REGULAR,
           },
-
-          // animate active trade values but only the last two columns
-          shouldAnimate: labelIndex > 2 && row.isActive,
         };
 
         return cell;
