@@ -7,64 +7,51 @@ import {
 } from '../../services/messaging';
 import { connectSaga } from '../../utils/connectSaga';
 import { select } from '../../utils/typedSelect';
-import {
-  selectNotificationsClosedTradesEnabled,
-  selectNotificationsOpenedTradesEnabled,
-} from '../settings/selectors';
+import { ApplicationState } from '../reducers';
+import { selectMessageTopicEnabled } from '../settings/selectors';
 import { showSnackbar } from '../snackbar/actions';
 import { MessagingTopics } from './models';
 
-function* handleMessagingFlow(): SagaIterator {
+function* messagingTopicFlow(topic: MessagingTopics): SagaIterator {
   const hasMessagingPermission = yield call(requestMessagingPermissionService);
 
   if (hasMessagingPermission) {
-    const openTradesNotificationEnabled = yield* select(
-      selectNotificationsOpenedTradesEnabled,
+    const messagingTopicEnabled = yield* select((state: ApplicationState) =>
+      selectMessageTopicEnabled(state, topic),
     );
 
-    if (openTradesNotificationEnabled) {
-      yield call(
-        messagingSubscribeToTopicService,
-        MessagingTopics.openedTrades,
-      );
+    if (messagingTopicEnabled) {
+      yield call(messagingSubscribeToTopicService, topic);
     } else {
-      yield call(
-        messagingUnsubscribeFromTopicService,
-        MessagingTopics.openedTrades,
-      );
-    }
-
-    const closedTradesNotificationEnabled = yield* select(
-      selectNotificationsClosedTradesEnabled,
-    );
-
-    if (closedTradesNotificationEnabled) {
-      yield call(
-        messagingSubscribeToTopicService,
-        MessagingTopics.closedTrades,
-      );
-    } else {
-      yield call(
-        messagingUnsubscribeFromTopicService,
-        MessagingTopics.closedTrades,
-      );
+      yield call(messagingUnsubscribeFromTopicService, topic);
     }
   } else {
     yield put(
-      showSnackbar(
-        'We need your permission to send you notifications about trades and profits.',
-      ),
+      showSnackbar('We need your permission to send you notifications.'),
     );
   }
 }
 
-// FIXME: we should use separate flows here
 export function* messagingFlow(): SagaIterator {
-  yield fork(handleMessagingFlow);
   yield fork(() =>
-    connectSaga(selectNotificationsOpenedTradesEnabled, handleMessagingFlow),
+    connectSaga(
+      (state: ApplicationState) =>
+        selectMessageTopicEnabled(state, MessagingTopics.openedTrades),
+      () => messagingTopicFlow(MessagingTopics.openedTrades),
+    ),
   );
   yield fork(() =>
-    connectSaga(selectNotificationsClosedTradesEnabled, handleMessagingFlow),
+    connectSaga(
+      (state: ApplicationState) =>
+        selectMessageTopicEnabled(state, MessagingTopics.closedTrades),
+      () => messagingTopicFlow(MessagingTopics.closedTrades),
+    ),
+  );
+  yield fork(() =>
+    connectSaga(
+      (state: ApplicationState) =>
+        selectMessageTopicEnabled(state, MessagingTopics.depositSuccess),
+      () => messagingTopicFlow(MessagingTopics.depositSuccess),
+    ),
   );
 }

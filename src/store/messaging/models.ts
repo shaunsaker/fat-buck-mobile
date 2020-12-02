@@ -8,4 +8,5 @@ export enum MessagingActionsTypes {
 export enum MessagingTopics {
   openedTrades = 'openedTrades',
   closedTrades = 'closedTrades',
+  depositSuccess = 'depositSuccess',
 }

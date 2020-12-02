@@ -1,9 +1,7 @@
+import { MessagingTopics } from '../messaging/models';
 import { ApplicationState } from '../reducers';
 
-export const selectNotificationsOpenedTradesEnabled = (
+export const selectMessageTopicEnabled = (
   state: ApplicationState,
-) => state.settings.notifications.openedTradesEnabled;
-
-export const selectNotificationsClosedTradesEnabled = (
-  state: ApplicationState,
-) => state.settings.notifications.closedTradesEnabled;
+  topic: MessagingTopics,
+) => state.settings.messaging[topic];

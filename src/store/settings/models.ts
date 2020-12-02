@@ -1,11 +1,11 @@
+import { MessagingTopics } from '../messaging/models';
+
 export enum SettingsActionsTypes {
-  SET_NOTIFICATIONS_OPENED_TRADES_ENABLED = '@@settings/SET_NOTIFICATIONS_OPENED_TRADES_ENABLED',
-  SET_NOTIFICATIONS_CLOSED_TRADES_ENABLED = '@@settings/SET_NOTIFICATIONS_CLOSED_TRADES_ENABLED',
+  SET_MESSAGING_TOPIC_ENABLED = '@@settings/SET_MESSAGING_TOPIC_ENABLED',
 }
 
 export interface SettingsState {
-  notifications: {
-    openedTradesEnabled: boolean;
-    closedTradesEnabled: boolean;
+  messaging: {
+    [key in keyof typeof MessagingTopics]: boolean;
   };
 }
