@@ -159,7 +159,7 @@ const TradesSectionBase = ({
       </Table>
 
       <ShowAlternateViewButtonContainer>
-        <Button kind={ButtonKinds.primaryFlat} small onPress={onShowGraphPress}>
+        <Button kind={ButtonKinds.primary} small onPress={onShowGraphPress}>
           SHOW GRAPH
         </Button>
       </ShowAlternateViewButtonContainer>

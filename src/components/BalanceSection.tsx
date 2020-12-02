@@ -133,7 +133,7 @@ BalanceSectionBaseProps) => {
 
       {showActionButtons ? (
         <BalanceSectionActionButtonContainer right>
-          <Button kind={ButtonKinds.primaryFlat} small onPress={handleDeposit}>
+          <Button kind={ButtonKinds.primary} small onPress={handleDeposit}>
             DEPOSIT
           </Button>
         </BalanceSectionActionButtonContainer>

@@ -7,7 +7,6 @@ import { BORDER_WIDTH, FONT_BOLD, RHYTHM } from '../constants';
 
 export enum ButtonKinds {
   primary,
-  primaryFlat,
   secondary,
   accent,
   accentFilled,
@@ -32,7 +31,7 @@ const ButtonContainer = styled(Touchable)<ButtonContainerProps>`
   border-width: ${BORDER_WIDTH}px;
   border-style: solid;
   border-color: ${({ kind }) =>
-    kind === ButtonKinds.primary || kind === ButtonKinds.primaryFlat
+    kind === ButtonKinds.primary
       ? colors.primary
       : kind === ButtonKinds.disabled || kind === ButtonKinds.secondary
       ? colors.lightTransWhite
@@ -44,7 +43,7 @@ const ButtonContainer = styled(Touchable)<ButtonContainerProps>`
   border-radius: ${({ small }) =>
     small ? SMALL_BUTTON_HEIGHT / 2 : HEIGHT / 2}px;
   background-color: ${({ kind }) =>
-    kind === ButtonKinds.primary || kind === ButtonKinds.primaryFlat
+    kind === ButtonKinds.primary
       ? colors.primary
       : kind === ButtonKinds.accentFilled
       ? colors.accent
@@ -65,7 +64,7 @@ const ButtonText = styled.Text<ButtonTextProps>`
   font-size: ${({ small }) => (small ? 12 : 16)}px;
   font-family: ${FONT_BOLD};
   color: ${({ kind }) =>
-    kind === ButtonKinds.primary || kind === ButtonKinds.primaryFlat
+    kind === ButtonKinds.primary
       ? colors.black
       : kind === ButtonKinds.disabled
       ? colors.transWhite
@@ -95,7 +94,10 @@ export const Button = ({
 }: ButtonProps) => {
   const renderedKind = disabled ? ButtonKinds.disabled : kind;
   const childComponent = loading ? (
-    <ActivityIndicator size="small" color={colors.white} />
+    <ActivityIndicator
+      size="small"
+      color={ButtonKinds.primary ? colors.black : colors.white}
+    />
   ) : (
     <ButtonText kind={renderedKind} small={small}>
       {children}
