@@ -5,6 +5,7 @@ import {
   messagingUnsubscribeFromTopicService,
   requestMessagingPermissionService,
 } from '../../services/messaging';
+import { connectSaga } from '../../utils/connectSaga';
 import { select } from '../../utils/typedSelect';
 import {
   selectNotificationsClosedTradesEnabled,
@@ -57,6 +58,13 @@ function* handleMessagingFlow(): SagaIterator {
   }
 }
 
+// FIXME: we should use separate flows here
 export function* messagingFlow(): SagaIterator {
   yield fork(handleMessagingFlow);
+  yield fork(() =>
+    connectSaga(selectNotificationsOpenedTradesEnabled, handleMessagingFlow),
+  );
+  yield fork(() =>
+    connectSaga(selectNotificationsClosedTradesEnabled, handleMessagingFlow),
+  );
 }
