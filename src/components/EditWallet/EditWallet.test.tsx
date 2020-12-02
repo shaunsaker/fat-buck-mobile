@@ -86,6 +86,23 @@ describe('EditWallet', () => {
     expect(spy).toHaveBeenCalledWith(navigate(Screens.QRCodeScanner));
   });
 
+  it('updates state with props from the QRCOde screen', () => {
+    const walletAddress = '12345678';
+    const route = makeRouteProps({
+      name: Screens.editWallet,
+      params: {
+        address: walletAddress,
+      },
+    });
+    const { getByPlaceholderText } = mountComponent(
+      <EditWallet route={route} />,
+    );
+
+    expect(
+      getByPlaceholderText(ADDRESS_INPUT_PLACEHOLDER_TEXT).props.value,
+    ).toEqual(walletAddress);
+  });
+
   it('renders an existing wallet correctly', () => {
     const wallet = makeWallet();
     const route = makeRouteProps({

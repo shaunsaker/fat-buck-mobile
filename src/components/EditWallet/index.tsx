@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components/native';
 import { RHYTHM } from '../../constants';
@@ -139,6 +139,13 @@ export const EditWallet = ({ route }: EditWalletProps) => {
   const isNewWallet = !route.params?.name;
   const isLoading = useSelector(selectWalletsLoading);
   const isDisabled = !name || !address || isLoading;
+
+  useEffect(() => {
+    // if the route updates with the address, ie. from QRCode
+    if (route.params?.address) {
+      setAddress(route.params?.address);
+    }
+  }, [route.params]);
 
   const onChangeName = useCallback((text: string) => {
     setName(text);
