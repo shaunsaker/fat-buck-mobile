@@ -6,6 +6,7 @@ import {
   saveWallet,
   saveWalletError,
   saveWalletSuccess,
+  setSelectedWalletId,
   syncWalletsSuccess,
 } from './actions';
 import {
@@ -23,7 +24,7 @@ import {
 } from '../../services/db';
 import { throwError } from 'redux-saga-test-plan/providers';
 import { showSnackbar } from '../snackbar/actions';
-import { initialState } from '../reducers';
+import rootReducer, { initialState } from '../reducers';
 import { navigateBack } from '../navigation/actions';
 
 describe('wallets flow', () => {
@@ -95,6 +96,18 @@ describe('wallets flow', () => {
       return expectSaga(onDeleteWalletFlow, deleteWallet(walletId))
         .withState(initialState)
         .provide([[matchers.call.fn(firestoreDeleteDocument), undefined]])
+        .put(deleteWalletSuccess())
+        .put(navigateBack())
+        .put(showSnackbar(DELETE_WALLET_SUCCESS_MESSAGE))
+        .run();
+    });
+
+    it('resets the selected wallet id', () => {
+      const state = rootReducer(initialState, setSelectedWalletId(walletId));
+      return expectSaga(onDeleteWalletFlow, deleteWallet(walletId))
+        .withState(state)
+        .provide([[matchers.call.fn(firestoreDeleteDocument), undefined]])
+        .put(setSelectedWalletId(''))
         .put(deleteWalletSuccess())
         .put(navigateBack())
         .put(showSnackbar(DELETE_WALLET_SUCCESS_MESSAGE))

@@ -24,12 +24,14 @@ import {
   deleteWallet,
   deleteWalletSuccess,
   deleteWalletError,
+  setSelectedWalletId,
 } from './actions';
 import { AuthActionTypes } from '../auth/models';
 import { select } from '../../utils/typedSelect';
 import { selectUserUid } from '../user/selectors';
 import { ActionType } from 'typesafe-actions';
 import { navigateBack } from '../navigation/actions';
+import { selectSelectedWalletId } from './selectors';
 
 export function* onSyncWalletsChannelFlow(data: WalletData[]) {
   const newData: Record<WalletId, WalletData> = {};
@@ -106,7 +108,15 @@ export function* onDeleteWalletFlow(
       .collection('wallets')
       .doc(action.payload.walletId);
     yield call(firestoreDeleteDocument, ref);
+
+    // if the wallet is currently selected, deselect it
+    const selectedWalletId = yield* select(selectSelectedWalletId);
+    if (selectedWalletId === action.payload.walletId) {
+      yield put(setSelectedWalletId(''));
+    }
+
     yield put(deleteWalletSuccess());
+
     yield put(navigateBack());
     yield put(showSnackbar(DELETE_WALLET_SUCCESS_MESSAGE));
   } catch (error) {
