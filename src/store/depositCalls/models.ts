@@ -20,7 +20,7 @@ export interface DepositCallData {
   date: string;
   walletAddress: string;
   status: DepositCallStatus;
-  binanceTransactionId?: string; // added once it has been seen in deposit history
+  txId?: string; // added once it has been seen in deposit history
   resolvedDate?: string; // added once it has resolved (status is SUCCESS)
   message?: string; // used for errors
 }

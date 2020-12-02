@@ -22,7 +22,7 @@ export interface DepositTransactionData extends BaseTransactionData {
   uid: string;
   walletAddress: string;
   depositCallId: string;
-  binanceTransactionId: string;
+  txId: string;
 }
 
 export interface CommissionTransactionData extends BaseTransactionData {
@@ -43,7 +43,7 @@ export interface WithdrawalTransactionData extends BaseTransactionData {
   uid: string;
   walletAddress: string;
   withdrawalCallId: string;
-  binanceTransactionId: string;
+  txId: string;
   transactionFee: number;
   resolvedAmount: number;
 }
