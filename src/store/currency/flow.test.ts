@@ -15,7 +15,7 @@ import {
   onSyncAvailableCurrenciesChannelFlow,
   onSyncCurrencyChannelFlow,
 } from './flow';
-import { Currency, CurrencyData, DEFAULT_CURRENCY } from './models';
+import { CurrencyData, DEFAULT_CURRENCY } from './models';
 
 describe('currency flow', () => {
   describe('onSetCountryNameFlow', () => {
