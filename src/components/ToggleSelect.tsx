@@ -42,19 +42,15 @@ const ToggleSelectOptionText = styled.Text`
 
 interface ToggleSelectProps<T> {
   options: T[];
-  selectedOption: T;
-  onSelectOption: (option: T) => void;
+  selectedOptionIndex: number;
+  onSelectOption: (index: number) => void;
 }
 
 export const ToggleSelect = <T extends string>({
   options,
-  selectedOption,
+  selectedOptionIndex,
   onSelectOption,
 }: ToggleSelectProps<T>) => {
-  const selectedOptionIndex = options.findIndex(
-    (option) => option === selectedOption,
-  );
-
   return (
     <ToggleSelectContainer>
       <ToggleSelectOptionBackground
@@ -66,11 +62,11 @@ export const ToggleSelect = <T extends string>({
         duration={ANIMATION_DURATION_SHORT}
       />
 
-      {options.map((option) => (
+      {options.map((option, index) => (
         <ToggleSelectOptionContainer
           key={option}
-          isSelected={option === selectedOption}
-          onPress={() => onSelectOption(option)}>
+          isSelected={selectedOptionIndex === index}
+          onPress={() => onSelectOption(index)}>
           <ToggleSelectOptionText>{option}</ToggleSelectOptionText>
         </ToggleSelectOptionContainer>
       ))}

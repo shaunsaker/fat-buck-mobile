@@ -3,8 +3,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components/native';
 import { colors } from '../colors';
 import { RHYTHM } from '../constants';
-import { navigate, Screens } from '../Router';
+import { Screens } from '../Router';
 import { setSelectedWalletId } from '../store/actions';
+import { navigate } from '../store/navigation/actions';
 import { WalletData } from '../store/wallets/models';
 import {
   selectSelectedWalletId,
@@ -188,7 +189,7 @@ export const WalletsSection = ({}: WalletsSectionProps) => {
     (wallet: WalletData) => {
       // if the wallet is the selected wallet id, the user wants to edit it
       if (wallet.id === selectedWalletId) {
-        navigate(Screens.editWallet, wallet);
+        dispatch(navigate(Screens.editWallet, wallet));
       } else {
         dispatch(setSelectedWalletId(wallet.id));
       }
@@ -197,8 +198,8 @@ export const WalletsSection = ({}: WalletsSectionProps) => {
   );
 
   const onAddWallet = useCallback(() => {
-    navigate(Screens.editWallet);
-  }, []);
+    dispatch(navigate(Screens.editWallet));
+  }, [dispatch]);
 
   return (
     <WalletsSectionBase

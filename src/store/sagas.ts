@@ -1,4 +1,4 @@
-import { all, fork } from 'redux-saga/effects';
+import { fork } from 'redux-saga/effects';
 import { activeBotsFlow } from './activeBots/flow';
 import { authFlow } from './auth/flow';
 import { balanceFlow } from './balance/flow';
@@ -15,24 +15,36 @@ import { navigationFlow } from './navigation/flow';
 import { clipboardFlow } from './clipboard/flow';
 import { servicesFlow } from './services/flow';
 import { messagingFlow } from './messaging/flow';
+import { connectSaga } from '../utils/connectSaga';
+import { selectIsAuthenticated } from './auth/selectors';
+
+function* authenticatedFlows(isAuthenticated: boolean) {
+  if (isAuthenticated) {
+    yield fork(profitFlow);
+    yield fork(activeBotsFlow);
+    yield fork(balanceFlow);
+    yield fork(tradesFlow);
+    yield fork(currencyFlow);
+    yield fork(walletsFlow);
+    yield fork(transactionsFlow);
+    yield fork(depositCallsFlow);
+    yield fork(messagingFlow);
+  }
+}
+
+function* omnipresentFlows() {
+  yield fork(authFlow);
+  yield fork(snackbarFlow);
+  yield fork(welcomeFlow);
+  yield fork(userFlow);
+  yield fork(navigationFlow);
+  yield fork(clipboardFlow);
+  yield fork(servicesFlow);
+}
 
 function* rootSaga() {
-  yield all([fork(authFlow)]);
-  yield all([fork(snackbarFlow)]);
-  yield all([fork(profitFlow)]);
-  yield all([fork(activeBotsFlow)]);
-  yield all([fork(balanceFlow)]);
-  yield all([fork(tradesFlow)]);
-  yield all([fork(welcomeFlow)]);
-  yield all([fork(userFlow)]);
-  yield all([fork(currencyFlow)]);
-  yield all([fork(walletsFlow)]);
-  yield all([fork(transactionsFlow)]);
-  yield all([fork(depositCallsFlow)]);
-  yield all([fork(navigationFlow)]);
-  yield all([fork(clipboardFlow)]);
-  yield all([fork(servicesFlow)]);
-  yield all([fork(messagingFlow)]);
+  yield fork(omnipresentFlows);
+  yield fork(() => connectSaga(selectIsAuthenticated, authenticatedFlows));
 }
 
 export default rootSaga;

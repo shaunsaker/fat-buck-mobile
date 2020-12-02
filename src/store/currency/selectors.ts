@@ -5,3 +5,6 @@ export const selectExchangeRate = (state: ApplicationState) =>
 
 export const selectSelectedCurrency = (state: ApplicationState) =>
   state.currency.selectedCurrency;
+
+export const selectAvailableCurrencies = (state: ApplicationState) =>
+  state.currency.availableCurrencies;

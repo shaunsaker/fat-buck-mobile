@@ -1,11 +1,5 @@
 import messaging from '@react-native-firebase/messaging';
 
-export const registerDeviceForRemoteMessagesService = async (): Promise<
-  void
-> => {
-  await messaging().registerDeviceForRemoteMessages();
-};
-
 export const requestMessagingPermissionService = (): Promise<boolean> => {
   return new Promise(async (resolve) => {
     const isMessagingPermissionGranted =
@@ -17,4 +11,8 @@ export const requestMessagingPermissionService = (): Promise<boolean> => {
 
 export const messagingSubscribeToTopicService = (topic: string): void => {
   messaging().subscribeToTopic(topic);
+};
+
+export const messagingUnsubscribeFromTopicService = (topic: string): void => {
+  messaging().unsubscribeFromTopic(topic);
 };

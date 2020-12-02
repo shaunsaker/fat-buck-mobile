@@ -2,7 +2,7 @@ export enum BalanceActionTypes {
   SYNC_BALANCE = '@@balance/SYNC_BALANCE',
   SYNC_BALANCE_SUCCESS = '@@balance/SYNC_BALANCE_SUCCESS',
   SYNC_BALANCE_ERROR = '@@balance/SYNC_BALANCE_ERROR',
-  SET_BALANCE_TYPE = '@@balance/SET_BALANCE_TYPE',
+  SET_DISPLAY_BALANCE_AS_BTC = '@@balance/SET_DISPLAY_BALANCE_AS_BTC',
 }
 
 export interface BalanceData {
@@ -11,13 +11,8 @@ export interface BalanceData {
   lastUpdated: string;
 }
 
-export enum BalanceTypes {
-  btc = 'BTC',
-  zar = 'ZAR',
-}
-
 export interface BalanceState {
   loading: boolean;
-  balanceType: BalanceTypes;
+  displayBalanceAsBTC: boolean;
   data: BalanceData;
 }

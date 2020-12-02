@@ -1,6 +1,6 @@
 import { action } from 'typesafe-actions';
 
-import { BalanceActionTypes, BalanceData, BalanceTypes } from './models';
+import { BalanceActionTypes, BalanceData } from './models';
 
 export const syncBalance = () => action(BalanceActionTypes.SYNC_BALANCE);
 
@@ -12,7 +12,7 @@ export const syncBalanceSuccess = (data: BalanceData) =>
 export const syncBalanceError = () =>
   action(BalanceActionTypes.SYNC_BALANCE_ERROR);
 
-export const setBalanceType = (balanceType: BalanceTypes) =>
-  action(BalanceActionTypes.SET_BALANCE_TYPE, {
-    balanceType,
+export const setDisplayBalanceAsBTC = (displayBalanceAsBTC: boolean) =>
+  action(BalanceActionTypes.SET_DISPLAY_BALANCE_AS_BTC, {
+    displayBalanceAsBTC,
   });

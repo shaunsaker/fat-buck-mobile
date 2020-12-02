@@ -5,8 +5,6 @@ import { showSnackbar } from '../actions';
 import firestore from '@react-native-firebase/firestore';
 import { ProfitData, ProfitActionTypes } from './models';
 import { syncProfitSuccess } from './actions';
-import { onlySelectorTruthyOrChanged } from '../../utils/onlySelectorTruthyOrChanged';
-import { selectIsAuthenticated } from '../auth/selectors';
 import { AuthActionTypes } from '../auth/models';
 
 export function* onSyncProfitChannelFlow(data: ProfitData) {
@@ -36,9 +34,5 @@ export function* watchSyncProfitFlow(): SagaIterator {
 
 export function* profitFlow(): SagaIterator {
   yield fork(watchSyncProfitFlow);
-  yield fork(
-    onlySelectorTruthyOrChanged,
-    selectIsAuthenticated,
-    syncProfitFlow,
-  );
+  yield fork(syncProfitFlow);
 }

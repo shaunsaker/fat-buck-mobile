@@ -16,8 +16,9 @@ import { setSideMenuIsOpen, signOut } from '../store/actions';
 import { useLinking } from './useLinking';
 import { selectIsAuthenticated } from '../store/auth/selectors';
 import { CONTACT } from '../config';
-import { isCurrentRoute, navigate, Screens } from '../Router';
+import { isCurrentRoute, Screens } from '../Router';
 import { BORDER_WIDTH, RHYTHM } from '../constants';
+import { navigate } from '../store/navigation/actions';
 
 const SideMenuContainer = styled.View`
   flex: 1;
@@ -196,13 +197,13 @@ export const SideMenu = ({ children }: SideMenuProps) => {
 
   const onProfile = useCallback(() => {
     closeSideMenu();
-    navigate(Screens.profile);
-  }, [closeSideMenu]);
+    dispatch(navigate(Screens.profile));
+  }, [dispatch, closeSideMenu]);
 
   const onWelcome = useCallback(() => {
     closeSideMenu();
-    navigate(Screens.welcomeStatic);
-  }, [closeSideMenu]);
+    dispatch(navigate(Screens.welcomeStatic));
+  }, [dispatch, closeSideMenu]);
 
   const onGetInTouch = useCallback(() => {
     openLink(`mailto:${CONTACT}`);

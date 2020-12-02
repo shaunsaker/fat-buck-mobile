@@ -16,8 +16,6 @@ import {
   syncActiveBotsError,
   syncActiveBotsSuccess,
 } from './actions';
-import { selectIsAuthenticated } from '../auth/selectors';
-import { onlySelectorTruthyOrChanged } from '../../utils/onlySelectorTruthyOrChanged';
 import { ActiveBotsActionTypes, ActiveBotData } from './models';
 import { AuthActionTypes } from '../auth/models';
 import { select } from '../../utils/typedSelect';
@@ -79,9 +77,5 @@ export function* watchSyncActiveBotsSuccessFlow(action: any): SagaIterator {
 
 export function* activeBotsFlow(): SagaIterator {
   yield fork(watchSyncActiveBotsFlow);
-  yield fork(
-    onlySelectorTruthyOrChanged,
-    selectIsAuthenticated,
-    syncActiveBotsFlow,
-  );
+  yield fork(syncActiveBotsFlow);
 }

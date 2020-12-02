@@ -5,8 +5,6 @@ import { showSnackbar } from '../actions';
 import firestore from '@react-native-firebase/firestore';
 import { TradeData, Trades, TradesActionTypes } from './models';
 import { syncTrades, syncTradesSuccess } from './actions';
-import { onlySelectorTruthyOrChanged } from '../../utils/onlySelectorTruthyOrChanged';
-import { selectIsAuthenticated } from '../auth/selectors';
 import { AuthActionTypes } from '../auth/models';
 import { watchSyncActiveBotsSuccessFlow } from '../activeBots/flow';
 import { ActionType } from 'typesafe-actions';
@@ -49,10 +47,5 @@ export function* watchSyncTradesFlow(): SagaIterator {
 
 export function* tradesFlow(): SagaIterator {
   yield fork(watchSyncTradesFlow);
-  yield fork(
-    onlySelectorTruthyOrChanged,
-    selectIsAuthenticated,
-    watchSyncActiveBotsSuccessFlow,
-    syncTrades,
-  );
+  yield fork(watchSyncActiveBotsSuccessFlow, syncTrades);
 }

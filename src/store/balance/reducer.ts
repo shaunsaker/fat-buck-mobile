@@ -1,10 +1,10 @@
 import { Reducer } from 'redux';
 import { REHYDRATE } from 'redux-persist';
-import { BalanceActionTypes, BalanceState, BalanceTypes } from './models';
+import { BalanceActionTypes, BalanceState } from './models';
 
 export const initialState: BalanceState = {
   loading: false,
-  balanceType: BalanceTypes.btc,
+  displayBalanceAsBTC: true,
   data: {
     amount: 0,
     value: 0,
@@ -43,10 +43,10 @@ export const balanceReducer: Reducer<BalanceState> = (
         loading: false,
       };
     }
-    case BalanceActionTypes.SET_BALANCE_TYPE: {
+    case BalanceActionTypes.SET_DISPLAY_BALANCE_AS_BTC: {
       return {
         ...state,
-        balanceType: action.payload.balanceType,
+        displayBalanceAsBTC: action.payload.displayBalanceAsBTC,
       };
     }
     default: {

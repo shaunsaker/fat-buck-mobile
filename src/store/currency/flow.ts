@@ -6,26 +6,29 @@ import {
   takeEvery,
   takeLatest,
   take,
+  takeLeading,
 } from 'redux-saga/effects';
 import { createFirestoreSyncChannel } from '../../services/db';
 import { showSnackbar } from '../actions';
 import firestore from '@react-native-firebase/firestore';
 import {
   setSelectedCurrency,
+  syncAvailableCurrencies,
+  syncAvailableCurrenciesError,
+  syncAvailableCurrenciesSuccess,
   syncCurrency,
   syncCurrencyError,
   syncCurrencySuccess,
 } from './actions';
-import { selectIsAuthenticated } from '../auth/selectors';
-import { onlySelectorTruthyOrChanged } from '../../utils/onlySelectorTruthyOrChanged';
 import { CurrencyData, CurrencyActionTypes, DEFAULT_CURRENCY } from './models';
 import { AuthActionTypes } from '../auth/models';
 import { CountryActionTypes } from '../country/models';
 import { ActionType } from 'typesafe-actions';
 import { setCountryName } from '../country/actions';
-import { selectSelectedCurrency } from './selectors';
+import { selectAvailableCurrencies, selectSelectedCurrency } from './selectors';
 import { select } from '../../utils/typedSelect';
 import { getCountryInfoByName } from '../../services/countriesInfo';
+import { connectSaga } from '../../utils/connectSaga';
 
 export function* onSetCountryNameFlow(
   action: ActionType<typeof setCountryName>,
@@ -79,14 +82,52 @@ export function* syncCurrencyFlow(): SagaIterator {
   yield put(syncCurrency());
 }
 
+export function* onSyncAvailableCurrenciesChannelFlow(
+  data: CurrencyData[],
+): SagaIterator {
+  const availableCurrencies = data
+    .filter((currency) => currency.rate)
+    .map((currency) => currency.symbol);
+  yield put(syncAvailableCurrenciesSuccess(availableCurrencies));
+}
+
+export function* onSyncAvailableCurrenciesFlow(): SagaIterator {
+  try {
+    const ref = firestore().collection('exchangeRates');
+    const channel = yield call(createFirestoreSyncChannel, ref);
+
+    yield takeEvery(channel, onSyncAvailableCurrenciesChannelFlow);
+
+    // TODO: this isn't working entirely, still getting firestore permission errors
+    yield take(AuthActionTypes.SIGN_OUT_SUCCESS);
+    channel.close();
+  } catch (error) {
+    yield put(syncAvailableCurrenciesError());
+    yield put(showSnackbar(error.message));
+  }
+}
+
+export function* watchSyncAvailableCurrenciesFlow(): SagaIterator {
+  yield takeLeading(
+    CurrencyActionTypes.SYNC_AVAILABLE_CURRENCIES,
+    onSyncAvailableCurrenciesFlow,
+  );
+}
+
+export function* syncAvailableCurrenciesFlow(): SagaIterator {
+  // only get the available currencies if we don't have them, they shouldn't change at all so there's no point syncing on every app mount
+  const hasAvailableCurrencies = (yield* select(selectAvailableCurrencies))
+    .length;
+
+  if (!hasAvailableCurrencies) {
+    yield put(syncAvailableCurrencies());
+  }
+}
+
 export function* currencyFlow(): SagaIterator {
   yield fork(watchSetCountryFlow);
   yield fork(watchSyncCurrencyFlow);
-  yield fork(
-    onlySelectorTruthyOrChanged,
-    selectIsAuthenticated,
-    onlySelectorTruthyOrChanged,
-    selectSelectedCurrency,
-    syncCurrencyFlow,
-  );
+  yield fork(() => connectSaga(selectSelectedCurrency, syncCurrencyFlow));
+  yield fork(watchSyncAvailableCurrenciesFlow);
+  yield fork(syncAvailableCurrenciesFlow);
 }

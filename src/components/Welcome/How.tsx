@@ -23,7 +23,7 @@ export const How = ({}: HowProps) => {
   return (
     <HowContainer>
       <LogoContainer>
-        <Logo variant={LogoVariants.eating} size={120} />
+        <Logo variant={LogoVariants.eating} size={100} />
       </LogoContainer>
 
       <TextContainer>

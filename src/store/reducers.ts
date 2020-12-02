@@ -27,6 +27,8 @@ import { TransactionsState } from './transactions/models';
 import { transactionsReducer } from './transactions/reducer';
 import { DepositCallsState } from './depositCalls/models';
 import { depositCallsReducer } from './depositCalls/reducer';
+import { SettingsState } from './settings/models';
+import { settingsReducer } from './settings/reducer';
 
 export interface ApplicationState {
   sideMenu: SideMenuState;
@@ -43,6 +45,7 @@ export interface ApplicationState {
   sliders: SlidersState;
   transactions: TransactionsState;
   depositCalls: DepositCallsState;
+  settings: SettingsState;
 }
 
 export const rootReducer = combineReducers({
@@ -60,6 +63,7 @@ export const rootReducer = combineReducers({
   sliders: slidersReducer,
   transactions: transactionsReducer,
   depositCalls: depositCallsReducer,
+  settings: settingsReducer,
 });
 
 export const initialState = rootReducer(undefined, { type: '' });

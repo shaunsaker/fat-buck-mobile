@@ -4,13 +4,18 @@ import { getCountryInfoByName } from '../../services/countriesInfo';
 import { setCountryName } from '../country/actions';
 import { CountryInfo } from '../country/models';
 import { showSnackbar } from '../snackbar/actions';
-import { setSelectedCurrency, syncCurrencySuccess } from './actions';
+import {
+  setSelectedCurrency,
+  syncAvailableCurrenciesSuccess,
+  syncCurrencySuccess,
+} from './actions';
 import {
   getCurrencyNotSupportedMessage,
   onSetCountryNameFlow,
+  onSyncAvailableCurrenciesChannelFlow,
   onSyncCurrencyChannelFlow,
 } from './flow';
-import { CurrencyData, DEFAULT_CURRENCY } from './models';
+import { Currency, CurrencyData, DEFAULT_CURRENCY } from './models';
 
 describe('currency flow', () => {
   describe('onSetCountryNameFlow', () => {
@@ -57,6 +62,31 @@ describe('currency flow', () => {
       return expectSaga(onSyncCurrencyChannelFlow, currencyData)
         .put(setSelectedCurrency(DEFAULT_CURRENCY))
         .put(showSnackbar(getCurrencyNotSupportedMessage(currencyData.id)))
+        .run();
+    });
+  });
+
+  describe('onSyncAvailableCurrenciesChannelFlow', () => {
+    it('puts syncAvailableCurrenciesSuccess with the returned data', () => {
+      const data: CurrencyData[] = [
+        {
+          base: '',
+          dateUpdated: '',
+          symbol: 'USD',
+          rate: 1,
+          id: 'USD',
+        },
+        {
+          base: '',
+          dateUpdated: '',
+          symbol: 'ZAR',
+          rate: 1,
+          id: 'ZAR',
+        },
+      ];
+
+      return expectSaga(onSyncAvailableCurrenciesChannelFlow, data)
+        .put(syncAvailableCurrenciesSuccess(data.map((item) => item.symbol)))
         .run();
     });
   });

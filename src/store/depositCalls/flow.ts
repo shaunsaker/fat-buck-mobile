@@ -23,8 +23,6 @@ import {
   syncDepositCallsError,
   syncDepositCallsSuccess,
 } from './actions';
-import { onlySelectorTruthyOrChanged } from '../../utils/onlySelectorTruthyOrChanged';
-import { selectIsAuthenticated } from '../auth/selectors';
 import { AuthActionTypes } from '../auth/models';
 import { select } from '../../utils/typedSelect';
 import { selectUserUid } from '../user/selectors';
@@ -106,10 +104,6 @@ export function* watchCreateDepositCallFlow(): SagaIterator {
 
 export function* depositCallsFlow(): SagaIterator {
   yield fork(watchSyncDepositCallsFlow);
-  yield fork(
-    onlySelectorTruthyOrChanged,
-    selectIsAuthenticated,
-    syncDepositCallsFlow,
-  );
+  yield fork(syncDepositCallsFlow);
   yield fork(watchCreateDepositCallFlow);
 }

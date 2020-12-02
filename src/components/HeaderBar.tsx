@@ -8,13 +8,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setSideMenuIsOpen } from '../store/actions';
 import app from '../../app.json';
 import { CloseButton } from './CloseButton';
-import { navigate } from '../Router';
 import { SmallText } from './SmallText';
 import { FONT_BOLD, RHYTHM } from '../constants';
 import { Loader } from './Loader';
 import { selectProfitLoading } from '../store/profit/selectors';
 import { selectBalanceLoading } from '../store/balance/selectors';
 import { selectTradesLoading } from '../store/trades/selectors';
+import { navigate } from '../store/navigation/actions';
 
 const HeaderBarContainer = styled.View`
   flex-direction: row;
@@ -135,8 +135,8 @@ export const HeaderBar = ({
   }, [dispatch]);
 
   const onClose = useCallback(() => {
-    navigate();
-  }, []);
+    dispatch(navigate());
+  }, [dispatch]);
 
   return (
     <HeaderBarBase

@@ -1,10 +1,13 @@
 import {
   setSelectedCurrency,
+  syncAvailableCurrencies,
+  syncAvailableCurrenciesError,
+  syncAvailableCurrenciesSuccess,
   syncCurrency,
   syncCurrencyError,
   syncCurrencySuccess,
 } from './actions';
-import { CurrencyData, CurrencyState } from './models';
+import { Currency, CurrencyData, CurrencyState } from './models';
 import { currencyReducer, initialState } from './reducer';
 
 describe('currency reducer', () => {
@@ -24,8 +27,7 @@ describe('currency reducer', () => {
       id: 'AUD',
     };
     const expected: CurrencyState = {
-      loading: false,
-      selectedCurrency: initialState.selectedCurrency,
+      ...initialState,
       ...currencyData,
     };
     nextState = currencyReducer(nextState, syncCurrencySuccess(currencyData));
@@ -48,5 +50,33 @@ describe('currency reducer', () => {
     );
 
     expect(nextState.selectedCurrency).toEqual(selectedCurrency);
+  });
+
+  it('sets loading to true on SYNC_AVAILABLE_CURRENCIES', () => {
+    const nextState = currencyReducer(initialState, syncAvailableCurrencies());
+
+    expect(nextState.loading).toEqual(true);
+  });
+
+  it('sets state correctly on SYNC_AVAILABLE_CURRENCIES_SUCCESS', () => {
+    let nextState = currencyReducer(initialState, syncAvailableCurrencies());
+    const availableCurrencies: Currency[] = ['USD', 'ZAR'];
+    const expected: CurrencyState = {
+      ...initialState,
+      availableCurrencies,
+    };
+    nextState = currencyReducer(
+      nextState,
+      syncAvailableCurrenciesSuccess(availableCurrencies),
+    );
+
+    expect(nextState).toEqual(expected);
+  });
+
+  it('sets loading to false on SYNC_AVAILABLE_CURRENCIES_ERROR', () => {
+    let nextState = currencyReducer(initialState, syncAvailableCurrencies());
+    nextState = currencyReducer(nextState, syncAvailableCurrenciesError());
+
+    expect(nextState.loading).toEqual(false);
   });
 });

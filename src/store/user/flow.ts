@@ -37,9 +37,9 @@ export function* onSignInSuccessFlow(
   const dateLastSignedIn = getDate();
   const country = (yield* select(selectCountry)).name;
   const user: UserData = {
-    uid: action.payload.user.uid,
-    email: action.payload.user.email,
-    cellphone: action.payload.user.phoneNumber,
+    uid: action.payload.user.uid || '',
+    email: action.payload.user.email || '',
+    cellphone: action.payload.user.phoneNumber || '',
     country,
     dateLastSignedIn,
   };

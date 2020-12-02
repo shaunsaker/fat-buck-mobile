@@ -1,14 +1,11 @@
 import { ApplicationState } from '../reducers';
 import { getFloatString } from '../../utils/getFloatString';
-import { BalanceTypes } from './models';
 
-export const selectBalanceType = (state: ApplicationState) =>
-  state.balance.balanceType;
+export const selectDisplayBalanceAsBTC = (state: ApplicationState) =>
+  state.balance.displayBalanceAsBTC;
 
 export const selectBalance = (state: ApplicationState) => {
-  const isBTCBalanceType = state.balance.balanceType === BalanceTypes.btc;
-
-  if (isBTCBalanceType) {
+  if (state.balance.displayBalanceAsBTC) {
     return getFloatString(state.balance.data.amount, 6);
   } else {
     return getFloatString(state.balance.data.value * state.currency.rate);

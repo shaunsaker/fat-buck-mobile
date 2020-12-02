@@ -10,6 +10,7 @@ export const initialState: CurrencyState = {
   symbol: '',
   rate: 0,
   id: '',
+  availableCurrencies: [],
 };
 
 export const currencyReducer: Reducer<CurrencyState> = (
@@ -38,6 +39,25 @@ export const currencyReducer: Reducer<CurrencyState> = (
       };
     }
     case CurrencyActionTypes.SYNC_CURRENCY_ERROR: {
+      return {
+        ...state,
+        loading: false,
+      };
+    }
+    case CurrencyActionTypes.SYNC_AVAILABLE_CURRENCIES: {
+      return {
+        ...state,
+        loading: true,
+      };
+    }
+    case CurrencyActionTypes.SYNC_AVAILABLE_CURRENCIES_SUCCESS: {
+      return {
+        ...state,
+        loading: false,
+        availableCurrencies: action.payload.availableCurrencies,
+      };
+    }
+    case CurrencyActionTypes.SYNC_AVAILABLE_CURRENCIES_ERROR: {
       return {
         ...state,
         loading: false,

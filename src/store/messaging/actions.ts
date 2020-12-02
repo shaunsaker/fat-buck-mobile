@@ -9,3 +9,6 @@ export const requestMessagingPermission = () =>
 
 export const messagingSubscribeToTopic = (topic: MessagingTopics) =>
   action(MessagingActionsTypes.MESSAGING_SUBSCRIBE_TO_TOPIC, { topic });
+
+export const messagingUnsubscribeToTopic = (topic: MessagingTopics) =>
+  action(MessagingActionsTypes.MESSAGING_UNSUBSCRIBE_FROM_TOPIC, { topic });

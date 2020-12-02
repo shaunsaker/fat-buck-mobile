@@ -1,10 +1,10 @@
 import {
-  setBalanceType,
+  setDisplayBalanceAsBTC,
   syncBalance,
   syncBalanceError,
   syncBalanceSuccess,
 } from './actions';
-import { BalanceData, BalanceTypes } from './models';
+import { BalanceData } from './models';
 import { balanceReducer, initialState } from './reducer';
 
 describe('balance reducer', () => {
@@ -48,10 +48,13 @@ describe('balance reducer', () => {
     expect(nextState.loading).toEqual(false);
   });
 
-  it('sets balanceType correctly', () => {
-    const balanceType = BalanceTypes.zar;
-    const nextState = balanceReducer(initialState, setBalanceType(balanceType));
+  it('sets displayBalanceAsBTC correctly', () => {
+    const displayBalanceAsBTC = false;
+    const nextState = balanceReducer(
+      initialState,
+      setDisplayBalanceAsBTC(displayBalanceAsBTC),
+    );
 
-    expect(nextState.balanceType).toEqual(balanceType);
+    expect(nextState.displayBalanceAsBTC).toEqual(displayBalanceAsBTC);
   });
 });

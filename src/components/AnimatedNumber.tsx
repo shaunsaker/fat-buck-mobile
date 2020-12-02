@@ -11,6 +11,7 @@ export const AnimatedNumber = ({
   children,
 }: AnimatedNumberProps) => {
   const [initialValue, setInitialValue] = useState(parseFloat(children));
+  const finalValue = parseFloat(children);
 
   const onComplete = useCallback(() => {
     // set the initialValue to children to prepare a future update on children which will trigger a new counter animation
@@ -19,9 +20,9 @@ export const AnimatedNumber = ({
 
   return (
     <Counter
-      key={children} // mount new if end changes
+      key={finalValue} // mount new if finalValue changes
       start={initialValue}
-      end={children}
+      end={finalValue}
       digits={digits}
       time={1500}
       easing="quadOut"

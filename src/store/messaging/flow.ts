@@ -2,21 +2,52 @@ import { SagaIterator } from 'redux-saga';
 import { call, fork, put } from 'redux-saga/effects';
 import {
   messagingSubscribeToTopicService,
-  registerDeviceForRemoteMessagesService,
+  messagingUnsubscribeFromTopicService,
   requestMessagingPermissionService,
 } from '../../services/messaging';
+import { select } from '../../utils/typedSelect';
+import {
+  selectNotificationsClosedTradesEnabled,
+  selectNotificationsOpenedTradesEnabled,
+} from '../settings/selectors';
 import { showSnackbar } from '../snackbar/actions';
 import { MessagingTopics } from './models';
 
 function* handleMessagingFlow(): SagaIterator {
-  yield call(registerDeviceForRemoteMessagesService);
-
   const hasMessagingPermission = yield call(requestMessagingPermissionService);
 
   if (hasMessagingPermission) {
-    // TODO: if settings enabled, do this, else unsubscribe
-    yield call(messagingSubscribeToTopicService, MessagingTopics.openedTrades);
-    yield call(messagingSubscribeToTopicService, MessagingTopics.closedTrades);
+    const openTradesNotificationEnabled = yield* select(
+      selectNotificationsOpenedTradesEnabled,
+    );
+
+    if (openTradesNotificationEnabled) {
+      yield call(
+        messagingSubscribeToTopicService,
+        MessagingTopics.openedTrades,
+      );
+    } else {
+      yield call(
+        messagingUnsubscribeFromTopicService,
+        MessagingTopics.openedTrades,
+      );
+    }
+
+    const closedTradesNotificationEnabled = yield* select(
+      selectNotificationsClosedTradesEnabled,
+    );
+
+    if (closedTradesNotificationEnabled) {
+      yield call(
+        messagingSubscribeToTopicService,
+        MessagingTopics.closedTrades,
+      );
+    } else {
+      yield call(
+        messagingUnsubscribeFromTopicService,
+        MessagingTopics.closedTrades,
+      );
+    }
   } else {
     yield put(
       showSnackbar(

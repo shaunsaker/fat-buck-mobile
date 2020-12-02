@@ -1,11 +1,12 @@
 import React, { useCallback } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components/native';
 import { BLOCK_CHAIR_URL } from '../../config';
 import { RHYTHM } from '../../constants';
-import { navigate, Screens } from '../../Router';
+import { Screens } from '../../Router';
 import { DepositCallData } from '../../store/depositCalls/models';
 import { selectPendingDepositCalls } from '../../store/depositCalls/selectors';
+import { navigate } from '../../store/navigation/actions';
 import { Wallets } from '../../store/wallets/models';
 import { selectWallets } from '../../store/wallets/selectors';
 import { getTimeSince } from '../../utils/getTimeSince';
@@ -94,6 +95,7 @@ export const getWalletNameFromDepositCall = (
 };
 
 export const DepositCalls = ({}: DepositCallsProps) => {
+  const dispatch = useDispatch();
   const pendingDepositCalls = useSelector(selectPendingDepositCalls);
   const wallets = useSelector(selectWallets);
   const { openLink } = useLinking();
@@ -107,8 +109,8 @@ export const DepositCalls = ({}: DepositCallsProps) => {
   );
 
   const onCreateNewDeposit = useCallback(() => {
-    navigate(Screens.deposit);
-  }, []);
+    dispatch(navigate(Screens.deposit));
+  }, [dispatch]);
 
   const rows: Row[] = pendingDepositCalls.map((depositCall) => {
     const walletName = getWalletNameFromDepositCall(wallets, depositCall);

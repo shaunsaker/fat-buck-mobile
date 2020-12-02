@@ -10,21 +10,17 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   selectBalance,
   selectBTCPrice,
-  selectBalanceType,
+  selectDisplayBalanceAsBTC,
   selectBalanceLoading,
 } from '../store/balance/selectors';
-import { setBalanceType } from '../store/actions';
+import { setDisplayBalanceAsBTC } from '../store/actions';
 import { selectSelectedCurrency } from '../store/currency/selectors';
 import { Loader } from './Loader';
-import { navigate, Screens } from '../Router';
+import { Screens } from '../Router';
 import { IS_IOS, RHYTHM } from '../constants';
 import { selectHasPendingDepositCalls } from '../store/depositCalls/selectors';
 import { AnimatedNumber } from './AnimatedNumber';
-
-enum BalanceTypes {
-  btc = 'BTC',
-  zar = 'ZAR',
-}
+import { navigate } from '../store/navigation/actions';
 
 const BalanceSectionContainer = styled.View`
   padding: ${RHYTHM}px;
@@ -78,11 +74,11 @@ interface BalanceSectionBaseProps {
   value: string;
   currencyValue: string;
   currency: string;
-  balanceTypes: BalanceTypes[];
-  balanceType: BalanceTypes;
+  balanceTypes: string[];
+  selectedBalanceTypeIndex: number;
   showActionButtons?: boolean;
   isLoading?: boolean;
-  handleSelectBalanceType: (balanceType: BalanceTypes) => void;
+  handleSelectBalanceType: (selectedBalanceTypeIndex: number) => void;
   handleDeposit: () => void;
   handleWithdraw: () => void;
 }
@@ -92,7 +88,7 @@ const BalanceSectionBase = ({
   currencyValue,
   currency,
   balanceTypes,
-  balanceType,
+  selectedBalanceTypeIndex,
   showActionButtons,
   isLoading,
   handleSelectBalanceType,
@@ -108,14 +104,16 @@ BalanceSectionBaseProps) => {
       <BalanceSectionBalanceContainer>
         <BigText>
           <AnimatedNumber
-            key={balanceType}
-            digits={balanceType === BalanceTypes.btc ? 6 : 2}>
+            key={selectedBalanceTypeIndex}
+            digits={selectedBalanceTypeIndex === 0 ? 6 : 2}>
             {value}
           </AnimatedNumber>
         </BigText>
 
         <BalanceSectionProfilePercentageContainer>
-          <ParagraphText>{balanceType}</ParagraphText>
+          <ParagraphText>
+            {balanceTypes[selectedBalanceTypeIndex]}
+          </ParagraphText>
         </BalanceSectionProfilePercentageContainer>
       </BalanceSectionBalanceContainer>
 
@@ -128,7 +126,7 @@ BalanceSectionBaseProps) => {
       <BalanceSectionBalanceTypeContainer>
         <ToggleSelect
           options={balanceTypes}
-          selectedOption={balanceType}
+          selectedOptionIndex={selectedBalanceTypeIndex}
           onSelectOption={handleSelectBalanceType}
         />
       </BalanceSectionBalanceTypeContainer>
@@ -166,28 +164,31 @@ export const BalanceSection = ({
   showActionButtons = true,
 }: BalanceSectionProps) => {
   const dispatch = useDispatch();
-  const balanceType = useSelector(selectBalanceType);
+  const displayBalanceAsBTC = useSelector(selectDisplayBalanceAsBTC);
+  const selectedBalanceTypeIndex = displayBalanceAsBTC === true ? 0 : 1;
   const value = useSelector(selectBalance); // TODO: handle personal balance
   const currencyValue = useSelector(selectBTCPrice);
   const currency = useSelector(selectSelectedCurrency);
   const isLoading = useSelector(selectBalanceLoading);
-  const balanceTypes = [BalanceTypes.btc, BalanceTypes.zar];
+  const balanceTypes = ['BTC', currency];
   const hasPendingDepositCalls = useSelector(selectHasPendingDepositCalls);
 
   const onSelectBalanceType = useCallback(
-    (type: BalanceTypes) => {
-      dispatch(setBalanceType(type));
+    (index: number) => {
+      const asBTC = index === 0 ? true : false;
+
+      dispatch(setDisplayBalanceAsBTC(asBTC));
     },
     [dispatch],
   );
 
   const onDeposit = useCallback(() => {
     if (hasPendingDepositCalls) {
-      navigate(Screens.depositCalls);
+      dispatch(navigate(Screens.depositCalls));
     } else {
-      navigate(Screens.deposit);
+      dispatch(navigate(Screens.deposit));
     }
-  }, [hasPendingDepositCalls]);
+  }, [hasPendingDepositCalls, dispatch]);
 
   const onWithdraw = useCallback(() => {}, []);
 
@@ -197,7 +198,7 @@ export const BalanceSection = ({
       currencyValue={currencyValue}
       currency={currency}
       balanceTypes={balanceTypes}
-      balanceType={balanceType}
+      selectedBalanceTypeIndex={selectedBalanceTypeIndex}
       showActionButtons={showActionButtons}
       isLoading={isLoading}
       handleSelectBalanceType={onSelectBalanceType}

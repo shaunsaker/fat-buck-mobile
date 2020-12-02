@@ -17,8 +17,6 @@ import {
   Transactions,
 } from './models';
 import { syncTransactions, syncTransactionsSuccess } from './actions';
-import { onlySelectorTruthyOrChanged } from '../../utils/onlySelectorTruthyOrChanged';
-import { selectIsAuthenticated } from '../auth/selectors';
 import { AuthActionTypes } from '../auth/models';
 import { select } from '../../utils/typedSelect';
 import { selectUserUid } from '../user/selectors';
@@ -89,9 +87,5 @@ export function* syncTransactionsFlow(): SagaIterator {
 
 export function* transactionsFlow(): SagaIterator {
   yield fork(watchSyncTransactionsFlow);
-  yield fork(
-    onlySelectorTruthyOrChanged,
-    selectIsAuthenticated,
-    syncTransactionsFlow,
-  );
+  yield fork(syncTransactionsFlow);
 }

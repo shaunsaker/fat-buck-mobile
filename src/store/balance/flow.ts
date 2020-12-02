@@ -5,8 +5,6 @@ import { showSnackbar } from '../actions';
 import firestore from '@react-native-firebase/firestore';
 import { BalanceData, BalanceActionTypes } from './models';
 import { syncBalanceSuccess } from './actions';
-import { onlySelectorTruthyOrChanged } from '../../utils/onlySelectorTruthyOrChanged';
-import { selectIsAuthenticated } from '../auth/selectors';
 import { AuthActionTypes } from '../auth/models';
 
 export function* onSyncBalanceChannelFlow(data: BalanceData) {
@@ -36,9 +34,5 @@ export function* watchSyncBalanceFlow(): SagaIterator {
 
 export function* balanceFlow(): SagaIterator {
   yield fork(watchSyncBalanceFlow);
-  yield fork(
-    onlySelectorTruthyOrChanged,
-    selectIsAuthenticated,
-    syncBalanceFlow,
-  );
+  yield fork(syncBalanceFlow);
 }

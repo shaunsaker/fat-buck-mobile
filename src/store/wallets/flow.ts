@@ -25,8 +25,6 @@ import {
   deleteWalletSuccess,
   deleteWalletError,
 } from './actions';
-import { onlySelectorTruthyOrChanged } from '../../utils/onlySelectorTruthyOrChanged';
-import { selectIsAuthenticated } from '../auth/selectors';
 import { AuthActionTypes } from '../auth/models';
 import { select } from '../../utils/typedSelect';
 import { selectUserUid } from '../user/selectors';
@@ -123,11 +121,7 @@ export function* watchDeleteWalletFlow(): SagaIterator {
 
 export function* walletsFlow(): SagaIterator {
   yield fork(watchSyncWalletsFlow);
-  yield fork(
-    onlySelectorTruthyOrChanged,
-    selectIsAuthenticated,
-    syncWalletsFlow,
-  );
+  yield fork(syncWalletsFlow);
   yield fork(watchSaveWalletFlow);
   yield fork(watchDeleteWalletFlow);
 }
