@@ -19,7 +19,7 @@ import { PageHeader } from '../PageHeader';
 const EditWalletContainer = styled.View`
   flex: 1;
   align-items: center;
-  padding: 0 ${RHYTHM}px;
+  padding: 0 ${RHYTHM}px ${RHYTHM}px;
 `;
 
 const TextInputContainer = styled.View`
