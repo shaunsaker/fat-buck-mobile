@@ -40,7 +40,7 @@ const SignInContainer = styled.View`
 `;
 
 const SignInInputContainer = styled.View`
-  margin-bottom: ${RHYTHM}px;
+  margin-bottom: ${RHYTHM / 2}px;
   align-self: stretch;
 `;
 

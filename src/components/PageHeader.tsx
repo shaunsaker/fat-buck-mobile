@@ -6,8 +6,8 @@ import { TitleText } from './TitleText';
 
 const PageHeaderContainer = styled.View`
   align-items: center;
-  padding: ${RHYTHM}px;
-  margin-bottom: ${RHYTHM}px;
+  padding: ${RHYTHM / 2}px ${RHYTHM}px;
+  margin-bottom: ${RHYTHM / 2}px;
   background-color: ${colors.veryLightTransWhite};
 `;
 

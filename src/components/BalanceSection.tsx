@@ -28,12 +28,9 @@ const BalanceSectionContainer = styled.View`
   background-color: ${colors.veryLightTransWhite};
 `;
 
-const BalanceSectionHeadingContainer = styled.View`
-  margin-bottom: ${RHYTHM / 2}px;
-`;
+const BalanceSectionHeadingContainer = styled.View``;
 
 const BalanceSectionBalanceContainer = styled.View`
-  margin-bottom: ${RHYTHM / 2}px;
   flex-direction: row;
   align-items: flex-end;
 `;

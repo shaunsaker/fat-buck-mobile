@@ -23,12 +23,9 @@ const ProfitSectionContainer = styled.View`
   align-items: center;
 `;
 
-const ProfitSectionHeadingContainer = styled.View`
-  margin-bottom: ${RHYTHM / 2}px;
-`;
+const ProfitSectionHeadingContainer = styled.View``;
 
 const ProfitSectionProfitContainer = styled.View`
-  margin-bottom: ${RHYTHM / 2}px;
   flex-direction: row;
   align-items: flex-end;
 `;

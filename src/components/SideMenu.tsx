@@ -31,7 +31,7 @@ const SideMenuHeaderContainer = styled.View`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding: ${RHYTHM}px;
+  padding: ${RHYTHM / 2}px ${RHYTHM}px;
 `;
 
 const SideMenuLogoContainer = styled.View``;
