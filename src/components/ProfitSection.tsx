@@ -56,9 +56,9 @@ interface ProfitSectionBaseProps {
   currencyValue: string;
   currency: string;
   profitTypes: ProfitTypes[];
-  selectedProfitType: ProfitTypes;
+  selectedProfitTypeIndex: number;
   isLoading: boolean;
-  handleSelectProfitType: (selectedProfitType: ProfitTypes) => void;
+  handleSelectProfitType: (index: number) => void;
 }
 
 const ProfitSectionBase = ({
@@ -66,7 +66,7 @@ const ProfitSectionBase = ({
   currencyValue,
   currency,
   profitTypes,
-  selectedProfitType,
+  selectedProfitTypeIndex,
   isLoading,
   handleSelectProfitType,
 }: ProfitSectionBaseProps) => {
@@ -78,7 +78,7 @@ const ProfitSectionBase = ({
 
       <ProfitSectionProfitContainer>
         <BigText>
-          <AnimatedNumber key={selectedProfitType}>{value}</AnimatedNumber>
+          <AnimatedNumber key={selectedProfitTypeIndex}>{value}</AnimatedNumber>
         </BigText>
 
         <ProfitSectionProfilePercentageContainer>
@@ -88,7 +88,7 @@ const ProfitSectionBase = ({
 
       <ProfitSectionCurrencyValueContainer>
         <ParagraphText>
-          <AnimatedNumber key={selectedProfitType}>
+          <AnimatedNumber key={selectedProfitTypeIndex}>
             {currencyValue}
           </AnimatedNumber>{' '}
           {currency}
@@ -98,7 +98,7 @@ const ProfitSectionBase = ({
       <ProfitSectionProfitTypeContainer>
         <ToggleSelect
           options={profitTypes}
-          selectedOption={selectedProfitType}
+          selectedOptionIndex={selectedProfitTypeIndex}
           onSelectOption={handleSelectProfitType}
         />
       </ProfitSectionProfitTypeContainer>
@@ -117,13 +117,17 @@ export const ProfitSection = () => {
   const value = useSelector(selectProfitPercent);
   const currencyValue = useSelector(selectProfitCurrencyValue);
   const selectedProfitType = useSelector(selectProfitType);
+  const selectedProfitTypeIndex =
+    selectedProfitType === ProfitTypes.toDate ? 0 : 1;
   const currency = useSelector(selectSelectedCurrency);
   const isLoading = useSelector(selectProfitLoading);
   const profitTypes = [ProfitTypes.toDate, ProfitTypes.annual];
 
   const onSelectProfitType = useCallback(
-    (profitType: ProfitTypes) => {
-      dispatch(setProfitType(profitType));
+    (index: number) => {
+      const asDate = index === 0 ? ProfitTypes.toDate : ProfitTypes.annual;
+
+      dispatch(setProfitType(asDate));
     },
     [dispatch],
   );
@@ -134,7 +138,7 @@ export const ProfitSection = () => {
       currencyValue={currencyValue}
       currency={currency}
       profitTypes={profitTypes}
-      selectedProfitType={selectedProfitType}
+      selectedProfitTypeIndex={selectedProfitTypeIndex}
       isLoading={isLoading}
       handleSelectProfitType={onSelectProfitType}
     />
