@@ -2,16 +2,16 @@
 
 ## Development
 
-1. Install appcenter cli:
+1. Install codepush cli:
 
 ```
-npm install -g appcenter-cli
+npm install -g code-push-cli
 ```
 
 2. Login to appcenter:
 
 ```
-appcenter login
+code-push login
 ```
 
 ## Deployment
