@@ -2,7 +2,7 @@
   "name": "FatBuck",
   "version": "1.0.0",
   "build": "14",
-  "code": "5",
+  "code": "6",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
