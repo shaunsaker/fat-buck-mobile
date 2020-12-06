@@ -1,5 +1,19 @@
 # README
 
+## Development
+
+1. Install appcenter cli:
+
+```
+npm install -g appcenter-cli
+```
+
+2. Login to appcenter:
+
+```
+appcenter login
+```
+
 ## Deployment
 
 ### App Builds
