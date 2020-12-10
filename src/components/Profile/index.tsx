@@ -13,7 +13,7 @@ const TABS = ['TRANSACTIONS', 'WALLETS', 'SETTINGS'];
 
 const ProfileContainer = styled.View`
   flex: 1;
-  padding-bottom: ${RHYTHM}px;
+  padding: ${RHYTHM / 2}px 0 ${RHYTHM}px;
 `;
 
 interface ProfileBaseProps extends TabBarProps {}
