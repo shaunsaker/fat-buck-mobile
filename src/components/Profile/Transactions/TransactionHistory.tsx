@@ -1,13 +1,13 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components/native';
-import { colors } from '../colors';
-import { FONT_BOLD, RHYTHM } from '../constants';
-import { selectTransactions } from '../store/transactions/selectors';
-import { getTimeSince } from '../utils/getTimeSince';
-import { toBTCDigits } from '../utils/toBTCDigits';
-import { EmptyStateText } from './EmptyStateText';
-import { Column, Row, Table } from './Table';
+import { colors } from '../../../colors';
+import { FONT_BOLD, RHYTHM } from '../../../constants';
+import { selectTransactions } from '../../../store/transactions/selectors';
+import { getTimeSince } from '../../../utils/getTimeSince';
+import { toBTCDigits } from '../../../utils/toBTCDigits';
+import { EmptyStateText } from '../../EmptyStateText';
+import { Column, Row, Table } from '../../Table';
 
 const COLUMNS: Column[] = [
   {
@@ -40,7 +40,7 @@ interface TransactionHistoryBaseProps {
 const TransactionHistoryBase = ({ rows }: TransactionHistoryBaseProps) => {
   return (
     <TransactionHistoryContainer>
-      {!rows.length ? (
+      {rows.length ? (
         <Table
           title="Transaction History"
           columns={COLUMNS}
