@@ -12,8 +12,8 @@
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
-    "release": "yarn ts-node ./scripts/deploy.ts",
-    "release:code": "yarn ts-node ./scripts/deploy.ts --code",
+    "release": "yarn ts-node ./scripts/release.ts",
+    "release:code": "yarn ts-node ./scripts/release.ts --code",
     "deploy:android": "cd android && bundle exec fastlane deploy",
     "deploy:ios": "cd ios && bundle exec fastlane deploy",
     "deploy:code": "code-push release-react fat-buck-ios ios -d Production && cross-env PACKAGE_VERSION=$(cat package.json | grep version | head -1 | awk -F: '{ print $2 }' | sed 's/[\",]//g' | tr -d '[[:space:]]') code-push release-react fat-buck-android android -d Production -t $PACKAGE_VERSION"
