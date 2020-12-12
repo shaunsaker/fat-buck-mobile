@@ -19,6 +19,7 @@ import { HeaderBar } from '../HeaderBar';
 import { PageHeader } from '../PageHeader';
 import { getTrendlineData } from '../../utils/getTrendlineData';
 import { View } from 'react-native';
+import { VerticalText } from '../VerticalText';
 
 const TradesGraphContainer = styled.View`
   flex: 1;
@@ -32,14 +33,13 @@ const Row = styled.View`
   align-items: center;
 `;
 
-const YAxisLabel = styled.Text`
-  font-size: 14px;
-  font-family: ${FONT_REGULAR};
-  color: ${colors.white};
-  transform: rotate(-90deg);
-  margin-left: -65px;
-  margin-right: -55px;
-`;
+const LABEL_FONT_SIZE = 12;
+
+const YAxisLabelStyles = {
+  fontSize: LABEL_FONT_SIZE,
+  fontFamily: FONT_REGULAR,
+  color: colors.white,
+};
 
 const CONTENT_INSET = {
   top: RHYTHM * 2,
@@ -73,7 +73,12 @@ const TradesGraphBase = ({ data, trendlineData }: TradesGraphBaseProps) => {
 
       <TradesGraphContainer>
         <Row>
-          <YAxisLabel>Profit Percentage Per Day (%)</YAxisLabel>
+          <VerticalText
+            length={202}
+            height={YAxisLabelStyles.fontSize + RHYTHM}
+            style={YAxisLabelStyles}>
+            Profit Percentage Per Day (%)
+          </VerticalText>
 
           <YAxis
             data={data.map(({ value }) => value)}
@@ -120,7 +125,11 @@ const TradesGraphBase = ({ data, trendlineData }: TradesGraphBaseProps) => {
           style={{
             marginTop: -25,
           }}
-          svg={{ fontFamily: FONT_REGULAR, fill: colors.white }}
+          svg={{
+            fontFamily: FONT_REGULAR,
+            fill: colors.white,
+            fontSize: LABEL_FONT_SIZE,
+          }}
         />
       </TradesGraphContainer>
     </Background>
