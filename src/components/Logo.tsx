@@ -17,7 +17,7 @@ interface LogoProps {
   size?: number;
 }
 
-export const Logo = ({ variant, size = 50 }: LogoProps) => {
+export const Logo = ({ variant, size = 40 }: LogoProps) => {
   const defaultProps = {
     width: size,
     height: size,

@@ -6,7 +6,6 @@ import { colors } from '../colors';
 import { TouchableIcon } from './TouchableIcon';
 import { useDispatch, useSelector } from 'react-redux';
 import { setSideMenuIsOpen } from '../store/actions';
-import app from '../../app.json';
 import { CloseButton } from './CloseButton';
 import { SmallText } from './SmallText';
 import { FONT_BOLD, RHYTHM } from '../constants';
@@ -15,6 +14,7 @@ import { selectProfitLoading } from '../store/profit/selectors';
 import { selectBalanceLoading } from '../store/balance/selectors';
 import { selectTradesLoading } from '../store/trades/selectors';
 import { navigate } from '../store/navigation/actions';
+import LogoText from '../icons/logo-text.svg';
 
 const HeaderBarContainer = styled.View`
   flex-direction: row;
@@ -34,12 +34,6 @@ const HeaderBarMenuIconContainer = styled(TouchableIcon)`
 `;
 
 const HeaderBarTextContainer = styled.View``;
-
-const HeaderBarText = styled.Text`
-  font-size: 24px;
-  font-family: ${FONT_BOLD};
-  color: ${colors.white};
-`;
 
 const HeaderBarBetaText = styled(SmallText)`
   color: ${colors.transWhite};
@@ -92,7 +86,7 @@ const HeaderBarBase = ({
       </HeaderBarAlignmentContainer>
 
       <HeaderBarTextContainer>
-        <HeaderBarText>{app.displayName}</HeaderBarText>
+        <LogoText width={96} height={24} />
 
         <HeaderBarBetaText>BETA</HeaderBarBetaText>
       </HeaderBarTextContainer>
