@@ -1,10 +1,19 @@
 import React, { ReactNode, useCallback } from 'react';
-import { FlatList, StyleProp, TextStyle, ViewStyle } from 'react-native';
+import {
+  FlatList,
+  StyleProp,
+  TextStyle,
+  ViewStyle,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import styled from 'styled-components/native';
-import { colors } from '../colors';
 import { RHYTHM } from '../constants';
 import { HeadingText } from './HeadingText';
 import { SmallText } from './SmallText';
+import ArrowUpIcon from '../icons/arrow-up.svg';
+import ArrowDownIcon from '../icons/arrow-down.svg';
+import { colors } from '../colors';
 
 const TableContainer = styled.View`
   flex: 1;
@@ -26,13 +35,25 @@ const TableRowContainer = styled.View<TableRowContainerProps>`
     `${RHYTHM / 2}px ${paddingHorizontal}px`};
 `;
 
-const notLastCellStyles: TextStyle = {
+const ARROW_SIZE = 15;
+
+const SortArrowsContainer = styled.View`
+  margin-right: -5px;
+`;
+
+const firstCellStyles: TextStyle = {
   textAlign: 'left',
   marginRight: RHYTHM / 4,
 };
 
+const notLastCellStyles: TextStyle = {
+  ...firstCellStyles,
+  justifyContent: 'center',
+};
+
 const lastCellStyles: TextStyle = {
   textAlign: 'right',
+  justifyContent: 'flex-end',
 };
 
 export interface Cell {
@@ -48,6 +69,7 @@ export interface Row {
 }
 
 export interface Column {
+  key: string;
   label: string;
   style?: StyleProp<TextStyle>;
 }
@@ -60,6 +82,9 @@ interface TableProps {
   collapsed?: boolean; // only render rows
   children?: ReactNode;
   style?: StyleProp<ViewStyle>;
+  sortByKey?: string;
+  reverseSort?: boolean;
+  onTableHeaderPress?: (key: string) => void;
 }
 
 export const Table = ({
@@ -69,21 +94,19 @@ export const Table = ({
   paddingHorizontal = 0,
   children,
   style,
+  sortByKey,
+  reverseSort,
+  onTableHeaderPress,
 }: TableProps) => {
   const renderRow = useCallback(
     ({ item: row, index: rowIndex }: { item: Row; index: number }) => {
-      const hasBackground = Boolean(rowIndex % 2 === 0);
+      const isEvenRow = Boolean(rowIndex % 2 === 0);
 
       return (
         <TableRowContainer
           key={row.id}
           paddingHorizontal={paddingHorizontal}
-          style={[
-            hasBackground
-              ? { backgroundColor: colors.veryLightTransWhite }
-              : {},
-            row.style,
-          ]}>
+          style={[isEvenRow ? {} : {}, row.style]}>
           {row.cells.map((cell, columnIndex) => {
             const isLastCell = columnIndex === row.cells.length - 1;
 
@@ -109,6 +132,15 @@ export const Table = ({
     [columns, paddingHorizontal],
   );
 
+  const handleTableHeaderPress = useCallback(
+    (key: string) => {
+      if (onTableHeaderPress) {
+        onTableHeaderPress(key);
+      }
+    },
+    [onTableHeaderPress],
+  );
+
   return (
     <TableContainer style={style}>
       <TableTitleContainer>
@@ -117,19 +149,55 @@ export const Table = ({
 
       <TableRowContainer paddingHorizontal={paddingHorizontal}>
         {columns.map((column, columnIndex) => {
+          const isSortedColumn = column.key === sortByKey;
+          const isFirstCell = columnIndex === 0;
           const isLastCell = columnIndex === columns.length - 1;
+          const headerCellStyle = [
+            isFirstCell
+              ? firstCellStyles
+              : isLastCell
+              ? lastCellStyles
+              : notLastCellStyles,
+            column.style,
+            { flexDirection: 'row' },
+          ];
 
           return (
-            <SmallText
+            <TouchableOpacity
               key={column.label}
-              center
-              bold
-              style={[
-                isLastCell ? lastCellStyles : notLastCellStyles,
-                column.style,
-              ]}>
-              {column.label}
-            </SmallText>
+              // @ts-expect-error
+              style={headerCellStyle}
+              onPress={() => handleTableHeaderPress(column.key)}>
+              <SmallText center bold>
+                {column.label}
+              </SmallText>
+
+              <SortArrowsContainer>
+                <ArrowUpIcon
+                  width={ARROW_SIZE}
+                  height={ARROW_SIZE}
+                  fill={
+                    isSortedColumn
+                      ? reverseSort
+                        ? colors.transWhite
+                        : colors.white
+                      : ''
+                  }
+                  style={{ marginBottom: ARROW_SIZE / -2 }}
+                />
+                <ArrowDownIcon
+                  width={ARROW_SIZE}
+                  height={ARROW_SIZE}
+                  fill={
+                    isSortedColumn
+                      ? reverseSort
+                        ? colors.white
+                        : colors.transWhite
+                      : ''
+                  }
+                />
+              </SortArrowsContainer>
+            </TouchableOpacity>
           );
         })}
       </TableRowContainer>

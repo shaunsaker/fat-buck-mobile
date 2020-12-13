@@ -1,10 +1,17 @@
 import { Reducer } from 'redux';
 import { REHYDRATE } from 'redux-persist';
-import { TradesActionTypes, TradesState, Trade } from './models';
+import {
+  TradesActionTypes,
+  TradesState,
+  Trade,
+  TradesSortTypes,
+} from './models';
 
 export const initialState: TradesState = {
   loading: false,
   data: {},
+  sortType: TradesSortTypes.closed,
+  reverseSort: true, // start from latest to oldest
 };
 
 export const tradesReducer: Reducer<TradesState> = (
@@ -52,6 +59,22 @@ export const tradesReducer: Reducer<TradesState> = (
       return {
         ...state,
         loading: false,
+      };
+    }
+    case TradesActionTypes.SET_TRADES_SORT_TYPE: {
+      let reverseSort = state.reverseSort;
+      const isAlreadySortingOnThisType =
+        state.sortType === action.payload.sortType;
+
+      if (isAlreadySortingOnThisType) {
+        // toggle reverseSort
+        reverseSort = !reverseSort;
+      }
+
+      return {
+        ...state,
+        sortType: action.payload.sortType,
+        reverseSort,
       };
     }
     default: {

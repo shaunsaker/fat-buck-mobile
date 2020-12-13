@@ -2,7 +2,12 @@ import React, { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components/native';
 import { colors } from '../colors';
-import { selectTrades, selectTradesLoading } from '../store/trades/selectors';
+import {
+  selectTrades,
+  selectTradesLoading,
+  selectTradesReverseSort,
+  selectTradesSortType,
+} from '../store/trades/selectors';
 import {
   getTradeCoin,
   getTradeLoss,
@@ -18,6 +23,8 @@ import { FONT_BOLD, FONT_REGULAR, RHYTHM } from '../constants';
 import Button, { ButtonKinds } from './Button';
 import { navigate } from '../store/navigation/actions';
 import { Screens } from '../Router';
+import { TradesSortTypes } from '../store/trades/models';
+import { setTradesSortBy } from '../store/actions';
 
 const TradesSectionContainer = styled.View`
   flex: 1;
@@ -50,6 +57,7 @@ const ShowAlternateViewButtonContainer = styled.View`
 
 const COLUMNS: Column[] = [
   {
+    key: TradesSortTypes.coin,
     label: 'Coin',
     style: {
       flex: 0.75,
@@ -57,6 +65,7 @@ const COLUMNS: Column[] = [
     },
   },
   {
+    key: TradesSortTypes.opened,
     label: 'Opened',
     style: {
       flex: 1.5,
@@ -64,6 +73,7 @@ const COLUMNS: Column[] = [
     },
   },
   {
+    key: TradesSortTypes.closed,
     label: 'Closed',
     style: {
       flex: 1.5,
@@ -71,6 +81,7 @@ const COLUMNS: Column[] = [
     },
   },
   {
+    key: TradesSortTypes.amount,
     label: 'Amount',
     style: {
       flex: 1,
@@ -78,6 +89,7 @@ const COLUMNS: Column[] = [
     },
   },
   {
+    key: TradesSortTypes.percent,
     label: 'Profit %',
     style: {
       flex: 1,
@@ -97,16 +109,22 @@ interface TradesSectionBaseProps {
   rows: TradeRow[];
   wins: number;
   losses: number;
+  sortByKey: string;
+  reverseSort: boolean;
   isLoading: boolean;
   onShowGraphPress: () => void;
+  onTableHeaderPress: (key: string) => void;
 }
 
 const TradesSectionBase = ({
   rows,
   wins,
   losses,
+  sortByKey,
+  reverseSort,
   isLoading,
   onShowGraphPress,
+  onTableHeaderPress,
 }: TradesSectionBaseProps) => {
   // attach styles
   const rowsWithStyles = rows.map((row) => {
@@ -154,7 +172,10 @@ const TradesSectionBase = ({
         title="Trades"
         columns={COLUMNS}
         rows={rowsWithStyles}
-        paddingHorizontal={RHYTHM / 2}>
+        paddingHorizontal={RHYTHM / 2}
+        sortByKey={sortByKey}
+        reverseSort={reverseSort}
+        onTableHeaderPress={onTableHeaderPress}>
         {isLoading ? <TableLoader /> : null}
       </Table>
 
@@ -189,18 +210,32 @@ export const TradesSection = ({}: TradesSectionProps) => {
   }));
   const wins = trades.filter((trade) => trade.closeProfitAbs >= 0).length;
   const losses = trades.filter((trade) => trade.closeProfitAbs < 0).length;
+  const sortByKey = useSelector(selectTradesSortType);
+  const reverseSort = useSelector(selectTradesReverseSort);
 
   const onShowGraphPress = useCallback(() => {
     dispatch(navigate(Screens.tradesGraph));
   }, [dispatch]);
+
+  const onTableHeaderPress = useCallback(
+    (key: string) => {
+      const sortBy = key as TradesSortTypes;
+
+      dispatch(setTradesSortBy(sortBy));
+    },
+    [dispatch],
+  );
 
   return (
     <TradesSectionBase
       rows={rows}
       wins={wins}
       losses={losses}
+      sortByKey={sortByKey}
+      reverseSort={reverseSort}
       isLoading={isLoading}
       onShowGraphPress={onShowGraphPress}
+      onTableHeaderPress={onTableHeaderPress}
     />
   );
 };
